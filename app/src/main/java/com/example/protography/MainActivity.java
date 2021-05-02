@@ -1,12 +1,16 @@
 package com.example.protography;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Window;
 
-import com.example.protography.ui.Fragments.AddFragment;
+import com.example.protography.ui.Fragments.AddActivity;
+import com.example.protography.ui.Fragments.AddImageDetailsFragment;
+import com.example.protography.ui.Fragments.ImageSelectFragment;
 import com.example.protography.ui.Fragments.MapsFragment;
+import com.example.protography.ui.Fragments.PlaceSelectFragment;
 import com.example.protography.ui.Fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -19,20 +23,32 @@ import androidx.fragment.app.FragmentTransaction;
 public class MainActivity extends AppCompatActivity {
 
     Fragment fragment;
+    boolean IsAddActivity = false;
+    BottomNavigationView navView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
-        getSupportActionBar().hide(); //hide the title bar
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navView.setOnNavigationItemReselectedListener(mOnNavigationItemReselectedListener);
 
         loadFragment(new MapsFragment());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(IsAddActivity) {
+            navView.setSelectedItemId(R.id.navigation_search);
+            //altrimenti tornando dall'attività di aggiunta sarebbe selezionato un item non corrispondente al fragment aperto.
+            IsAddActivity = false;
+        }
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -42,8 +58,9 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_add:
-                    fragment = new AddFragment();
-                    loadFragment(fragment);
+                    Intent intent = new Intent(MainActivity.this, AddActivity.class);
+                    startActivity(intent);
+                    IsAddActivity = true;
                     return true;
                 case R.id.navigation_profile:
                     fragment = new ProfileFragment();
@@ -55,6 +72,14 @@ public class MainActivity extends AppCompatActivity {
                     return true;
             }
             return false;
+        }
+    };
+
+    private BottomNavigationView.OnNavigationItemReselectedListener mOnNavigationItemReselectedListener
+            = new BottomNavigationView.OnNavigationItemReselectedListener() {
+        @Override
+        public void onNavigationItemReselected(@NonNull MenuItem item) {
+            //on reselect do nothing
         }
     };
 
