@@ -6,6 +6,4 @@
     <string name="take_photo">Camera</string>
     <string name="select_photo">Gallery</string>
     <string name="choose_method">Select a photo or take one</string>
-
-
 </resources>

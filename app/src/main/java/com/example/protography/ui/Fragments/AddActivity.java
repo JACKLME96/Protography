@@ -1,24 +1,19 @@
 package com.example.protography.ui.Fragments;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.example.protography.MainActivity;
+
 import com.example.protography.R;
-import com.example.protography.ui.ViewModels.AddViewModel;
 
 public class AddActivity extends AppCompatActivity {
 
@@ -59,8 +54,6 @@ public class AddActivity extends AppCompatActivity {
     }
 
     private void loadFragment(Fragment fragment, String tag) {
-        // load fragment
-        //(if tag != )
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction
                 .replace(R.id.frame_container, fragment, tag)

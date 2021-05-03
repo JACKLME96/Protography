@@ -4,13 +4,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.Window;
+
 
 import com.example.protography.ui.Fragments.AddActivity;
-import com.example.protography.ui.Fragments.AddImageDetailsFragment;
-import com.example.protography.ui.Fragments.ImageSelectFragment;
+
 import com.example.protography.ui.Fragments.MapsFragment;
-import com.example.protography.ui.Fragments.PlaceSelectFragment;
 import com.example.protography.ui.Fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

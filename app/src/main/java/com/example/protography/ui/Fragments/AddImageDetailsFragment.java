@@ -10,10 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
@@ -24,8 +26,7 @@ import android.widget.Toast;
 
 import com.example.protography.R;
 import com.example.protography.ui.Models.Image;
-import com.example.protography.ui.ViewModels.AddViewModel;
-import com.google.android.gms.maps.model.LatLng;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -59,6 +60,13 @@ public class AddImageDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle("Add details");
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
     }
 
     @Override
@@ -124,6 +132,8 @@ public class AddImageDetailsFragment extends Fragment {
                                     time.getText().toString().trim(),tips.getText().toString().trim(),equipment.getText().toString().trim(),coords);
                             String uploadId = mDatabaseRef.push().getKey();
                             mDatabaseRef.child(uploadId).setValue(upload);
+
+                            getActivity().finish();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {

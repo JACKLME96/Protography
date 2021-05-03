@@ -1,41 +1,19 @@
 package com.example.protography.ui.ViewModels;
 
-import android.net.Uri;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.android.gms.maps.model.LatLng;
-
 public class AddViewModel extends ViewModel {
 
-    private MutableLiveData<Uri> imageSelectedUri;
-    private MutableLiveData<LatLng> imageSelectedCords;
-
+    private MutableLiveData<String> mText;
 
     public AddViewModel() {
-        imageSelectedUri = new MutableLiveData<>();
-        imageSelectedCords = new MutableLiveData<>();
-
+        mText = new MutableLiveData<>();
+        mText.setValue("This is Add fragment");
     }
 
-    public LiveData<Uri> getUri() {
-        return imageSelectedUri;
+    public LiveData<String> getText() {
+        return mText;
     }
-
-    public void SetUri( Uri input) {
-        imageSelectedUri.setValue(input);
-    }
-
-    public LiveData<LatLng> getcCords() {
-        return imageSelectedCords;
-    }
-
-    public void SetCoords( LatLng input) {
-        imageSelectedCords.setValue(input);
-    }
-
-
-
 }
