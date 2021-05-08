@@ -2,32 +2,32 @@ package com.example.protography.ui.Fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
+
 
 import android.Manifest;
-
-import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.TextView;
 
 import com.example.protography.BuildConfig;
 import com.example.protography.R;
-import com.example.protography.ui.ViewModels.MapsViewModel;
+
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.TypeFilter;
@@ -36,81 +36,79 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 
 import java.util.Arrays;
 
-public class MapsFragment extends Fragment {
+public class PlaceSelectFragment extends Fragment {
+    private TextView coords;
+    String coordsValue;
+    GoogleMap map;
+    boolean firstMoved = false;
+    SharedPreferences sharedPref;
 
-    private static final String TAG = "MapsFragment";
-    private MapsViewModel mapsViewModel;
-    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
-    private GoogleMap map;
 
-    private final OnMapReadyCallback callback = new OnMapReadyCallback() {
+
+    private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         @Override
         public void onMapReady(GoogleMap googleMap) {
             map = googleMap;
-            LatLng sydney = new LatLng(-34, 151);
-            map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            map.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-            checkLocationPermission();
+            setMyLocationButton(googleMap);
+            googleMap.setOnCameraMoveListener(() -> {
+                firstMoved = true;
+                coordsValue = Double.toString(googleMap.getCameraPosition().target.latitude).substring(0,7) + " , " + Double.toString(googleMap.getCameraPosition().target.longitude).substring(0,7);
+                coords.setText(coordsValue);
+            });
+            googleMap.setOnCameraIdleListener(() -> {
+                if(firstMoved) {
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("COORDS", coordsValue);
+                    editor.apply();
+                }
+                else
+                {
+                    LatLng bicocca = new LatLng(45, 9);
+                    map.moveCamera(CameraUpdateFactory.newLatLng(bicocca));
+                }
+            });
         }
     };
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle("Select a place");
+        sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
-        return inflater.inflate(R.layout.fragment_maps, container, false);
+        View v = inflater.inflate(R.layout.fragment_place_select, container, false);
+        coords = v.findViewById(R.id.coords);
+        return v;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mapsViewModel = new ViewModelProvider(requireActivity()).get(MapsViewModel.class);
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(callback);
+        }
         SetSearchBar();
     }
 
-    //ASK FOR USER'S LOCATION PERMISSION
-    public boolean checkLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(getContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            requestPermissions(
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_LOCATION);
-        }
-        else
-            setMyLocationButton();
-        return true;
+    private void setMyLocationButton(GoogleMap googleMap) {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            return;
+        googleMap.setMyLocationEnabled(true);
+        googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        googleMap.setPadding(0, 175, 0, 0);
     }
 
-    //CHECK ANSWER
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_LOCATION: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (ActivityCompat.checkSelfPermission(getContext(),
-                            Manifest.permission.ACCESS_FINE_LOCATION)
-                            == PackageManager.PERMISSION_GRANTED)
-                        setMyLocationButton();
-                }
-            }
-        }
-    }
-
-    //SET THE "MY LOCATION" BUTTON
-    @SuppressLint("MissingPermission")
-    private void setMyLocationButton(){
-        map.setMyLocationEnabled(true);
-        map.getUiSettings().setMyLocationButtonEnabled(true);
-        map.setPadding(0, 175, 0, 0);
-    }
-
-    //SET THE SEARCH BAR FOR THE MAP
     private void SetSearchBar(){
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -140,9 +138,16 @@ public class MapsFragment extends Fragment {
                 @Override
                 public void onError(@NonNull Status status) {
                     // TODO: Handle the error.
-                    Log.d(TAG, "An error occurred: " + status);
                 }
             });
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(firstMoved) {
+            coords.setText(sharedPref.getString("COORDS", "DEFAULT"));
         }
     }
 }
