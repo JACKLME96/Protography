@@ -1,112 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="15dp"
         android:orientation="vertical"
         tools:context=".ui.Fragments.AddImageDetailsFragment">
 
-    <ImageView
-            android:id="@+id/image"
-            android:layout_width="match_parent"
-            android:layout_height="270dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Title"
-            android:textSize="26dp" />
-
-        <EditText
-            android:id="@+id/title"
+        <ImageView
+            android:id="@id/image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter the title" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Description"
-            android:textSize="26dp"
+            android:maxHeight="400dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
             android:layout_marginTop="16dp" />
 
-
-        <EditText
-            android:id="@+id/description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter the description" />
-
         <TextView
+            android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Equipment"
-            android:textSize="26dp"
-            android:layout_marginTop="16dp" />
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold"
+            android:text="Insert image details"
+            android:textSize="25dp"/>
 
-        <EditText
-            android:id="@+id/equipment"
+        <View
+            android:id="@+id/divider"
+            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter your equipment" />
+            android:layout_height="2dp"
+            android:background="?android:attr/listDivider" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Settings"
-            android:textSize="26dp"
-            android:layout_marginTop="16dp" />
 
-        <EditText
-            android:id="@+id/settings"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter your camera settings" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="15dp"
+            tools:context=".ui.Fragments.AddImageDetailsFragment">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Best time to go"
-            android:textSize="26dp"
-            android:layout_marginTop="16dp" />
-
-        <EditText
-            android:id="@+id/time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter the best time to go" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Tips"
-            android:textSize="26dp"
-            android:layout_marginTop="16dp" />
-
-        <EditText
-            android:id="@+id/tips"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter some useful tips" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:endIconMode="clear_text"
+                android:hint="Title"
+                android:layout_marginBottom="15dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/title"
+                    android:inputType="text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-        <Button
-            android:id="@+id/confirm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Confirm"
-            android:layout_marginTop="16dp" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:endIconMode="clear_text"
+                android:hint="Description"
+                android:layout_marginBottom="15dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/description"
+                    android:inputType="text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:endIconMode="clear_text"
+                android:hint="Equipment"
+                android:layout_marginBottom="15dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/equipment"
+                    android:inputType="text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:endIconMode="clear_text"
+                android:hint="Camera settings"
+                android:layout_marginBottom="15dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/settings"
+                    android:inputType="text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:endIconMode="clear_text"
+                android:hint="Best time to go"
+                android:layout_marginBottom="15dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/time"
+                    android:inputType="text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:endIconMode="clear_text"
+                android:hint="Tips"
+                android:layout_marginBottom="15dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tips"
+                    android:inputType="text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
 

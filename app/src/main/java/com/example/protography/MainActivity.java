@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 
-import com.example.protography.ui.Fragments.AddActivity;
+import com.example.protography.ui.AddActivity;
 
 import com.example.protography.ui.Fragments.MapsFragment;
 import com.example.protography.ui.Fragments.ProfileFragment;

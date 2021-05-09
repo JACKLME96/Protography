@@ -23,9 +23,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.protography.R;
+import com.stepstone.stepper.Step;
+import com.stepstone.stepper.VerificationError;
 import com.theartofdev.edmodo.cropper.CropImage;
 
-public class ImageSelectFragment extends Fragment implements View.OnClickListener {
+import org.jetbrains.annotations.NotNull;
+
+
+public class ImageSelectFragment extends Fragment implements View.OnClickListener, Step {
 
     ImageView selectedImage;
     Button reselectBtn;
@@ -36,8 +41,6 @@ public class ImageSelectFragment extends Fragment implements View.OnClickListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle("Select an image");
         CropImage.activity().start(getContext(), this);
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
     }
@@ -71,10 +74,6 @@ public class ImageSelectFragment extends Fragment implements View.OnClickListene
             selectedImage.setImageURI(imageUri);
             reselectBtn.setVisibility(View.VISIBLE);
         }
-        else {
-            Toast.makeText(getContext(), "You Must select an image!", Toast.LENGTH_LONG).show();
-            getActivity().finish();
-        }
 
         if(imageUri != null) {
             SharedPreferences.Editor editor = sharedPref.edit();
@@ -98,5 +97,24 @@ public class ImageSelectFragment extends Fragment implements View.OnClickListene
         super.onResume();
         reselectBtn.setVisibility(View.VISIBLE);
         selectedImage.setImageURI(Uri.parse(sharedPref.getString("IMAGEURI", "DEFAULT")));
+    }
+
+    @Nullable
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public VerificationError verifyStep() {
+        if(imageUri == null)
+           return new VerificationError("You must select an image to proceed");
+        return null;
+    }
+
+    @Override
+    public void onSelected() {
+
+    }
+
+    @Override
+    public void onError(@NonNull @NotNull VerificationError error) {
+        Toast.makeText(this.getContext(), error.getErrorMessage(), Toast.LENGTH_SHORT).show();
     }
 }

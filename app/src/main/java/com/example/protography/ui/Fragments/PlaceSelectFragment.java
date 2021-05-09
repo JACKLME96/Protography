@@ -33,15 +33,19 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.stepstone.stepper.Step;
+import com.stepstone.stepper.VerificationError;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
-public class PlaceSelectFragment extends Fragment {
+public class PlaceSelectFragment extends Fragment implements Step {
     private TextView coords;
-    String coordsValue;
-    GoogleMap map;
+    private String coordsValue;
+    private GoogleMap map;
     boolean firstMoved = false;
-    SharedPreferences sharedPref;
+    private SharedPreferences sharedPref;
 
 
 
@@ -75,7 +79,6 @@ public class PlaceSelectFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle("Select a place");
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
     }
 
@@ -149,5 +152,22 @@ public class PlaceSelectFragment extends Fragment {
         if(firstMoved) {
             coords.setText(sharedPref.getString("COORDS", "DEFAULT"));
         }
+    }
+
+    @Nullable
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public VerificationError verifyStep() {
+        return null;
+    }
+
+    @Override
+    public void onSelected() {
+
+    }
+
+    @Override
+    public void onError(@NonNull @NotNull VerificationError error) {
+
     }
 }

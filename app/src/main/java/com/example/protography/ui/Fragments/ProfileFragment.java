@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.protography.R;
+import com.example.protography.ui.Adapters.ProfileAdapter;
 import com.example.protography.ui.ViewModels.ProfileViewModel;
 import com.google.android.material.tabs.TabLayout;
 
@@ -40,11 +41,11 @@ public class ProfileFragment extends Fragment {
 
         mViewPager = root.findViewById(R.id.view_pager);
 
-        MainAdapter adapter = new MainAdapter(getParentFragmentManager(), mTabLayout.getTabCount());
+        ProfileAdapter adapter = new ProfileAdapter(getParentFragmentManager(), mTabLayout.getTabCount());
         mViewPager.setAdapter(adapter);
-        mViewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
 
-        mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mViewPager.setCurrentItem(tab.getPosition());
@@ -66,35 +67,5 @@ public class ProfileFragment extends Fragment {
 
 
 // Tipo estensione
-    private class MainAdapter extends FragmentStatePagerAdapter {
 
-        private int numeroPagine;
-
-        public MainAdapter(@NonNull FragmentManager fm, int numeroPagine) {
-            super(fm);
-            this.numeroPagine = numeroPagine;
-        }
-
-        @NonNull
-        @Override
-        public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    TabUploadsFragment tabUploads = new TabUploadsFragment();
-                    return tabUploads;
-                case 1:
-                    TabBookmarksFragment tabBookmark = new TabBookmarksFragment();
-                    return tabBookmark;
-                default:
-                    return null;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return numeroPagine;
-        }
-
-
-    }
 }

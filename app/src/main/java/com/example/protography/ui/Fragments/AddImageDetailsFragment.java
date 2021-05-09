@@ -30,44 +30,41 @@ import com.example.protography.ui.Models.Image;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+import com.stepstone.stepper.BlockingStep;
+import com.stepstone.stepper.Step;
+import com.stepstone.stepper.StepperLayout;
+import com.stepstone.stepper.VerificationError;
 
-public class AddImageDetailsFragment extends Fragment {
+import org.jetbrains.annotations.NotNull;
+
+public class AddImageDetailsFragment extends Fragment implements BlockingStep {
     private ImageView image;
-    private EditText title;
+    private TextInputEditText title;
     private EditText descriprion;
     private EditText equipment;
     private EditText settings;
     private EditText time;
     private EditText tips;
-    private Button confirm;
-    Uri imageuri;
-    String coords;
-    SharedPreferences sharedPref;
-
+    private Uri imageuri;
+    private String coords;
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
-    private StorageTask mUploadTask;
 
+    SharedPreferences sharedPref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle("Add details");
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        setHasOptionsMenu(true);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,20 +79,11 @@ public class AddImageDetailsFragment extends Fragment {
         settings = v.findViewById(R.id.settings);
         time = v.findViewById(R.id.time);
         tips = v.findViewById(R.id.tips);
-        confirm = v.findViewById(R.id.confirm);
         imageuri = Uri.parse(sharedPref.getString("IMAGEURI", "DEFAULT"));
         coords = sharedPref.getString("COORDS", "DEFAULT");
 
         mStorageRef = FirebaseStorage.getInstance().getReference("Images");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("Images");
-
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(FieldChecks())
-                    uploadFile();
-            }
-        });
 
         return v;
     }
@@ -116,32 +104,24 @@ public class AddImageDetailsFragment extends Fragment {
         if (imageuri != null) {
             StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(imageuri));
-            mUploadTask = fileReference.putFile(imageuri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+            fileReference.putFile(imageuri)
+                    .addOnSuccessListener(taskSnapshot -> {
 
-                            Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
-                            while (!urlTask.isSuccessful());
-                            Uri downloadUrl = urlTask.getResult();
-                            final String image_url = String.valueOf(downloadUrl);
+                        Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
+                        while (!urlTask.isSuccessful());
+                        Uri downloadUrl = urlTask.getResult();
+                        final String image_url = String.valueOf(downloadUrl);
 
-                            Toast.makeText(getActivity(), "Upload successful", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Upload successful", Toast.LENGTH_LONG).show();
 
-                            Image upload = new Image(title.getText().toString().trim(),image_url, descriprion.getText().toString().trim(), settings.getText().toString().trim(),
-                                    time.getText().toString().trim(),tips.getText().toString().trim(),equipment.getText().toString().trim(),coords);
-                            String uploadId = mDatabaseRef.push().getKey();
-                            mDatabaseRef.child(uploadId).setValue(upload);
+                        Image upload = new Image(title.getText().toString().trim(),image_url, descriprion.getText().toString().trim(), settings.getText().toString().trim(),
+                                time.getText().toString().trim(),tips.getText().toString().trim(),equipment.getText().toString().trim(),coords);
+                        String uploadId = mDatabaseRef.push().getKey();
+                        mDatabaseRef.child(uploadId).setValue(upload);
 
-                            getActivity().finish();
-                        }
+                        getActivity().finish();
                     })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    .addOnFailureListener(e -> Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show());
         }
         else {
             Toast.makeText(getContext(), "No file selected", Toast.LENGTH_SHORT).show();
@@ -173,5 +153,39 @@ public class AddImageDetailsFragment extends Fragment {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onNextClicked(StepperLayout.OnNextClickedCallback callback) {
+
+    }
+
+    @Override
+    public void onCompleteClicked(StepperLayout.OnCompleteClickedCallback callback) {
+        if(FieldChecks())
+            uploadFile();
+    }
+
+    @Override
+    public void onBackClicked(StepperLayout.OnBackClickedCallback callback) {
+        callback.goToPrevStep();
+    }
+
+
+    @Nullable
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public VerificationError verifyStep() {
+        return null;
+    }
+
+    @Override
+    public void onSelected() {
+
+    }
+
+    @Override
+    public void onError(@NonNull @NotNull VerificationError error) {
+
     }
 }
