@@ -1,42 +1,36 @@
 package com.example.protography;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.view.View;
 
-
-import com.example.protography.ui.AddActivity;
-
-import com.example.protography.ui.Fragments.MapsFragment;
-import com.example.protography.ui.Fragments.ProfileFragment;
+import com.example.protography.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
 
-    Fragment fragment;
+    private ActivityMainBinding binding;
     boolean IsAddActivity = false;
     BottomNavigationView navView;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        navView = findViewById(R.id.nav_view);
-        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navView.setOnNavigationItemReselectedListener(mOnNavigationItemReselectedListener);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        View root = binding.getRoot();
+        setContentView(root);
 
-        loadFragment(new MapsFragment());
+        navView = binding.navView;
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
+        NavigationUI.setupWithNavController(navView, navController);
     }
 
     @Override
@@ -47,45 +41,6 @@ public class MainActivity extends AppCompatActivity {
             //altrimenti tornando dall'attività di aggiunta sarebbe selezionato un item non corrispondente al fragment aperto.
             IsAddActivity = false;
         }
-    }
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_add:
-                    Intent intent = new Intent(MainActivity.this, AddActivity.class);
-                    startActivity(intent);
-                    IsAddActivity = true;
-                    return true;
-                case R.id.navigation_profile:
-                    fragment = new ProfileFragment();
-                    loadFragment(fragment);
-                    return true;
-                case R.id.navigation_search:
-                    fragment = new MapsFragment();
-                    loadFragment(fragment);
-                    return true;
-            }
-            return false;
-        }
-    };
-
-    private BottomNavigationView.OnNavigationItemReselectedListener mOnNavigationItemReselectedListener
-            = new BottomNavigationView.OnNavigationItemReselectedListener() {
-        @Override
-        public void onNavigationItemReselected(@NonNull MenuItem item) {
-            //on reselect do nothing
-        }
-    };
-
-    private void loadFragment(Fragment fragment) {
-        // load fragment
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_container, fragment);
-        transaction.commit();
     }
 
     @Override
