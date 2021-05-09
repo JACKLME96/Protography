@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.example.protography.R;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
+import com.example.protography.databinding.FragmentImageSelectBinding;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +37,7 @@ public class ImageSelectFragment extends Fragment implements View.OnClickListene
     Button reselectBtn;
     private Uri imageUri;
     SharedPreferences sharedPref;
-
+    private FragmentImageSelectBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,13 +47,15 @@ public class ImageSelectFragment extends Fragment implements View.OnClickListene
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_image_select, container, false);
-        selectedImage = v.findViewById(R.id.image);
-        reselectBtn = v.findViewById(R.id.reselectBtn);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        binding = FragmentImageSelectBinding.inflate(inflater, container, false);
+        selectedImage = binding.image;
+        reselectBtn = binding.reselectBtn;
         reselectBtn.setVisibility(View.GONE);
         reselectBtn.setOnClickListener(this);
+
+        View root = binding.getRoot();
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true ) {
             @Override
@@ -62,7 +65,7 @@ public class ImageSelectFragment extends Fragment implements View.OnClickListene
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
-        return v;
+        return root;
     }
 
     @Override

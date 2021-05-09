@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.protography.R;
+import com.example.protography.databinding.FragmentAddImageDetailsBinding;
 import com.example.protography.ui.Models.Image;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -47,7 +48,7 @@ import org.jetbrains.annotations.NotNull;
 public class AddImageDetailsFragment extends Fragment implements BlockingStep {
     private ImageView image;
     private TextInputEditText title;
-    private EditText descriprion;
+    private EditText description;
     private EditText equipment;
     private EditText settings;
     private EditText time;
@@ -56,6 +57,7 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
     private String coords;
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
+    private FragmentAddImageDetailsBinding binding;
 
     SharedPreferences sharedPref;
 
@@ -70,22 +72,23 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_add_image_details, container, false);
+        binding = FragmentAddImageDetailsBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
 
-        image = v.findViewById(R.id.image);
-        title = v.findViewById(R.id.title);
-        descriprion = v.findViewById(R.id.description);
-        equipment = v.findViewById(R.id.equipment);
-        settings = v.findViewById(R.id.settings);
-        time = v.findViewById(R.id.time);
-        tips = v.findViewById(R.id.tips);
+        image = binding.image;
+        title = binding.title;
+        description = binding.description;
+        equipment = binding.equipment;
+        settings = binding.settings;
+        time = binding.time;
+        tips = binding.tips;
         imageuri = Uri.parse(sharedPref.getString("IMAGEURI", "DEFAULT"));
         coords = sharedPref.getString("COORDS", "DEFAULT");
 
         mStorageRef = FirebaseStorage.getInstance().getReference("Images");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("Images");
 
-        return v;
+        return root;
     }
 
     @Override
@@ -114,7 +117,7 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
 
                         Toast.makeText(getActivity(), "Upload successful", Toast.LENGTH_LONG).show();
 
-                        Image upload = new Image(title.getText().toString().trim(),image_url, descriprion.getText().toString().trim(), settings.getText().toString().trim(),
+                        Image upload = new Image(title.getText().toString().trim(),image_url, description.getText().toString().trim(), settings.getText().toString().trim(),
                                 time.getText().toString().trim(),tips.getText().toString().trim(),equipment.getText().toString().trim(),coords);
                         String uploadId = mDatabaseRef.push().getKey();
                         mDatabaseRef.child(uploadId).setValue(upload);
@@ -135,9 +138,9 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
             return false;
         }
 
-        if (descriprion.getText().toString().trim().isEmpty()) {
-            descriprion.setError("Field is required");
-            descriprion.requestFocus();
+        if (description.getText().toString().trim().isEmpty()) {
+            description.setError("Field is required");
+            description.requestFocus();
             return false;
         }
 
