@@ -6,10 +6,9 @@
     tools:context=".ui.Fragments.TabUploadsFragment"
     android:background="@color/white">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_uploads"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Text"
-        android:id="@+id/text_view_uploads"/>
+        android:layout_height="match_parent" />
 
 </FrameLayout>

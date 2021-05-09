@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/purple_500"
+    android:background="@color/teal_200"
     tools:context=".ui.Fragments.ProfileFragment">
 
     <ImageView
@@ -15,7 +15,7 @@
         app:srcCompat="@drawable/ic_baseline_person_24"
         android:contentDescription="@string/descrizione_immagine"
         android:layout_gravity="center"
-        android:background="@color/purple_500"/>
+        android:background="@color/teal_200"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -23,7 +23,7 @@
         android:text="Username"
         android:id="@+id/text_view_username"
         android:layout_gravity="center"
-        android:background="@color/purple_500"/>
+        android:background="@color/teal_200"/>
 
    <com.google.android.material.tabs.TabLayout
        android:layout_width="match_parent"
@@ -32,7 +32,7 @@
        app:tabTextColor="@android:color/white"
        app:tabIndicatorColor="@android:color/white"
        app:tabSelectedTextColor="@android:color/white"
-       android:background="@color/purple_500"/>
+       android:background="@color/teal_200"/>
 
     <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"

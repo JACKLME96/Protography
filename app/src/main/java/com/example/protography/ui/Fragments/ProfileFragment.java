@@ -66,6 +66,5 @@ public class ProfileFragment extends Fragment {
     }
 
 
-// Tipo estensione
 
 }

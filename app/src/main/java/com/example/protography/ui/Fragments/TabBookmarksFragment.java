@@ -19,9 +19,6 @@ public class TabBookmarksFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_uploads_tab, container, false);
 
-        TextView textView = view.findViewById(R.id.text_view_uploads);
-        textView.setText("TabBookmarks");
-
         return view;
     }
 }
