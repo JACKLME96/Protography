@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.protography.databinding.ActivityMainBinding;
+import com.example.protography.ui.AddActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -16,7 +17,6 @@ import androidx.navigation.ui.NavigationUI;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    boolean IsAddActivity = false;
     BottomNavigationView navView;
 
     @Override
@@ -36,12 +36,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(IsAddActivity) {
             navView.setSelectedItemId(R.id.navigation_search);
             //altrimenti tornando dall'attività di aggiunta sarebbe selezionato un item non corrispondente al fragment aperto.
-            IsAddActivity = false;
         }
-    }
 
     @Override
     public void onBackPressed() {

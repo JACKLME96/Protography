@@ -7,10 +7,8 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -22,7 +20,6 @@ import android.widget.ImageView;
 
 import android.widget.Toast;
 
-import com.example.protography.R;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 import com.example.protography.databinding.FragmentImageSelectBinding;
@@ -42,7 +39,6 @@ public class ImageSelectFragment extends Fragment implements View.OnClickListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CropImage.activity().start(getContext(), this);
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
     }
 
@@ -52,18 +48,9 @@ public class ImageSelectFragment extends Fragment implements View.OnClickListene
         binding = FragmentImageSelectBinding.inflate(inflater, container, false);
         selectedImage = binding.image;
         reselectBtn = binding.reselectBtn;
-        reselectBtn.setVisibility(View.GONE);
         reselectBtn.setOnClickListener(this);
 
         View root = binding.getRoot();
-
-        OnBackPressedCallback callback = new OnBackPressedCallback(true ) {
-            @Override
-            public void handleOnBackPressed() {
-                getActivity().finish();
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         return root;
     }
@@ -75,7 +62,7 @@ public class ImageSelectFragment extends Fragment implements View.OnClickListene
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             imageUri = result.getUri();
             selectedImage.setImageURI(imageUri);
-            reselectBtn.setVisibility(View.VISIBLE);
+            reselectBtn.setText("Select another");
         }
 
         if(imageUri != null) {
@@ -98,7 +85,9 @@ public class ImageSelectFragment extends Fragment implements View.OnClickListene
     @Override
     public void onResume() {
         super.onResume();
-        reselectBtn.setVisibility(View.VISIBLE);
+        if(imageUri != null)
+            reselectBtn.setText("Select another");
+
         selectedImage.setImageURI(Uri.parse(sharedPref.getString("IMAGEURI", "DEFAULT")));
     }
 
@@ -109,6 +98,12 @@ public class ImageSelectFragment extends Fragment implements View.OnClickListene
         if(imageUri == null)
            return new VerificationError("You must select an image to proceed");
         return null;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        selectedImage.setImageResource(0);
     }
 
     @Override

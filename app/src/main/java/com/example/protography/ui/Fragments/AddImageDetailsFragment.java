@@ -12,16 +12,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.protography.R;
@@ -55,6 +58,7 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
     private EditText tips;
     private Uri imageuri;
     private String coords;
+    private ProgressBar progressBar;
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
     private FragmentAddImageDetailsBinding binding;
@@ -82,6 +86,8 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
         settings = binding.settings;
         time = binding.time;
         tips = binding.tips;
+        progressBar = binding.progressBar;
+
         imageuri = Uri.parse(sharedPref.getString("IMAGEURI", "DEFAULT"));
         coords = sharedPref.getString("COORDS", "DEFAULT");
 
@@ -97,16 +103,16 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
         image.setImageURI(imageuri);
     }
 
-    private String getFileExtension(Uri uri) {
-        ContentResolver cR = getContext().getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cR.getType(uri));
-    }
-
     private void uploadFile() {
         if (imageuri != null) {
+
+            //set progress bar visible and disable user interaction
+            progressBar.setVisibility(View.VISIBLE);
+            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
             StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
-                    + "." + getFileExtension(imageuri));
+                    + ".jpg");
             fileReference.putFile(imageuri)
                     .addOnSuccessListener(taskSnapshot -> {
 
@@ -122,9 +128,20 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
                         String uploadId = mDatabaseRef.push().getKey();
                         mDatabaseRef.child(uploadId).setValue(upload);
 
+                        //set progress bar invisible and enable user interaction
+                        progressBar.setVisibility(View.GONE);
+                        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                         getActivity().finish();
                     })
-                    .addOnFailureListener(e -> Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show());
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        //set progress bar invisible and enable user interaction
+                        progressBar.setVisibility(View.GONE);
+                        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                        getActivity().finish();
+                    });
+
         }
         else {
             Toast.makeText(getContext(), "No file selected", Toast.LENGTH_SHORT).show();
