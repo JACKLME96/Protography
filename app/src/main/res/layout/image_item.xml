@@ -10,7 +10,10 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="Immagine" />
+        android:adjustViewBounds="true"
+        android:contentDescription="Immagine"
+        android:maxHeight="300dp"
+        android:scaleType="fitStart" />
 
     <TextView
         android:id="@+id/user"

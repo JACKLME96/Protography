@@ -1,5 +1,7 @@
 package com.example.protography.ui.Adapters;
 
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.protography.R;
 import com.example.protography.ui.Models.Image;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -21,6 +24,7 @@ import java.util.List;
  */
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
+    private static final String TAG = "RecyclerViewAdapter";
     private List<Image> imageList;
     private OnItemClickListener onItemClickListener;
 
@@ -71,7 +75,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public void bind(Image image) {
             titleTextView.setText(image.getImageTitle());
             userTextView.setText("User");
-            // imageView.setImage
+            Picasso.get().load(image.getImageUrl()).into(imageView);
+            Log.d(TAG, "Uri: " + image.getImageUrl());
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
