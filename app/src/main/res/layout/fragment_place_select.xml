@@ -25,8 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="top"
-        card_view:cardBackgroundColor="@color/white"
-        card_view:cardCornerRadius="4dp">
+        card_view:cardBackgroundColor="@color/white">
         <androidx.fragment.app.FragmentContainerView android:id="@+id/autocomplete_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

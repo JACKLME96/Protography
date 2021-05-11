@@ -10,6 +10,6 @@
         android:id="@+id/stepperLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:ms_stepperType="tabs" />
-
+        app:ms_stepperType="tabs"
+        app:ms_stepperFeedbackType="tabs|disabled_content_interaction|disabled_bottom_navigation"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

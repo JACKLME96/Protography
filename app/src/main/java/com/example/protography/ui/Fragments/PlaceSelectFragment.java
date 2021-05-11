@@ -54,6 +54,7 @@ public class PlaceSelectFragment extends Fragment implements Step {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             map = googleMap;
+            map.setMinZoomPreference(5.0f);
             setMyLocationButton(googleMap);
             googleMap.setOnCameraMoveListener(() -> {
                 firstMoved = true;
