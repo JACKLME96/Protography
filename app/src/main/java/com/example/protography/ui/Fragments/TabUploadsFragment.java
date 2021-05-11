@@ -51,12 +51,7 @@ public class TabUploadsFragment extends Fragment {
 
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView_uploads);
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(imageList, new RecyclerViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Image image) {
-                Log.d(TAG, image.getImageTitle());
-            }
-        });
+        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(imageList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(recyclerViewAdapter);
 

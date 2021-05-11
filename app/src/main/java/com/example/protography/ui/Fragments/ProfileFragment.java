@@ -35,8 +35,8 @@ public class ProfileFragment extends Fragment {
 
         mTabLayout = root.findViewById(R.id.tab_layout);
         // Si aggiungono i tab con il loro titolo che viene mostrato
-        mTabLayout.addTab(mTabLayout.newTab().setText("Uploads"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("Bookmarks"));
+        mTabLayout.addTab(mTabLayout.newTab().setText(R.string.tab_upload));
+        mTabLayout.addTab(mTabLayout.newTab().setText(R.string.tab_bookmarks));
         mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         mViewPager = root.findViewById(R.id.view_pager);

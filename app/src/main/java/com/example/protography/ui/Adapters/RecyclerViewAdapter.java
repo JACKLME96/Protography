@@ -8,10 +8,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.protography.MainActivity;
 import com.example.protography.R;
 import com.example.protography.ui.Models.Image;
 import com.squareup.picasso.Picasso;
@@ -26,18 +28,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private static final String TAG = "RecyclerViewAdapter";
     private List<Image> imageList;
-    private OnItemClickListener onItemClickListener;
-
-    // Custom interface to intercept the click on an item of the RecyclerView
-    public interface OnItemClickListener {
-        void onItemClick(Image image);
-    }
 
 
 
-    public RecyclerViewAdapter(List<Image> imageList, OnItemClickListener onItemClickListener) {
+    public RecyclerViewAdapter(List<Image> imageList) {
         this.imageList = imageList;
-        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -59,32 +54,35 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     // Classe ViewHolder
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        private Image image;
         private ImageView imageView;
         private TextView userTextView;
         private TextView titleTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
             titleTextView = itemView.findViewById(R.id.title);
             userTextView = itemView.findViewById(R.id.user);
             imageView = itemView.findViewById(R.id.imageView);
+
+            itemView.setOnClickListener(this);
+
         }
 
         public void bind(Image image) {
+            this.image = image;
             titleTextView.setText(image.getImageTitle());
             userTextView.setText("User");
             Picasso.get().load(image.getImageUrl()).into(imageView);
-            Log.d(TAG, "Uri: " + image.getImageUrl());
+        }
 
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    onItemClickListener.onItemClick(image);
-                }
-            });
-
+        @Override
+        public void onClick(View v) {
+            // Successivamente si aprirà il fragment con i dati della foto cliccata
+            Toast.makeText(itemView.getContext(), "immagine cliccata", Toast.LENGTH_SHORT).show();
         }
     }
 }
