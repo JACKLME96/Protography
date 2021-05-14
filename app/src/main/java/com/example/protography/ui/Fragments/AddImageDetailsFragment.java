@@ -124,7 +124,7 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
                         Toast.makeText(getActivity(), "Upload successful", Toast.LENGTH_LONG).show();
 
                         Image upload = new Image(title.getText().toString().trim(),image_url, description.getText().toString().trim(), settings.getText().toString().trim(),
-                                time.getText().toString().trim(),tips.getText().toString().trim(),equipment.getText().toString().trim(),coords);
+                                time.getText().toString().trim(), tips.getText().toString().trim(), equipment.getText().toString().trim(), coords);
                         String uploadId = mDatabaseRef.push().getKey();
                         mDatabaseRef.child(uploadId).setValue(upload);
 

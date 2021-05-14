@@ -27,6 +27,7 @@ public class ProfileFragment extends Fragment {
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
 
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 

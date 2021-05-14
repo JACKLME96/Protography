@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.protography.MainActivity;
 import com.example.protography.R;
+import com.example.protography.databinding.ImageItemBinding;
 import com.example.protography.ui.Models.Image;
 import com.squareup.picasso.Picasso;
 
@@ -28,10 +29,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private static final String TAG = "RecyclerViewAdapter";
     private List<Image> imageList;
+    private ImageItemBinding binding;
 
 
 
     public RecyclerViewAdapter(List<Image> imageList) {
+
         this.imageList = imageList;
     }
 
@@ -39,7 +42,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Create a new view, which defines the UI of the list item
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.image_item, parent, false);
+        binding = ImageItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        View view = binding.getRoot();
+
         return new ViewHolder(view);
     }
 
@@ -50,6 +55,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
+
         return imageList.size();
     }
 
@@ -64,9 +70,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            titleTextView = itemView.findViewById(R.id.title);
-            userTextView = itemView.findViewById(R.id.user);
-            imageView = itemView.findViewById(R.id.imageView);
+            titleTextView = binding.title;
+            userTextView = binding.user;
+            imageView = binding.imageView;
 
             itemView.setOnClickListener(this);
 
@@ -82,7 +88,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         @Override
         public void onClick(View v) {
             // Successivamente si aprirà il fragment con i dati della foto cliccata
-            Toast.makeText(itemView.getContext(), "immagine cliccata", Toast.LENGTH_SHORT).show();
+            Toast.makeText(itemView.getContext(), "Immagine cliccata", Toast.LENGTH_SHORT).show();
         }
     }
 }

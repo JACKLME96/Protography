@@ -10,7 +10,11 @@ import androidx.lifecycle.ViewModelProvider;
 import android.Manifest;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,16 +46,22 @@ public class MapsFragment extends Fragment {
     private MapsViewModel mapsViewModel;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private GoogleMap map;
+    private LatLng coordinateAttuali;
 
     private final OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         @Override
         public void onMapReady(GoogleMap googleMap) {
             map = googleMap;
-            LatLng sydney = new LatLng(-34, 151);
-            map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            map.moveCamera(CameraUpdateFactory.newLatLng(sydney));
             checkLocationPermission();
+
+            if (coordinateAttuali != null)
+                map.moveCamera(CameraUpdateFactory.newLatLng(coordinateAttuali));
+            else {
+                LatLng sydney = new LatLng(-34, 151);
+                map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+                map.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            }
         }
     };
 
@@ -81,8 +91,19 @@ public class MapsFragment extends Fragment {
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST_LOCATION);
         }
-        else
+        else {
+            coordinateAttuali = null;
+
+            // Imposta le coordinate attuali se la versione sdk è >= 23
+            if (android.os.Build.VERSION.SDK_INT >= 23) {
+                LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (locationGPS != null) {
+                    coordinateAttuali = new LatLng(locationGPS.getLatitude(), locationGPS.getLongitude());
+                }
+            }
             setMyLocationButton();
+        }
         return true;
     }
 

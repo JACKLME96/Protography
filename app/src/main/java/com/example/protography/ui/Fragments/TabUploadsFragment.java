@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.protography.R;
+import com.example.protography.databinding.FragmentUploadsTabBinding;
 import com.example.protography.ui.Adapters.RecyclerViewAdapter;
 import com.example.protography.ui.Models.Image;
 import com.google.firebase.database.DataSnapshot;
@@ -30,15 +31,21 @@ import java.util.List;
 public class TabUploadsFragment extends Fragment {
 
     private static final String TAG = "TabUploadsFragment";
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference root = database.getReference().child("Images");
+    private DatabaseReference databaseReference;
+    private FragmentUploadsTabBinding binding;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Images");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_uploads_tab, container, false);
-
+        binding = FragmentUploadsTabBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
 
         return view;
     }
@@ -50,14 +57,17 @@ public class TabUploadsFragment extends Fragment {
         List<Image> imageList = new ArrayList<>();
 
 
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView_uploads);
+        RecyclerView recyclerView = binding.recyclerViewUploads;
         RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(imageList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(recyclerViewAdapter);
 
-        root.addValueEventListener(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                imageList.clear();
+
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Image image = dataSnapshot.getValue(Image.class);
                     imageList.add(image);

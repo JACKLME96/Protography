@@ -34,6 +34,7 @@ public class ProfileAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
+
         return pageNumber;
     }
 }
