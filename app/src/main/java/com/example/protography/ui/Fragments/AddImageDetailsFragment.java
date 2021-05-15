@@ -1,51 +1,31 @@
 package com.example.protography.ui.Fragments;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-
-
-import android.text.Layout;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.webkit.MimeTypeMap;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import com.example.protography.R;
 import com.example.protography.databinding.FragmentAddImageDetailsBinding;
 import com.example.protography.ui.Models.Image;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
-import com.google.firebase.storage.UploadTask;
 import com.stepstone.stepper.BlockingStep;
-import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
-
 import org.jetbrains.annotations.NotNull;
 
 public class AddImageDetailsFragment extends Fragment implements BlockingStep {
@@ -89,7 +69,6 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
         progressBar = binding.progressBar;
 
         imageuri = Uri.parse(sharedPref.getString("IMAGEURI", "DEFAULT"));
-        coords = sharedPref.getString("COORDS", "DEFAULT");
 
         mStorageRef = FirebaseStorage.getInstance().getReference("Images");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("Images");
@@ -105,6 +84,7 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
 
     private void uploadFile() {
         if (imageuri != null) {
+            coords = sharedPref.getString("COORDS", "DEFAULT");
 
             //set progress bar visible and disable user interaction
             progressBar.setVisibility(View.VISIBLE);
