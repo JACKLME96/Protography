@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.protography.R;
+import com.example.protography.databinding.FragmentProfileBinding;
 import com.example.protography.ui.Adapters.ProfileAdapter;
 import com.example.protography.ui.ViewModels.ProfileViewModel;
 import com.google.android.material.tabs.TabLayout;
@@ -26,21 +27,22 @@ public class ProfileFragment extends Fragment {
 
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
+    private FragmentProfileBinding binding;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_profile, container, false);
+        binding = FragmentProfileBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
 
-
-        mTabLayout = root.findViewById(R.id.tab_layout);
+        mTabLayout = binding.tabLayout;
         // Si aggiungono i tab con il loro titolo che viene mostrato
         mTabLayout.addTab(mTabLayout.newTab().setText(R.string.tab_upload));
         mTabLayout.addTab(mTabLayout.newTab().setText(R.string.tab_bookmarks));
         mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        mViewPager = root.findViewById(R.id.view_pager);
+        mViewPager = binding.viewPager;
 
         ProfileAdapter adapter = new ProfileAdapter(getParentFragmentManager(), mTabLayout.getTabCount());
         mViewPager.setAdapter(adapter);

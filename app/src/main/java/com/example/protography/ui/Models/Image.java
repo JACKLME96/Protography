@@ -2,7 +2,9 @@ package com.example.protography.ui.Models;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class Image {
+import java.io.Serializable;
+
+public class Image implements Serializable {
     private String ImageTitle;
     private String ImageUrl;
     private String ImageDescription;
@@ -57,7 +59,7 @@ public class Image {
         ImageEquipment = equipment;
     }
 
-    public String getIamgeTime(){
+    public String getImageTime(){
         return ImageTime;
     }
 

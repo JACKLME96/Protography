@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         View root = binding.getRoot();
         setContentView(root);
 
-        sharedPreferences = getSharedPreferences("MYSHAREDPREF", Context.MODE_PRIVATE);
+        sharedPreferences = getPreferences(Context.MODE_PRIVATE);
 
         navView = binding.navView;
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
