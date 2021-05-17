@@ -145,7 +145,10 @@
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/iso"
+                                android:inputType="numberDecimal"
+                                android:maxLines="1"
                                 android:layout_width="match_parent"
+                                android:nextFocusDown="@id/shutterSpeed"
                                 android:layout_height="wrap_content"/>
                         </com.google.android.material.textfield.TextInputLayout>
                         <com.google.android.material.textfield.TextInputLayout
@@ -156,10 +159,11 @@
                             android:layout_marginStart="-8dp"
                             android:layout_height="wrap_content"
                             android:hint="Shutter Speed"
-                            app:prefixText="f/"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/shutterSpeed"
+                                android:inputType="text"
+                                android:nextFocusDown="@id/aperture"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"/>
                         </com.google.android.material.textfield.TextInputLayout>
@@ -171,10 +175,13 @@
                             android:layout_marginLeft="-10dp"
                             android:layout_marginStart="-10dp"
                             android:layout_height="wrap_content"
+                            app:prefixText="f/"
                             android:hint="Aperture"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/aperture"
+                                android:maxLines="1"
+                                android:inputType="numberDecimal"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"/>
                         </com.google.android.material.textfield.TextInputLayout>

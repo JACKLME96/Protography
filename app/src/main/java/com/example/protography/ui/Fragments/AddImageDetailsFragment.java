@@ -200,7 +200,7 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
             } else {
                 if (!shutterSpeed.getText().toString().trim().isEmpty()) {
                     if (!aperture.getText().toString().trim().isEmpty()) {
-                        settings = iso.getText().toString().trim() + "," + "f/" + shutterSpeed.getText().toString().trim() + "," + aperture.getText().toString().trim();
+                        settings = iso.getText().toString().trim() + "," + shutterSpeed.getText().toString().trim() + "," + "f/" + aperture.getText().toString().trim();
                         return true;
                     } else {
                         aperture.setError("Fill all fields");
