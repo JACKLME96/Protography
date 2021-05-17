@@ -102,6 +102,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public void bind(Image image) {
             this.image = image;
             titleTextView.setText(image.getImageTitle());
+
             userTextView.setText("User");
             Picasso.get().load(image.getImageUrl()).into(imageView);
         }

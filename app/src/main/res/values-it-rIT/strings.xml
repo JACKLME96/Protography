@@ -7,4 +7,6 @@
     <string name="select_photo">Galleria</string>
     <string name="choose_method">Seleziona una foto o fanne una</string>
     <string name="descrizione_immagine">Immagine profilo</string>
+    <string name="tab_upload">Caricamenti</string>
+    <string name="tab_bookmarks">Salvati</string>
 </resources>
