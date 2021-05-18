@@ -1,20 +1,31 @@
 package com.example.protography.ui.Fragments;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.transition.AutoTransition;
+import androidx.transition.TransitionManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.example.protography.R;
 import com.example.protography.databinding.FragmentAddImageDetailsBinding;
 import com.example.protography.ui.Models.Image;
 import com.google.android.gms.tasks.Task;
@@ -33,12 +44,18 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
     private TextInputEditText title;
     private EditText description;
     private EditText equipment;
-    private EditText settings;
+    private EditText iso;
+    private EditText shutterSpeed;
+    private EditText aperture;
+    private LinearLayout settingsView;
+    private RelativeLayout arrowLayout;
+    private Button arrowBtn;
+    private CardView equipmentCardView;
     private EditText time;
     private EditText tips;
     private Uri imageuri;
     private String coords;
-    private ProgressBar progressBar;
+    private String settings ="";
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
     private FragmentAddImageDetailsBinding binding;
@@ -63,13 +80,33 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
         title = binding.title;
         description = binding.description;
         equipment = binding.equipment;
-        settings = binding.settings;
+        iso = binding.iso;
+        aperture = binding.aperture;
+        shutterSpeed = binding.shutterSpeed;
         time = binding.time;
         tips = binding.tips;
-        progressBar = binding.progressBar;
+        equipmentCardView = binding.equipmentCard;
+        arrowBtn = binding.arrowBtn;
+        settingsView = binding.expandableView;
+
+        //gestione sezione settings
+        arrowLayout = binding.arrowLayout;
+        arrowLayout.setOnClickListener(v -> {
+            if (settingsView.getVisibility()==View.GONE){
+                TransitionManager.beginDelayedTransition(equipmentCardView, new AutoTransition());
+                settingsView.setVisibility(View.VISIBLE);
+                arrowBtn.setBackgroundResource(R.drawable.ic_baseline_arrow_drop_up_24);
+            } else {
+                TransitionManager.beginDelayedTransition(equipmentCardView, new AutoTransition());
+                settingsView.setVisibility(View.GONE);
+                arrowBtn.setBackgroundResource(R.drawable.ic_baseline_arrow_drop_down_24);
+                iso.getText().clear();
+                shutterSpeed.getText().clear();
+                aperture.getText().clear();
+            }
+        });
 
         imageuri = Uri.parse(sharedPref.getString("IMAGEURI", "DEFAULT"));
-
         mStorageRef = FirebaseStorage.getInstance().getReference("Images");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("Images");
 
@@ -86,10 +123,11 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
         if (imageuri != null) {
             coords = sharedPref.getString("COORDS", "DEFAULT");
 
-            //set progress bar visible and disable user interaction
-            progressBar.setVisibility(View.VISIBLE);
-            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            AlertDialog dialog =  new AlertDialog.Builder(getContext())
+                    .setView(R.layout.loading_dialog)
+                    .setCancelable(false)
+                    .create();
+            dialog.show();
 
             StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                     + ".jpg");
@@ -103,25 +141,19 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
 
                         Toast.makeText(getActivity(), "Upload successful", Toast.LENGTH_LONG).show();
 
-                        Image upload = new Image(title.getText().toString().trim(),image_url, description.getText().toString().trim(), settings.getText().toString().trim(),
+                        Image upload = new Image(title.getText().toString().trim(),image_url, description.getText().toString().trim(), settings,
                                 time.getText().toString().trim(), tips.getText().toString().trim(), equipment.getText().toString().trim(), coords);
                         String uploadId = mDatabaseRef.push().getKey();
                         mDatabaseRef.child(uploadId).setValue(upload);
 
-                        //set progress bar invisible and enable user interaction
-                        progressBar.setVisibility(View.GONE);
-                        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                        dialog.dismiss();
                         getActivity().finish();
                     })
                     .addOnFailureListener(e -> {
                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                        //set progress bar invisible and enable user interaction
-                        progressBar.setVisibility(View.GONE);
-                        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-
+                        dialog.dismiss();
                         getActivity().finish();
                     });
-
         }
         else {
             Toast.makeText(getContext(), "No file selected", Toast.LENGTH_SHORT).show();
@@ -147,10 +179,40 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
             return false;
         }
 
-        if (settings.getText().toString().trim().isEmpty()) {
-            settings.setError("Field is required");
-            settings.requestFocus();
-            return false;
+        //i settings se visibili devono essere tutti valorizzati
+        if (settingsView.getVisibility()==View.VISIBLE) {
+            if (iso.getText().toString().trim().isEmpty()) {
+                if (shutterSpeed.getText().toString().trim().isEmpty()) {
+                    if (aperture.getText().toString().trim().isEmpty()) {
+                        iso.setError("Fill all fields");
+                        iso.requestFocus();
+                        return false;
+                    } else {
+                        aperture.setError("Fill all fields");
+                        aperture.requestFocus();
+                        return false;
+                    }
+                } else {
+                    iso.setError("Fill all fields");
+                    iso.requestFocus();
+                    return false;
+                }
+            } else {
+                if (!shutterSpeed.getText().toString().trim().isEmpty()) {
+                    if (!aperture.getText().toString().trim().isEmpty()) {
+                        settings = iso.getText().toString().trim() + "," + shutterSpeed.getText().toString().trim() + "," + "f/" + aperture.getText().toString().trim();
+                        return true;
+                    } else {
+                        aperture.setError("Fill all fields");
+                        aperture.requestFocus();
+                        return false;
+                    }
+                } else {
+                    shutterSpeed.setError("Fill all fields");
+                    shutterSpeed.requestFocus();
+                    return false;
+                }
+            }
         }
         return true;
     }
