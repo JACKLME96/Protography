@@ -51,7 +51,7 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.banner:
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, LoginActivity.class));
                 break;
             case R.id.register:
                 registerUser();
@@ -88,7 +88,7 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
         }
 
         if(password.length() < 6){
-            editTextPassword.setError("Lunghezza minima della psw è di 6 caratteri ");
+            editTextPassword.setError("Lunghezza minima della password è di 6 caratteri ");
             editTextPassword.requestFocus();
             return;
         }
@@ -106,15 +106,16 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
                                 @Override
                                 public void onComplete(@NonNull @NotNull Task<Void> task) {
                                     if (task.isSuccessful()) {
+
                                         Toast.makeText(UserRegistration.this, "Utente registrato con successo,", Toast.LENGTH_LONG).show();
 
                                     } else {
-                                        Toast.makeText(UserRegistration.this, "Registrazione fallita", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(UserRegistration.this, "Registrazione fallita, Utente già esistente", Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
                         }else {
-                            Toast.makeText(UserRegistration.this, "Registrazione fallita", Toast.LENGTH_LONG).show();
+                            Toast.makeText(UserRegistration.this, "Registrazione fallita, Utente già esistente", Toast.LENGTH_LONG).show();
 
                         }
                     }

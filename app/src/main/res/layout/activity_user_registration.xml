@@ -40,7 +40,7 @@
         android:id="@+id/NomeCompleto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="264dp"
+        android:layout_marginTop="288dp"
         android:clickable="true"
         android:ems="10"
         android:hint="Nome Completo"
@@ -54,7 +54,7 @@
         android:id="@+id/registerAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="364dp"
+        android:layout_marginTop="352dp"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
@@ -67,7 +67,7 @@
         android:id="@+id/registerPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="464dp"
+        android:layout_marginTop="416dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
@@ -78,17 +78,16 @@
 
     <Button
         android:id="@+id/register"
-        android:layout_width="243dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="600dp"
-        android:layout_marginBottom="86dp"
+        android:layout_width="262dp"
+        android:layout_height="57dp"
         android:text="Registrati"
-        app:backgroundTint="#673AB7"
+        app:backgroundTint="#FF03DAC5"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.744" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
