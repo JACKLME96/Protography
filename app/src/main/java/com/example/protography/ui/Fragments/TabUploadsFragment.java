@@ -58,7 +58,7 @@ public class TabUploadsFragment extends Fragment {
 
 
         RecyclerView recyclerView = binding.recyclerViewUploads;
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(imageList);
+        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(imageList, getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(recyclerViewAdapter);
 

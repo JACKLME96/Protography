@@ -40,11 +40,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private static final String TAG = "RecyclerViewAdapter";
     private List<Image> imageList;
     private ImageItemBinding binding;
+    private Context context;
 
 
 
-    public RecyclerViewAdapter(List<Image> imageList) {
+    public RecyclerViewAdapter(List<Image> imageList, Context context) {
         this.imageList = imageList;
+        this.context = context;
     }
 
     @NonNull
@@ -60,6 +62,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(imageList.get(position));
+
+        binding.like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Toast.makeText(context, "Like", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
     @Override
@@ -75,7 +86,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         private ImageView imageView;
         private TextView userTextView;
         private TextView titleTextView;
-        private Context context;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -84,19 +94,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             titleTextView = binding.title;
             userTextView = binding.user;
             imageView = binding.imageView;
-            this.context = context;
-            binding.like.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "Clicked");
-
-
-
-                }
-            });
 
             itemView.setOnClickListener(this);
-
         }
 
         public void bind(Image image) {
@@ -108,8 +107,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public void onClick(View v) {
-            // Successivamente si aprirà il fragment con i dati della foto cliccata
-            //Toast.makeText(itemView.getContext(), "Immagine cliccata", Toast.LENGTH_SHORT).show();
+
             Intent intent = new Intent(itemView.getContext(), ImageActivity.class);
             intent.putExtra("Immagine", image);
 
