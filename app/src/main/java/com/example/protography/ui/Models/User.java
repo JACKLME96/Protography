@@ -1,4 +1,4 @@
-package com.example.protography;
+package com.example.protography.ui.Models;
 
 public class User {
     public String fullName, email;

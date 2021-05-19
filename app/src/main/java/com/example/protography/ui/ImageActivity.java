@@ -1,27 +1,27 @@
 package com.example.protography.ui;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
 
+import android.view.View;
+import android.widget.TextView;
+
+import com.example.protography.R;
 import com.example.protography.databinding.ActivityImageBinding;
 import com.example.protography.ui.Models.Image;
 import com.squareup.picasso.Picasso;
-
-import org.jetbrains.annotations.NotNull;
 
 public class ImageActivity extends AppCompatActivity {
 
     private static final String TAG = "ImageActivity";
     ActivityImageBinding binding;
     Image image;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,14 +35,33 @@ public class ImageActivity extends AppCompatActivity {
         Picasso.get().load(image.getImageUrl()).into(binding.imageView);
         binding.user.setText("User");
         binding.title.setText(image.getImageTitle());
+        binding.coords.setText(image.getCoords());
+
+        //apertura gmaps
+        binding.coords.setOnClickListener(v -> {
+            Uri gmmIntentUri = Uri.parse("google.navigation:q=" + image.getCoords());
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                startActivity(mapIntent);
+            }
+        });
+
         binding.description.setText(image.getImageDescription());
+        binding.description.setShowingLine(4);
+        binding.description.setShowMoreColor(getResources().getColor(R.color.DarkThemeGray));
+        binding.description.setShowLessTextColor(getResources().getColor(R.color.DarkThemeGray));
+
         binding.equipment.setText(image.getImageEquipment());
+
         binding.cameraSettings.setText(image.getImageSettings());
-        if (image.getImageTime() == null || image.getImageTime().equals(""))
+
+        if (image.getImageTime() == null || image.getImageTime().isEmpty())
             binding.bestTimeToGo.setText("----------");
         else
             binding.bestTimeToGo.setText(image.getImageTime());
-        if (image.getImageTips() == null || image.getImageTips().equals(""))
+
+        if (image.getImageTips() == null || image.getImageTips().isEmpty())
             binding.tips.setText("----------");
         else
             binding.tips.setText(image.getImageTips());
