@@ -9,4 +9,12 @@
     <string name="descrizione_immagine">Immagine profilo</string>
     <string name="tab_upload">Caricamenti</string>
     <string name="tab_bookmarks">Salvati</string>
+    <string name="nature">Natura</string>
+    <string name="urban">Urbano</string>
+    <string name="portrait">Ritratto</string>
+    <string name="equipment">Equipaggiamento</string>
+    <string name="camera_settings">Impostazioni camera</string>
+    <string name="best_time_to_go">Momento migliore per andare</string>
+    <string name="tips">Suggerimenti</string>
+    <string name="errorMaps">Impossibile mostrare le indicazioni</string>
 </resources>

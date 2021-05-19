@@ -9,4 +9,13 @@
     <string name="descrizione_immagine">Profile image</string>
     <string name="tab_upload">Uploads</string>
     <string name="tab_bookmarks">Bookmarks</string>
+    <string name="saves_nr" translatable="false">Saves nr.</string>
+    <string name="nature">Nature</string>
+    <string name="urban">Urban</string>
+    <string name="portrait">Portrait</string>
+    <string name="equipment">Equipment</string>
+    <string name="camera_settings">Camera settings</string>
+    <string name="best_time_to_go">Best time to go</string>
+    <string name="tips">Tips</string>
+    <string name="errorMaps">Impossible to show directions</string>
 </resources>

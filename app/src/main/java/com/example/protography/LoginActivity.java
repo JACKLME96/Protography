@@ -27,6 +27,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button signIn;
 
     private FirebaseAuth mAuth;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         editTextEmail = (EditText) findViewById(R.id.emailAddress);
         editTextPassword = (EditText) findViewById(R.id.password);
+
+        progressBar = (ProgressBar) findViewById(R.id.progressBar2);
+        progressBar.setVisibility(View.GONE);
 
         mAuth = FirebaseAuth.getInstance();
         forgotPassword =(TextView)findViewById(R.id.forgotPassword);
@@ -73,7 +77,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            editTextEmail.setError("Email non valida");
+            editTextEmail.setError("Email non valida. Utente non registrato.");
             editTextEmail.requestFocus();
             return;
         }
@@ -86,16 +90,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             editTextPassword.setError("Lunghezza minima psw non soddisfatta");
             editTextPassword.requestFocus();
             return;
+
         }
+
+        progressBar.setVisibility(View.VISIBLE);
+
 
         mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+                //Login avvenuto con successo
                 if(task.isSuccessful()){
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    progressBar.setVisibility(View.GONE);
                 }
+                //Login Fallito, credenziali errate
                 else
-                    Toast.makeText(LoginActivity.this, "login fallito, controlla i dati inseriti.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Login fallito, controlla i dati inseriti.", Toast.LENGTH_SHORT).show();
             }
         });
     }

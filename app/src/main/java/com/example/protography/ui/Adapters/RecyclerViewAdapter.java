@@ -62,15 +62,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(imageList.get(position));
-
-        binding.like.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Toast.makeText(context, "Like", Toast.LENGTH_SHORT).show();
-
-            }
-        });
     }
 
     @Override
