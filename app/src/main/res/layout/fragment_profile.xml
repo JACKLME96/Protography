@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_baseline_person_24"
-        android:contentDescription="@string/descrizione_immagine"
+        android:contentDescription="@string/image_description"
         android:layout_gravity="center"/>
 
     <TextView

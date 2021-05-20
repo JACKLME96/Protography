@@ -59,11 +59,9 @@ public class ProfileFragment extends Fragment {
                 // Cerco i dati dall'utente loggato
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     User u = dataSnapshot.getValue(User.class);
-                    Log.d(TAG, u.email);
                     if (u.email.equals(auth.getCurrentUser().getEmail())) {
                         userAttuale = u.fullName;
                         binding.textViewUsername.setText(userAttuale);
-                        Log.d(TAG, "Trovato: " + userAttuale);
                     }
                 }
             }
@@ -74,8 +72,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        Log.d(TAG, "User: " + userAttuale);
-        binding.textViewUsername.setText(userAttuale);
 
         mTabLayout = binding.tabLayout;
         // Si aggiungono i tab con il loro titolo che viene mostrato

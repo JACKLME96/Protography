@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import android.widget.TextView;
@@ -37,6 +38,14 @@ public class ImageActivity extends AppCompatActivity {
         binding.user.setText("User");
         binding.title.setText(image.getImageTitle());
         binding.coords.setText(image.getCoords());
+
+
+        if (image.getImageCategory().equals("Nature"))
+            binding.chipNature.setChecked(true);
+        else if (image.getImageCategory().equals("Urban"))
+            binding.chipUrban.setChecked(true);
+        else
+            binding.chipPortrait.setChecked(true);
 
         //apertura gmaps
         binding.coords.setOnClickListener(v -> {

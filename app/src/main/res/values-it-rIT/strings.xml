@@ -6,7 +6,7 @@
     <string name="take_photo">Camera</string>
     <string name="select_photo">Galleria</string>
     <string name="choose_method">Seleziona una foto o fanne una</string>
-    <string name="descrizione_immagine">Immagine profilo</string>
+    <string name="image_description">Immagine profilo</string>
     <string name="tab_upload">Caricamenti</string>
     <string name="tab_bookmarks">Salvati</string>
     <string name="nature">Natura</string>
@@ -17,4 +17,11 @@
     <string name="best_time_to_go">Momento migliore per andare</string>
     <string name="tips">Suggerimenti</string>
     <string name="errorMaps">Impossibile mostrare le indicazioni</string>
+    <string name="insert_image_details">Inserisci i dettagli dell\'immagine</string>
+    <string name="title">Titolo</string>
+    <string name="description">Descrizione</string>
+    <string name="advanced_settings">Impostazioni avanzate</string>
+    <string name="shutter_speed">Velocità otturattore</string>
+    <string name="aperture">Apertura</string>
+    <string name="select_the_category" translatable="false">Seleziona la categoria</string>
 </resources>

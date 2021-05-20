@@ -52,6 +52,7 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
     private EditText tips;
     private Uri imageuri;
     private String coords;
+    private String category;
     private String settings ="";
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
@@ -138,8 +139,16 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
 
                         Toast.makeText(getActivity(), "Upload successful", Toast.LENGTH_LONG).show();
 
+                        if (binding.radioButtonNature.isChecked())
+                            category = "Nature";
+                        else if (binding.radioButtonUrban.isChecked())
+                            category = "Urban";
+                        else
+                            category = "Portrait";
+
+
                         Image upload = new Image(title.getText().toString().trim(),image_url, description.getText().toString().trim(), settings,
-                                time.getText().toString().trim(), tips.getText().toString().trim(), equipment.getText().toString().trim(), coords);
+                                time.getText().toString().trim(), tips.getText().toString().trim(), equipment.getText().toString().trim(), coords, category);
                         String uploadId = mDatabaseRef.push().getKey();
                         mDatabaseRef.child(uploadId).setValue(upload);
 

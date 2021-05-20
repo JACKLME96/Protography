@@ -11,10 +11,11 @@ public class Image implements Serializable {
     private String ImageTime;
     private String ImageTips;
     private String ImageCoords;
+    private String ImageCategory;
 
     public Image(){ }
 
-    public Image(String title, String url, String description, String settings, String time, String tips, String equipment, String coords){
+    public Image(String title, String url, String description, String settings, String time, String tips, String equipment, String coords, String category){
         ImageTitle = title;
         ImageUrl = url;
         ImageDescription = description;
@@ -23,6 +24,7 @@ public class Image implements Serializable {
         ImageTime = time;
         ImageTips = tips;
         ImageCoords = coords;
+        ImageCategory = category;
     }
 
     public String getImageTitle(){
@@ -85,5 +87,13 @@ public class Image implements Serializable {
 
     public void setCoords(String coords){
         ImageCoords = coords;
+    }
+
+    public String getImageCategory(){
+        return ImageCategory;
+    }
+
+    public void setImageCategory(String category){
+        ImageCategory = category;
     }
 }

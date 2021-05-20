@@ -122,6 +122,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp">
                     <com.google.android.material.chip.Chip
+                        android:id="@+id/chipNature"
                         android:layout_width="wrap_content"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_height="wrap_content"
@@ -131,7 +132,7 @@
                         android:text="@string/nature"
                         android:textSize="15sp"/>
                     <com.google.android.material.chip.Chip
-                        android:checked="true"
+                        android:id="@+id/chipUrban"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:clickable="false"
                         android:layout_width="wrap_content"
@@ -142,6 +143,7 @@
                         android:textSize="15sp"/>
 
                     <com.google.android.material.chip.Chip
+                        android:id="@+id/chipPortrait"
                         android:layout_width="wrap_content"
                         android:clickable="false"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
