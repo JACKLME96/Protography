@@ -20,7 +20,9 @@ import android.widget.ImageView;
 
 import android.widget.Toast;
 
+import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.Step;
+import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 import com.example.protography.databinding.FragmentImageSelectBinding;
 import com.theartofdev.edmodo.cropper.CropImage;

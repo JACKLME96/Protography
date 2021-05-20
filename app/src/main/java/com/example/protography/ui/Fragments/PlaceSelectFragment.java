@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.protography.BuildConfig;
@@ -33,7 +34,9 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.Step;
+import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +49,6 @@ public class PlaceSelectFragment extends Fragment implements Step {
     private GoogleMap map;
     boolean firstMoved = false;
     private SharedPreferences sharedPref;
-
 
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
@@ -73,6 +75,7 @@ public class PlaceSelectFragment extends Fragment implements Step {
                     map.moveCamera(CameraUpdateFactory.newLatLng(bicocca));
                 }
             });
+
         }
     };
 
@@ -127,7 +130,7 @@ public class PlaceSelectFragment extends Fragment implements Step {
                     getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
             //filer the type of results
-            autocompleteFragment.setTypeFilter(TypeFilter.CITIES);
+            autocompleteFragment.setTypeFilter(TypeFilter.ADDRESS);
 
             // Specify the types of place data to return.
             autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME));
@@ -146,6 +149,7 @@ public class PlaceSelectFragment extends Fragment implements Step {
             });
         }
     }
+
 
     @Override
     public void onResume() {
@@ -171,4 +175,5 @@ public class PlaceSelectFragment extends Fragment implements Step {
     public void onError(@NonNull @NotNull VerificationError error) {
 
     }
+
 }
