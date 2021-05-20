@@ -46,6 +46,40 @@
                 android:textStyle="bold"
                 android:textSize="18sp"/>
 
+            <RadioGroup
+                android:id="@+id/category"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:checkedButton="@id/radioButtonNature"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="8dp">
+
+                <RadioButton
+                    android:id="@+id/radioButtonNature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:buttonTint ="?attr/colorPrimary"
+                    android:text="@string/nature" />
+
+                <RadioButton
+                    android:id="@+id/radioButtonUrban"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:buttonTint ="?attr/colorPrimary"
+                    android:layout_marginHorizontal="30dp"
+                    android:text="@string/urban" />
+
+                <RadioButton
+                    android:id="@+id/radioButtonPortrait"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    app:buttonTint ="?attr/colorPrimary"
+                    android:text="@string/portrait" />
+            </RadioGroup>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -75,43 +109,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/select_the_category"
-                android:textSize="16sp"/>
-
-
-            <RadioGroup
-                android:id="@+id/category"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:checkedButton="@id/radioButtonNature"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/radioButtonNature"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/nature" />
-
-                <RadioButton
-                    android:id="@+id/radioButtonUrban"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/urban" />
-
-                <RadioButton
-                    android:id="@+id/radioButtonPortrait"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:text="@string/portrait" />
-            </RadioGroup>
-
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/equipmentCard"
