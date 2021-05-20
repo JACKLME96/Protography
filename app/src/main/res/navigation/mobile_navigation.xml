@@ -21,4 +21,10 @@
         android:name="com.example.protography.ui.Fragments.ProfileFragment"
         android:label="@string/profile"
         tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/navigation_find"
+        android:name="com.example.protography.ui.Fragments.FindFragment"
+        android:label="Find"
+        tools:layout="@layout/fragment_find" />
 </navigation>
