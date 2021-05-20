@@ -81,7 +81,7 @@ public class MapsFragment extends Fragment {
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(@NonNull Marker marker) {
-                    String position = String.format("%.5f", marker.getPosition().latitude).replace(",", ".") + "," + String.format("%.5f", marker.getPosition().longitude).replace(",", ".");
+                    String position = Double.toString(marker.getPosition().latitude).substring(0,7) + " , " + Double.toString(marker.getPosition().longitude).substring(0,7);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("POS", position);
                     editor.apply();
