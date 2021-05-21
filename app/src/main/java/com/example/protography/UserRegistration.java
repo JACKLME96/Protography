@@ -3,7 +3,6 @@ package com.example.protography;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -21,10 +20,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
-public class UserRegistration extends AppCompatActivity implements View.OnClickListener {
+public class UserRegistration extends AppCompatActivity {
 
 
-    private TextView banner, registerUser;
+    private TextView registerUser;
     private EditText editTextFullName, editTextEmail, editTextPassword;
 
     private FirebaseAuth mAuth;
@@ -37,27 +36,18 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
 
         mAuth = FirebaseAuth.getInstance();
 
-        banner = (TextView)findViewById(R.id.banner);
-        banner.setOnClickListener(this);
         registerUser = (Button) findViewById(R.id.register);
-        registerUser.setOnClickListener(this);
+        registerUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                registerUser();
+            }
+        });
 
         editTextFullName = (EditText) findViewById(R.id.NomeCompleto);
         editTextEmail = (EditText) findViewById(R.id.registerAddress);
         editTextPassword = (EditText) findViewById(R.id.registerPassword);
 
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch(v.getId()){
-            case R.id.banner:
-                startActivity(new Intent(this, LoginActivity.class));
-                break;
-            case R.id.register:
-                registerUser();
-                break;
-        }
     }
 
     private void registerUser() {

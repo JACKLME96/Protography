@@ -1,4 +1,4 @@
-package com.example.protography;
+package com.example.protography.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +13,10 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.protography.ForgotPassword;
+import com.example.protography.MainActivity;
+import com.example.protography.R;
+import com.example.protography.UserRegistration;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -43,8 +47,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editTextEmail = (EditText) findViewById(R.id.emailAddress);
         editTextPassword = (EditText) findViewById(R.id.password);
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar2);
-        progressBar.setVisibility(View.GONE);
 
         mAuth = FirebaseAuth.getInstance();
         forgotPassword =(TextView)findViewById(R.id.forgotPassword);
@@ -90,11 +92,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             editTextPassword.setError("Lunghezza minima psw non soddisfatta");
             editTextPassword.requestFocus();
             return;
-
         }
-
-        progressBar.setVisibility(View.VISIBLE);
-
 
         mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -102,7 +100,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 //Login avvenuto con successo
                 if(task.isSuccessful()){
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    progressBar.setVisibility(View.GONE);
+                    finish();
                 }
                 //Login Fallito, credenziali errate
                 else
