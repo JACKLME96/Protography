@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.CheckBox;
@@ -72,7 +73,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         forgotPassword =binding.forgotPassword;
         forgotPassword.setOnClickListener(this);
 
-        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
         if(!sharedPref.getString("EMAIL", "").isEmpty() && !sharedPref.getString("PSW", "").isEmpty())
             userLogin();
@@ -95,9 +96,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void userLogin() {
-        String email = editTextEmail.getText().toString().trim().isEmpty() ? sharedPref.getString("EMAIL", "DEFAULT") : editTextEmail.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim().isEmpty() ? sharedPref.getString("PSW", "DEFAULT") : editTextPassword.getText().toString().trim();
-        ;
+        String email = editTextEmail.getText().toString().trim().isEmpty() ? sharedPref.getString("EMAIL", null) : editTextEmail.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim().isEmpty() ? sharedPref.getString("PSW", null) : editTextPassword.getText().toString().trim();
 
         if (email.isEmpty()) {
             editTextEmail.setError("Campo email vuoto");

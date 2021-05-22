@@ -97,9 +97,8 @@ public class UserRegistration extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull @NotNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-
                                         Toast.makeText(UserRegistration.this, "Utente registrato con successo! Ora puoi loggarti", Toast.LENGTH_LONG).show();
-
+                                        finish();
                                     } else {
                                         Toast.makeText(UserRegistration.this, "Registrazione fallita, Utente già esistente", Toast.LENGTH_LONG).show();
                                     }
@@ -107,11 +106,8 @@ public class UserRegistration extends AppCompatActivity {
                             });
                         }else {
                             Toast.makeText(UserRegistration.this, "Registrazione fallita, Utente già esistente", Toast.LENGTH_LONG).show();
-
                         }
                     }
                 });
-
     }
-
 }

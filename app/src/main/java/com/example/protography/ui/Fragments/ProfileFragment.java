@@ -1,10 +1,15 @@
 package com.example.protography.ui.Fragments;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +25,7 @@ import com.example.protography.MainActivity;
 import com.example.protography.R;
 import com.example.protography.databinding.FragmentProfileBinding;
 import com.example.protography.ui.Adapters.ProfileAdapter;
+import com.example.protography.ui.LoginActivity;
 import com.example.protography.ui.Models.Image;
 import com.example.protography.ui.Models.User;
 import com.example.protography.ui.ViewModels.ProfileViewModel;
@@ -41,7 +47,8 @@ public class ProfileFragment extends Fragment {
     private ViewPager mViewPager;
     private FragmentProfileBinding binding;
     private String mailUser;
-
+    private Button logout;
+    SharedPreferences sharedPref;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -49,8 +56,22 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
         mailUser = ((MainActivity) getActivity()).getMailUser();
         binding.textViewUsername.setText(mailUser);
+        logout = binding.logout;
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                sharedPref.edit().remove("EMAIL").apply();
+                sharedPref.edit().remove("PSW").apply();
+                getActivity().finish();
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
 
         mTabLayout = binding.tabLayout;
         // Si aggiungono i tab con il loro titolo che viene mostrato
