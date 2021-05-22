@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.protography.MainActivity;
 import com.example.protography.R;
 import com.example.protography.databinding.FragmentProfileBinding;
 import com.example.protography.ui.Adapters.ProfileAdapter;
@@ -39,9 +40,7 @@ public class ProfileFragment extends Fragment {
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private FragmentProfileBinding binding;
-    private DatabaseReference databaseReference;
-    private FirebaseAuth auth;
-    private String userAttuale;
+    private String mailUser;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -50,28 +49,8 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        auth = FirebaseAuth.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                // Cerco i dati dall'utente loggato
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    User u = dataSnapshot.getValue(User.class);
-                    if (u.email.equals(auth.getCurrentUser().getEmail())) {
-                        userAttuale = u.fullName;
-                        binding.textViewUsername.setText(userAttuale);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
+        mailUser = ((MainActivity) getActivity()).getMailUser();
+        binding.textViewUsername.setText(mailUser);
 
         mTabLayout = binding.tabLayout;
         // Si aggiungono i tab con il loro titolo che viene mostrato

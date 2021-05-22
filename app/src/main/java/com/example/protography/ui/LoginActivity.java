@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
@@ -17,10 +18,18 @@ import com.example.protography.ForgotPassword;
 import com.example.protography.MainActivity;
 import com.example.protography.R;
 import com.example.protography.UserRegistration;
+import com.example.protography.databinding.ActivityLoginBinding;
+import com.example.protography.databinding.ActivityMainBinding;
+import com.example.protography.ui.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -29,14 +38,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView register, forgotPassword;
     private EditText editTextEmail, editTextPassword;
     private Button signIn;
-
+    private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
+    private static final String TAG = "LoginActivity";
+    private ActivityLoginBinding binding;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        View root = binding.getRoot();
+        setContentView(root);
+        //setContentView(R.layout.activity_login);
 
         register = (TextView) findViewById(R.id.register);
         register.setOnClickListener(this);
@@ -99,12 +115,49 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                 //Login avvenuto con successo
                 if(task.isSuccessful()){
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finish();
+                    startMainActivity();
                 }
                 //Login Fallito, credenziali errate
                 else
                     Toast.makeText(LoginActivity.this, "Login fallito, controlla i dati inseriti.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void startMainActivity() {
+
+        // Metto simbolo di caricamento
+        binding.button.setVisibility(View.GONE);
+        binding.loading.setVisibility(View.VISIBLE);
+
+        // Cerco il nome dell'utente da passare nell'intent
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                String nameUser = "Nessun User";
+                // Cerco i dati dall'utente loggato
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    User u = dataSnapshot.getValue(User.class);
+                    if (u.email.equals(mAuth.getCurrentUser().getEmail())) {
+                        nameUser = u.fullName;
+                        break;
+                    }
+                }
+
+                // Una volta trovato l'utente faccio partire la mainActivity con i suoi dati
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra("mailUser", mAuth.getCurrentUser().getEmail());
+                intent.putExtra("nameUser", nameUser);
+
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

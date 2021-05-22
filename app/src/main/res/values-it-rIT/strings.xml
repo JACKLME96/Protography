@@ -24,5 +24,10 @@
     <string name="advanced_settings">Impostazioni avanzate</string>
     <string name="shutter_speed">Velocità otturattore</string>
     <string name="aperture">Apertura</string>
-    <string name="select_the_category" translatable="false">Seleziona la categoria</string>
+    <string name="select_the_category">Seleziona la categoria</string>
+    <string name="forgot_password">Password dimenticata?</string>
+    <string name="do_not_have_an_account">Non hai un account?</string>
+    <string name="sign_in">Registrati</string>
+    <string name="warning">Attenzione</string>
+    <string name="want_to_exit">Sicuro di voler uscire?</string>
 </resources>

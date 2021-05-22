@@ -27,4 +27,12 @@
     <string name="shutter_speed">Shutter Speed</string>
     <string name="aperture">Aperture</string>
     <string name="select_the_category">Select the category</string>
+    <string name="login" translatable="false">LOGIN</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="password" translatable="false">Password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="do_not_have_an_account">Do not have an account?</string>
+    <string name="sign_in">Sign in</string>
+    <string name="warning">Warning</string>
+    <string name="want_to_exit">Are you sure you want to exit?</string>
 </resources>

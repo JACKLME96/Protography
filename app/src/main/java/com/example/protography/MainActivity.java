@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.protography.databinding.ActivityMainBinding;
 import com.example.protography.ui.AddActivity;
@@ -24,10 +25,12 @@ import org.jetbrains.annotations.NotNull;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    private  static final String TAG = "MainActivity";
+    private static final String TAG = "MainActivity";
     private static final String ADD_ACTIVITY = "isAddActivity";
     private SharedPreferences sharedPreferences;
     BottomNavigationView navView;
+    private String mailUser;
+    private String nameUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View root = binding.getRoot();
         setContentView(root);
+
+        mailUser = getIntent().getStringExtra("mailUser");
+        nameUser = getIntent().getStringExtra("nameUser");
+        Toast.makeText(MainActivity.this, "Benvenuto " + nameUser, Toast.LENGTH_LONG).show();
 
         sharedPreferences = getPreferences(Context.MODE_PRIVATE);
 
@@ -81,8 +88,8 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
 
         new AlertDialog.Builder(this)
-                .setTitle("Warning")
-                .setMessage("Are you sure you want to exit?")
+                .setTitle(R.string.warning)
+                .setMessage(R.string.want_to_exit)
                 .setNegativeButton(android.R.string.cancel, null)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 
@@ -91,4 +98,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }).create().show();
     }
+
+    public String getMailUser() {
+        return mailUser;
+    }
+
+    public String getNameUser() {
+        return nameUser;
+    }
+
 }

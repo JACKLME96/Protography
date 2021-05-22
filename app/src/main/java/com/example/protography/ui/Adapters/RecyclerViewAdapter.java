@@ -95,6 +95,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             userTextView.setText("User");
             Picasso.get().load(image.getImageUrl()).into(imageView);
+
+            // La descrizione non serve nel profilo
+            binding.description.setVisibility(View.GONE);
         }
 
         @Override
