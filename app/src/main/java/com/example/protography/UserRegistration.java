@@ -98,7 +98,7 @@ public class UserRegistration extends AppCompatActivity {
                                 public void onComplete(@NonNull @NotNull Task<Void> task) {
                                     if (task.isSuccessful()) {
 
-                                        Toast.makeText(UserRegistration.this, "Utente registrato con successo,", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(UserRegistration.this, "Utente registrato con successo! Ora puoi loggarti", Toast.LENGTH_LONG).show();
 
                                     } else {
                                         Toast.makeText(UserRegistration.this, "Registrazione fallita, Utente già esistente", Toast.LENGTH_LONG).show();

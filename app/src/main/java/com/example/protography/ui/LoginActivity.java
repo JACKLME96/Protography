@@ -3,13 +3,15 @@ package com.example.protography.ui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
@@ -38,35 +40,37 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView register, forgotPassword;
     private EditText editTextEmail, editTextPassword;
     private Button signIn;
+
+    private FirebaseAuth mAuth;
+=======
     private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
     private static final String TAG = "LoginActivity";
     private ActivityLoginBinding binding;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityLoginBinding.inflate(getLayoutInflater());
-        View root = binding.getRoot();
-        setContentView(root);
-        //setContentView(R.layout.activity_login);
-
         register = (TextView) findViewById(R.id.register);
         register.setOnClickListener(this);
 
-        signIn = (Button) findViewById(R.id.button);
+        signIn =  findViewById(R.id.button);
         signIn.setOnClickListener(this);
 
-        editTextEmail = (EditText) findViewById(R.id.emailAddress);
-        editTextPassword = (EditText) findViewById(R.id.password);
-
+        editTextEmail =  findViewById(R.id.emailAddress);
+        editTextPassword = findViewById(R.id.password);
+        remember = findViewById(R.id.remember);
 
         mAuth = FirebaseAuth.getInstance();
-        forgotPassword =(TextView)findViewById(R.id.forgotPassword);
+        forgotPassword =findViewById(R.id.forgotPassword);
         forgotPassword.setOnClickListener(this);
+
+        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+
+        if(!sharedPref.getString("EMAIL", "").isEmpty() && !sharedPref.getString("PSW", "").isEmpty())
+            userLogin();
     }
 
     @Override
@@ -86,8 +90,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void userLogin() {
-        String email = editTextEmail.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim();
+        String email = editTextEmail.getText().toString().trim().isEmpty() ? sharedPref.getString("EMAIL", "DEFAULT") : editTextEmail.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim().isEmpty() ?  sharedPref.getString("PSW", "DEFAULT") : editTextPassword.getText().toString().trim();;
 
         if(email.isEmpty()){
             editTextEmail.setError("Campo email vuoto");
@@ -110,12 +114,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-        mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithEmailAndPassword(email ,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                 //Login avvenuto con successo
                 if(task.isSuccessful()){
+<<<<<<< HEAD
+                    if(remember.isChecked()){
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString("EMAIL", email);
+                        editor.putString("PSW", password);
+                        editor.apply();
+                    }
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
+=======
                     startMainActivity();
+>>>>>>> develop
                 }
                 //Login Fallito, credenziali errate
                 else
