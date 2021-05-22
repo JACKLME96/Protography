@@ -1,13 +1,13 @@
 package com.example.protography.ui;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.CheckBox;
@@ -21,7 +21,6 @@ import com.example.protography.MainActivity;
 import com.example.protography.R;
 import com.example.protography.UserRegistration;
 import com.example.protography.databinding.ActivityLoginBinding;
-import com.example.protography.databinding.ActivityMainBinding;
 import com.example.protography.ui.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -40,31 +39,37 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView register, forgotPassword;
     private EditText editTextEmail, editTextPassword;
     private Button signIn;
+    private CheckBox remember;
+    private SharedPreferences sharedPref;
+    private ActivityLoginBinding binding;
+    private static final String TAG = "LoginActivity";
+    private DatabaseReference databaseReference;
+
+
+
 
     private FirebaseAuth mAuth;
-=======
-    private DatabaseReference databaseReference;
-    private FirebaseAuth mAuth;
-    private ProgressBar progressBar;
-    private static final String TAG = "LoginActivity";
-    private ActivityLoginBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        register = (TextView) findViewById(R.id.register);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        View root = binding.getRoot();
+        setContentView(root);
+
+        register =  binding.register;
         register.setOnClickListener(this);
 
-        signIn =  findViewById(R.id.button);
+        signIn =  binding.button;
         signIn.setOnClickListener(this);
 
-        editTextEmail =  findViewById(R.id.emailAddress);
-        editTextPassword = findViewById(R.id.password);
-        remember = findViewById(R.id.remember);
+        editTextEmail =  binding.emailAddress;
+        editTextPassword = binding.password;
+        remember = binding.remember;
 
         mAuth = FirebaseAuth.getInstance();
-        forgotPassword =findViewById(R.id.forgotPassword);
+        forgotPassword =binding.forgotPassword;
         forgotPassword.setOnClickListener(this);
 
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
@@ -91,46 +96,42 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void userLogin() {
         String email = editTextEmail.getText().toString().trim().isEmpty() ? sharedPref.getString("EMAIL", "DEFAULT") : editTextEmail.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim().isEmpty() ?  sharedPref.getString("PSW", "DEFAULT") : editTextPassword.getText().toString().trim();;
+        String password = editTextPassword.getText().toString().trim().isEmpty() ? sharedPref.getString("PSW", "DEFAULT") : editTextPassword.getText().toString().trim();
+        ;
 
-        if(email.isEmpty()){
+        if (email.isEmpty()) {
             editTextEmail.setError("Campo email vuoto");
             editTextEmail.requestFocus();
             return;
         }
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             editTextEmail.setError("Email non valida. Utente non registrato.");
             editTextEmail.requestFocus();
             return;
         }
-        if(password.isEmpty()){
+        if (password.isEmpty()) {
             editTextPassword.setError("Campo password vuoto.");
             editTextPassword.requestFocus();
             return;
         }
-        if(password.length() < 6){
+        if (password.length() < 6) {
             editTextPassword.setError("Lunghezza minima psw non soddisfatta");
             editTextPassword.requestFocus();
             return;
         }
 
-        mAuth.signInWithEmailAndPassword(email ,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                 //Login avvenuto con successo
-                if(task.isSuccessful()){
-<<<<<<< HEAD
-                    if(remember.isChecked()){
+                if (task.isSuccessful()) {
+                    if (remember.isChecked()) {
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("EMAIL", email);
                         editor.putString("PSW", password);
                         editor.apply();
                     }
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finish();
-=======
                     startMainActivity();
->>>>>>> develop
                 }
                 //Login Fallito, credenziali errate
                 else
@@ -141,9 +142,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void startMainActivity() {
 
-        // Metto simbolo di caricamento
-        binding.button.setVisibility(View.GONE);
-        binding.loading.setVisibility(View.VISIBLE);
+        AlertDialog dialog =  new AlertDialog.Builder(this)
+                .setView(R.layout.loading_dialog)
+                .setCancelable(false)
+                .create();
+        dialog.show();
 
         // Cerco il nome dell'utente da passare nell'intent
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -167,6 +170,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 intent.putExtra("nameUser", nameUser);
 
                 startActivity(intent);
+                dialog.dismiss();
                 finish();
             }
 
