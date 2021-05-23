@@ -1,10 +1,9 @@
 package com.example.protography.ui.Models;
 
 public class User {
-    public String fullName, email;
+    private String fullName, email;
 
     public User(){
-
     }
 
     public User(String fullName, String email){
@@ -12,4 +11,11 @@ public class User {
         this.email = email;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
 }

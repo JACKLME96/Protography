@@ -13,10 +13,13 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.example.protography.ForgotPassword;
 import com.example.protography.MainActivity;
 import com.example.protography.R;
@@ -46,7 +49,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final String TAG = "LoginActivity";
     private DatabaseReference databaseReference;
 
-
+    private String mail,password;
 
 
     private FirebaseAuth mAuth;
@@ -96,15 +99,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void userLogin() {
-        String email = editTextEmail.getText().toString().trim().isEmpty() ? sharedPref.getString("EMAIL", null) : editTextEmail.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim().isEmpty() ? sharedPref.getString("PSW", null) : editTextPassword.getText().toString().trim();
+         mail = editTextEmail.getText().toString().trim().isEmpty() ? sharedPref.getString("EMAIL", null) : editTextEmail.getText().toString().trim();
+         password = editTextPassword.getText().toString().trim().isEmpty() ? sharedPref.getString("PSW", null) : editTextPassword.getText().toString().trim();
 
-        if (email.isEmpty()) {
+        if (mail.isEmpty()) {
             editTextEmail.setError("Campo email vuoto");
             editTextEmail.requestFocus();
             return;
         }
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(mail).matches()) {
             editTextEmail.setError("Email non valida. Utente non registrato.");
             editTextEmail.requestFocus();
             return;
@@ -120,22 +123,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithEmailAndPassword(mail, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                 //Login avvenuto con successo
                 if (task.isSuccessful()) {
                     if (remember.isChecked()) {
                         SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putString("EMAIL", email);
+                        editor.putString("EMAIL", mail);
                         editor.putString("PSW", password);
                         editor.apply();
                     }
                     startMainActivity();
                 }
                 //Login Fallito, credenziali errate
-                else
+                else {
+                    YoYo.with(Techniques.Shake)
+                            .duration(300)
+                            .repeat(2)
+                            .playOn(editTextEmail);
+                    YoYo.with(Techniques.Shake)
+                            .duration(300)
+                            .repeat(2)
+                            .playOn(editTextPassword);
+                    editTextPassword.getText().clear();
                     Toast.makeText(LoginActivity.this, "Login fallito, controlla i dati inseriti.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -158,8 +171,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 // Cerco i dati dall'utente loggato
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     User u = dataSnapshot.getValue(User.class);
-                    if (u.email.equals(mAuth.getCurrentUser().getEmail())) {
-                        nameUser = u.fullName;
+                    if (u.getEmail().equals(mAuth.getCurrentUser().getEmail())) {
+                        nameUser = u.getFullName();
                         break;
                     }
                 }

@@ -57,7 +57,7 @@ public class ProfileFragment extends Fragment {
         View root = binding.getRoot();
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-        mailUser = ((MainActivity) getActivity()).getMailUser();
+        mailUser = ((MainActivity) getActivity()).getNameUser();
         binding.textViewUsername.setText(mailUser);
         logout = binding.logout;
 
