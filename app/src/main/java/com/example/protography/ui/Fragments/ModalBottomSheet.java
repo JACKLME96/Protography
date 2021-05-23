@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.Layout;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,7 +63,7 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         BottomSheetDialog bottomSheet = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
         //inflating layout
-        View view = View.inflate(getContext(), R.layout.fragment_modal_bottom_sheet, null);
+        View view = View.inflate(getContext(), R.layout.activity_image, null);
         //setting layout with bottom sheet
         bottomSheet.setContentView(view);
         bottomSheetBehavior = BottomSheetBehavior.from((View) view.getParent());
@@ -70,6 +71,31 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
         bottomSheetBehavior.setState(bottomSheetBehavior.STATE_COLLAPSED);
         bottomSheetBehavior.setHideable(true);
         bottomSheetBehavior.setPeekHeight(900);
+
+        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull @NotNull View bottomSheet, int newState) {
+                if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED)
+                {
+                    imagePrev.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    ViewGroup.LayoutParams params= imagePrev.getLayoutParams();
+                    params.height = 700;
+                    imagePrev.setLayoutParams(params);
+                }
+                else
+                {
+                    imagePrev.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    ViewGroup.LayoutParams params= imagePrev.getLayoutParams();
+                    params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    imagePrev.setLayoutParams(params);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull @NotNull View bottomSheet, float slideOffset) {
+                //TODO Aggiungere un resizing dinamico dell'immagine per rendere più fluido
+            }
+        });
 
         return bottomSheet;
     }
@@ -81,6 +107,11 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
         View root = binding.getRoot();
 
         imagePrev = binding.imageView;
+        imagePrev.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        ViewGroup.LayoutParams params= imagePrev.getLayoutParams();
+        params.height = 600;
+        imagePrev.setLayoutParams(params);
+
         title = binding.title;
         user = binding.user;
         desc = binding.description;
