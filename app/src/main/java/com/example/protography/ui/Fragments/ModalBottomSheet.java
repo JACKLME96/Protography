@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -26,7 +28,9 @@ import android.widget.Toast;
 
 import com.example.protography.MainActivity;
 import com.example.protography.R;
+import com.example.protography.databinding.ActivityImageBinding;
 import com.example.protography.databinding.FragmentModalBottomSheetBinding;
+import com.example.protography.ui.ImageActivity;
 import com.example.protography.ui.Models.Image;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -41,7 +45,7 @@ import com.squareup.picasso.Picasso;
 import org.jetbrains.annotations.NotNull;
 
 public class ModalBottomSheet extends BottomSheetDialogFragment {
-    private FragmentModalBottomSheetBinding binding;
+    private ActivityImageBinding binding;
     private BottomSheetBehavior bottomSheetBehavior;
     private ImageView imagePrev;
     private TextView title;
@@ -79,12 +83,12 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
                 {
                     imagePrev.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     ViewGroup.LayoutParams params= imagePrev.getLayoutParams();
-                    params.height = 700;
+                    params.height = 600;
                     imagePrev.setLayoutParams(params);
                 }
                 else
                 {
-                    imagePrev.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    imagePrev.setScaleType(ImageView.ScaleType.FIT_START);
                     ViewGroup.LayoutParams params= imagePrev.getLayoutParams();
                     params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                     imagePrev.setLayoutParams(params);
@@ -103,7 +107,7 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                                 Bundle savedInstanceState) {
-        binding = FragmentModalBottomSheetBinding.inflate(inflater, container, false);
+        binding = ActivityImageBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         imagePrev = binding.imageView;
@@ -140,22 +144,34 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
                     Picasso.get().load(image.getImageUrl()).into(imagePrev);
                     title.setText(image.getImageTitle());
                     user.setText(((MainActivity) getActivity()).getNameUser());
-                    binding.description.setText(image.getImageDescription());
+                    desc.setText(image.getImageDescription());
                     binding.description.setShowingLine(4);
                     binding.description.setShowMoreColor(getResources().getColor(R.color.DarkThemeGray));
                     binding.description.setShowLessTextColor(getResources().getColor(R.color.DarkThemeGray));
                     equipment.setText(image.getImageEquipment());
-                    coords.setText(image.getCoords());
                     camera.setText(image.getImageSettings());
                     if (image.getImageTime() == null || image.getImageTime().isEmpty())
-                        binding.bestTimeToGo.setText("----------");
+                        bestTimeToGo.setText("----------");
                     else
-                        binding.bestTimeToGo.setText(image.getImageTime());
+                        bestTimeToGo.setText(image.getImageTime());
 
                     if (image.getImageTips() == null || image.getImageTips().isEmpty())
-                        binding.tips.setText("----------");
+                        tips.setText("----------");
                     else
-                        binding.tips.setText(image.getImageTips());
+                        tips.setText(image.getImageTips());
+
+                    coords.setOnClickListener(v -> {
+                        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + image.getCoords());
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+
+                        // Controlla che ci sia un applicazione per la navigazione
+                        if (mapIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                            startActivity(mapIntent);
+                        } else {
+                            Toast.makeText(getContext(), R.string.errorMaps, Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
                 }
             }

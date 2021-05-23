@@ -63,7 +63,7 @@
                     android:layout_marginBottom="1dp">
                     <TextView
                         android:id="@+id/user"
-                        android:layout_width="wrap_content"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:layout_marginStart="20dp"
@@ -73,6 +73,7 @@
                         android:id="@+id/coords"
                         android:textColor="?attr/colorPrimary"
                         android:clickable="true"
+                        android:text="Get Directions"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-thin"
@@ -107,7 +108,6 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginBottom="8dp"
                     android:text="Description"
-                    android:justificationMode="inter_word"
                     android:drawablePadding="8dp"
                     android:textSize="15sp" />
                 <View
