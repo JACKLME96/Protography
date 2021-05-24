@@ -11,6 +11,9 @@ import android.widget.ProgressBar;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.protography.databinding.ActivityForgotPasswordBinding;
+import com.example.protography.databinding.ActivityImageBinding;
+import com.example.protography.databinding.ActivityLoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 public class ForgotPassword extends AppCompatActivity {
 
     private EditText emailEditText;
+    private ActivityForgotPasswordBinding binding;
     private Button resetPasswordButton;
     
 
@@ -28,9 +32,14 @@ public class ForgotPassword extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_password);
-        emailEditText = (EditText) findViewById(R.id.email);
-        resetPasswordButton = (Button) findViewById(R.id.resetButton);
+
+        binding = ActivityForgotPasswordBinding.inflate(getLayoutInflater());
+        View root = binding.getRoot();
+        setContentView(root);
+
+
+        emailEditText = binding.email;
+        resetPasswordButton = binding.resetButton;
 
 
         auth = FirebaseAuth.getInstance();

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.CheckBox;
@@ -102,7 +103,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
          mail = editTextEmail.getText().toString().trim().isEmpty() ? sharedPref.getString("EMAIL", null) : editTextEmail.getText().toString().trim();
          password = editTextPassword.getText().toString().trim().isEmpty() ? sharedPref.getString("PSW", null) : editTextPassword.getText().toString().trim();
 
-        if (mail.isEmpty()) {
+        if (TextUtils.isEmpty(mail)) {
             editTextEmail.setError("Campo email vuoto");
             editTextEmail.requestFocus();
             return;
@@ -112,7 +113,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             editTextEmail.requestFocus();
             return;
         }
-        if (password.isEmpty()) {
+        if (TextUtils.isEmpty(password)) {
             editTextPassword.setError("Campo password vuoto.");
             editTextPassword.requestFocus();
             return;
