@@ -1,42 +1,36 @@
 package com.example.protography.ui.Fragments;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
-import android.text.Layout;
-import android.util.DisplayMetrics;
-import android.util.Log;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+
 import android.widget.ImageView;
-import android.widget.ScrollView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.protography.MainActivity;
 import com.example.protography.R;
 import com.example.protography.databinding.ActivityImageBinding;
-import com.example.protography.databinding.FragmentModalBottomSheetBinding;
-import com.example.protography.ui.ImageActivity;
+
 import com.example.protography.ui.Models.Image;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -56,8 +50,10 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
     private TextView tips;
     private TextView bestTimeToGo;
     private TextView coords;
+    private Image image;
+    LinearLayout swipeUp;
 
-    private String position;
+    private String latLng;
 
     private SharedPreferences sharedPreferences;
     private String TAG = "ModalBottomSheet";
@@ -74,7 +70,7 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
 
         bottomSheetBehavior.setState(bottomSheetBehavior.STATE_COLLAPSED);
         bottomSheetBehavior.setHideable(true);
-        bottomSheetBehavior.setPeekHeight(900);
+        bottomSheetBehavior.setPeekHeight(1000);
 
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
@@ -85,6 +81,10 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
                     ViewGroup.LayoutParams params= imagePrev.getLayoutParams();
                     params.height = 600;
                     imagePrev.setLayoutParams(params);
+                    swipeUp.setVisibility(View.VISIBLE);
+
+                    if(image.getImageTitle().length() > 15)
+                        title.setText(image.getImageTitle().substring(0,15) + "...");
                 }
                 else
                 {
@@ -92,12 +92,14 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
                     ViewGroup.LayoutParams params= imagePrev.getLayoutParams();
                     params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                     imagePrev.setLayoutParams(params);
+                    swipeUp.setVisibility(View.GONE);
+                    title.setText(image.getImageTitle());
                 }
             }
 
             @Override
             public void onSlide(@NonNull @NotNull View bottomSheet, float slideOffset) {
-                //TODO Aggiungere un resizing dinamico dell'immagine per rendere più fluido
+                //TODO Aggiungere un resizing dinamico dell'immagine/testo per rendere più fluido
             }
         });
 
@@ -124,6 +126,7 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
         tips = binding.tips;
         bestTimeToGo = binding.bestTimeToGo;
         coords = binding.coords;
+        swipeUp = binding.swipeUp;
 
         return root;
     }
@@ -132,18 +135,24 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        position = sharedPreferences.getString("POS", "DEFAULT");
-
+        latLng = sharedPreferences.getString("LATLNG", "");
         Query query = FirebaseDatabase.getInstance().getReference("Images")
-                .orderByChild("coords").equalTo(position);
+        .orderByChild("coords").equalTo(latLng);
+
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Image image = snapshot.getValue(Image.class);
+                    image = snapshot.getValue(Image.class);
                     Picasso.get().load(image.getImageUrl()).into(imagePrev);
-                    title.setText(image.getImageTitle());
-                    user.setText(((MainActivity) getActivity()).getNameUser());
+
+                    if(image.getImageTitle().length() > 15)
+                        title.setText(image.getImageTitle().substring(0,15) + "...");
+                    else
+                        title.setText(image.getImageTitle());
+
+                    swipeUp.setVisibility(View.VISIBLE);
+                    user.setText(sharedPreferences.getString("FULLNAME", null));
                     desc.setText(image.getImageDescription());
                     binding.description.setShowingLine(4);
                     binding.description.setShowMoreColor(getResources().getColor(R.color.DarkThemeGray));
@@ -159,6 +168,13 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
                         tips.setText("----------");
                     else
                         tips.setText(image.getImageTips());
+
+                    if (image.getImageCategory().equals("Nature"))
+                        binding.chipNature.setChecked(true);
+                    else if (image.getImageCategory().equals("Urban"))
+                        binding.chipUrban.setChecked(true);
+                    else
+                        binding.chipPortrait.setChecked(true);
 
                     coords.setOnClickListener(v -> {
                         Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + image.getCoords());
@@ -187,6 +203,6 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
 }

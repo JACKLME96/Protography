@@ -17,6 +17,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,9 +63,8 @@ public class MapsFragment extends Fragment {
             map = googleMap;
 
             for (Image image : immagini) {
-                String[] latlong = image.getCoords().split(",");
-                double latitude = Double.parseDouble(latlong[0]);
-                double longitude = Double.parseDouble(latlong[1]);
+                double latitude = image.getLatitude();
+                double longitude = image.getLongitude();
                 LatLng Coords = new LatLng(latitude, longitude);
                 map.addMarker(new MarkerOptions().position(Coords).title(image.getImageTitle()));
             }
@@ -87,10 +87,11 @@ public class MapsFragment extends Fragment {
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(@NonNull Marker marker) {
-                    String position = Double.toString(marker.getPosition().latitude).substring(0,7) + " , " + Double.toString(marker.getPosition().longitude).substring(0,7);
+                    String latLng = marker.getPosition().latitude + "," + marker.getPosition().longitude;
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("POS", position);
+                    editor.putString("LATLNG", latLng);
                     editor.apply();
+
                     ModalBottomSheet bottomSheet = new ModalBottomSheet();
 
                     bottomSheet.show(getChildFragmentManager(), bottomSheet.getTag());
@@ -210,6 +211,6 @@ public class MapsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
 }

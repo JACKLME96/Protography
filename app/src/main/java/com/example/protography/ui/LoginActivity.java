@@ -35,6 +35,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
@@ -79,7 +80,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if(!sharedPref.getString("EMAIL", "").isEmpty() && !sharedPref.getString("PSW", "").isEmpty())
+        if(sharedPref.getBoolean("REMEMBER", false))
             userLogin();
     }
 
@@ -100,8 +101,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void userLogin() {
-         mail = editTextEmail.getText().toString().trim().isEmpty() ? sharedPref.getString("EMAIL", null) : editTextEmail.getText().toString().trim();
-         password = editTextPassword.getText().toString().trim().isEmpty() ? sharedPref.getString("PSW", null) : editTextPassword.getText().toString().trim();
+        mail = editTextEmail.getText().toString().trim().isEmpty() ? sharedPref.getString("EMAIL", null) : editTextEmail.getText().toString().trim();
+        password = editTextPassword.getText().toString().trim().isEmpty() ? sharedPref.getString("PSW", null) : editTextPassword.getText().toString().trim();
 
         if (TextUtils.isEmpty(mail)) {
             editTextEmail.setError("Campo email vuoto");
@@ -129,12 +130,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                 //Login avvenuto con successo
                 if (task.isSuccessful()) {
-                    if (remember.isChecked()) {
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putString("EMAIL", mail);
-                        editor.putString("PSW", password);
-                        editor.apply();
-                    }
                     startMainActivity();
                 }
                 //Login Fallito, credenziali errate
@@ -162,28 +157,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .create();
         dialog.show();
 
-        // Cerco il nome dell'utente da passare nell'intent
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        Query query = FirebaseDatabase.getInstance().getReference("Users").orderByChild("email").equalTo(mail);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                String nameUser = "Nessun User";
-                // Cerco i dati dall'utente loggato
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     User u = dataSnapshot.getValue(User.class);
-                    if (u.getEmail().equals(mAuth.getCurrentUser().getEmail())) {
-                        nameUser = u.getFullName();
-                        break;
-                    }
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("EMAIL", u.getEmail());
+                    editor.putString("FULLNAME", u.getFullName());
+                    editor.putString("PSW", password);
+                    editor.putBoolean("REMEMBER", remember.isChecked());
+                    editor.apply();
                 }
-
-                // Una volta trovato l'utente faccio partire la mainActivity con i suoi dati
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra("mailUser", mAuth.getCurrentUser().getEmail());
-                intent.putExtra("nameUser", nameUser);
-
-                startActivity(intent);
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 dialog.dismiss();
                 finish();
             }

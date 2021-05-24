@@ -10,4 +10,10 @@
     <color name="DarkThemeLightGray">#ababab</color>
     <color name="DarkThemeGray">#2d2d2d</color>
     <color name="transparent">#002D2D2D</color>
+    <color name="yellow">#f39911</color>
+    <color name="yellowS">#F44336</color>
+    <color name="blue">#2196F3</color>
+    <color name="blueS">#003f91</color>
+
+
 </resources>

@@ -64,7 +64,12 @@ public class PlaceSelectFragment extends Fragment implements Step {
             googleMap.setOnCameraIdleListener(() -> {
                 if(firstMoved) {
                     SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString("COORDS", coordsValue);
+                    long latitude =  Double.doubleToLongBits(googleMap.getCameraPosition().target.latitude);
+                    long longitude = Double.doubleToLongBits(googleMap.getCameraPosition().target.longitude);
+                    String latLng = googleMap.getCameraPosition().target.latitude + "," + googleMap.getCameraPosition().target.longitude;
+                    editor.putString("LATLNG", latLng);
+                    editor.putLong("LATITUDE", latitude);
+                    editor.putLong("LONGITUDE", longitude);
                     editor.apply();
                 }
                 else
@@ -75,6 +80,19 @@ public class PlaceSelectFragment extends Fragment implements Step {
             });
         }
     };
+
+    @Override
+    public void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("COORDS", coordsValue);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if(savedInstanceState != null)
+            coords.setText(savedInstanceState.getString("COORDS", null));
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -144,14 +162,6 @@ public class PlaceSelectFragment extends Fragment implements Step {
                     // TODO: Handle the error.
                 }
             });
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(firstMoved) {
-            coords.setText(sharedPref.getString("COORDS", "DEFAULT"));
         }
     }
 
