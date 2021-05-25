@@ -80,8 +80,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if(sharedPref.getBoolean("REMEMBER", false))
-            userLogin();
+       remember.setChecked(sharedPref.getBoolean("REMEMBER", false));
+
+       if(remember.isChecked())
+           userLogin();
     }
 
     @Override
