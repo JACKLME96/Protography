@@ -24,6 +24,7 @@ public class ImageActivity extends AppCompatActivity {
     private static final String TAG = "ImageActivity";
     ActivityImageBinding binding;
     Image image;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +38,6 @@ public class ImageActivity extends AppCompatActivity {
         Picasso.get().load(image.getImageUrl()).into(binding.imageView);
         binding.user.setText("User");
         binding.title.setText(image.getImageTitle());
-        binding.coords.setText(image.getCoords());
-
 
         if (image.getImageCategory().equals("Nature"))
             binding.chipNature.setChecked(true);

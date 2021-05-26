@@ -1,38 +1,25 @@
 package com.example.protography.ui.Fragments;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.preference.PreferenceManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.protography.MainActivity;
 import com.example.protography.R;
 import com.example.protography.databinding.FragmentProfileBinding;
 import com.example.protography.ui.Adapters.ProfileAdapter;
-import com.example.protography.ui.Models.Image;
-import com.example.protography.ui.Models.User;
-import com.example.protography.ui.ViewModels.ProfileViewModel;
+import com.example.protography.ui.LoginActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ProfileFragment extends Fragment {
 
@@ -40,8 +27,9 @@ public class ProfileFragment extends Fragment {
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private FragmentProfileBinding binding;
-    private String mailUser;
-
+    private String nameUser;
+    private Button logout;
+    SharedPreferences sharedPref;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -49,8 +37,24 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        mailUser = ((MainActivity) getActivity()).getMailUser();
-        binding.textViewUsername.setText(mailUser);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        nameUser = (sharedPref.getString("FULLNAME", null));
+        binding.textViewUsername.setText(nameUser);
+        logout = binding.logout;
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                sharedPref.edit().remove("EMAIL").apply();
+                sharedPref.edit().remove("PSW").apply();
+                sharedPref.edit().remove("FULLNAME").apply();
+                sharedPref.edit().remove("REMEMBER").apply();
+                getActivity().finish();
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
 
         mTabLayout = binding.tabLayout;
         // Si aggiungono i tab con il loro titolo che viene mostrato

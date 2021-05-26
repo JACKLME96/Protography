@@ -51,7 +51,7 @@
     <string name="invalid_email_try_again">Invalid email. Try again.</string>
     <string name="check_email">Check your email for password reset.</string>
     <string name="errore_retrieving_data">Error retrieving password. Check the data.</string>
-    <string name="welcome">\"Welcome \"</string>
+    <string name="welcome">Welcome</string>
     <string name="empty_name">Invalid name. The field can\'t be empty.</string>
     <string name="password_empty">Invalid password. The field can\'t be empty</string>
     <string name="empty_email">Invalid email. The field can\'t be empty</string>

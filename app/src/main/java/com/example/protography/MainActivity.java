@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,11 +41,15 @@ public class MainActivity extends AppCompatActivity {
         View root = binding.getRoot();
         setContentView(root);
 
-        mailUser = getIntent().getStringExtra("mailUser");
-        nameUser = getIntent().getStringExtra("nameUser");
-        Toast.makeText(MainActivity.this, R.string.welcome + nameUser, Toast.LENGTH_LONG).show();
 
-        sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        mailUser = sharedPreferences.getString("EMAIL", null);
+        nameUser = sharedPreferences.getString("FULLNAME", null);
+        Toast.makeText(MainActivity.this, getString(R.string.welcome) + " " + nameUser, Toast.LENGTH_LONG).show();
+
+
 
         navView = binding.navView;
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -98,13 +103,4 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }).create().show();
     }
-
-    public String getMailUser() {
-        return mailUser;
-    }
-
-    public String getNameUser() {
-        return nameUser;
-    }
-
 }

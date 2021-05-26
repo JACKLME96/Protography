@@ -52,6 +52,8 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
     private EditText tips;
     private Uri imageuri;
     private String coords;
+    private Double latitude;
+    private Double longitude;
     private String category;
     private String settings ="";
     private StorageReference mStorageRef;
@@ -119,7 +121,9 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
 
     private void uploadFile() {
         if (imageuri != null) {
-            coords = sharedPref.getString("COORDS", "DEFAULT");
+            coords = sharedPref.getString("LATLNG", "");
+            latitude =  Double.longBitsToDouble(sharedPref.getLong("LATITUDE", 0));
+            longitude =  Double.longBitsToDouble(sharedPref.getLong("LONGITUDE", 0));
 
             AlertDialog dialog =  new AlertDialog.Builder(getContext())
                     .setView(R.layout.loading_dialog)
@@ -146,9 +150,8 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
                         else
                             category = "Portrait";
 
-
                         Image upload = new Image(title.getText().toString().trim(),image_url, description.getText().toString().trim(), settings,
-                                time.getText().toString().trim(), tips.getText().toString().trim(), equipment.getText().toString().trim(), coords, category);
+                                time.getText().toString().trim(), tips.getText().toString().trim(), equipment.getText().toString().trim(), coords, latitude, longitude, category);
                         String uploadId = mDatabaseRef.push().getKey();
                         mDatabaseRef.child(uploadId).setValue(upload);
 

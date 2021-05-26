@@ -8,22 +8,42 @@
     android:background="?attr/colorPrimaryVariant"
     tools:context=".ui.Fragments.ProfileFragment">
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_marginTop="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_baseline_person_24"
-        android:contentDescription="@string/image_description"
-        android:layout_gravity="center"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/image"
+            android:layout_marginTop="15dp"
+            app:tint="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_baseline_person_24"
+            android:contentDescription="@string/image_description"
+            android:layout_centerHorizontal="true"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Username"
-        android:id="@+id/text_view_username"
-        android:textColor="@android:color/white"
-        android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Username"
+            android:textColor="@color/white"
+            android:layout_marginTop="0dp"
+            android:layout_below="@+id/image"
+            android:id="@+id/text_view_username"
+            android:layout_centerInParent="true"/>
+
+        <Button
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/ic_baseline_logout_24"
+            android:id="@+id/logout"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true" />
+
+
+
+    </RelativeLayout>
 
    <com.google.android.material.tabs.TabLayout
        android:layout_width="match_parent"

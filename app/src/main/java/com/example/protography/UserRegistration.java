@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.protography.databinding.ActivityMainBinding;
+import com.example.protography.databinding.ActivityUserRegistrationBinding;
 import com.example.protography.ui.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,18 +27,20 @@ public class UserRegistration extends AppCompatActivity {
 
     private TextView registerUser;
     private EditText editTextFullName, editTextEmail, editTextPassword;
-
+    private ActivityUserRegistrationBinding binding;
     private FirebaseAuth mAuth;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_registration);
+        binding = ActivityUserRegistrationBinding.inflate(getLayoutInflater());
+        View root = binding.getRoot();
+        setContentView(root);
 
         mAuth = FirebaseAuth.getInstance();
 
-        registerUser = (Button) findViewById(R.id.register);
+        registerUser = binding.register;
         registerUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,9 +48,9 @@ public class UserRegistration extends AppCompatActivity {
             }
         });
 
-        editTextFullName = (EditText) findViewById(R.id.NomeCompleto);
-        editTextEmail = (EditText) findViewById(R.id.registerAddress);
-        editTextPassword = (EditText) findViewById(R.id.registerPassword);
+        editTextFullName = binding.NomeCompleto;
+        editTextEmail = binding.registerAddress;
+        editTextPassword = binding.registerPassword;
 
     }
 
@@ -106,20 +110,19 @@ public class UserRegistration extends AppCompatActivity {
                                 public void onComplete(@NonNull @NotNull Task<Void> task) {
                                     if (task.isSuccessful()) {
 
-                                        Toast.makeText(UserRegistration.this, R.string.success_registration, Toast.LENGTH_LONG).show();
+                                        Toast.makeText(UserRegistration.this, getString(R.string.success_registration), Toast.LENGTH_LONG).show();
+                                        finish();
 
                                     } else {
-                                        Toast.makeText(UserRegistration.this, R.string.user_already_existing, Toast.LENGTH_LONG).show();
+                                        Toast.makeText(UserRegistration.this, getString(R.string.user_already_existing), Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
                         }else {
-                            Toast.makeText(UserRegistration.this, R.string.user_already_existing, Toast.LENGTH_LONG).show();
+                            Toast.makeText(UserRegistration.this, getString(R.string.user_already_existing), Toast.LENGTH_LONG).show();
 
                         }
                     }
                 });
-
     }
-
 }

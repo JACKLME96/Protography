@@ -11,11 +11,13 @@ import android.Manifest;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +26,7 @@ import android.view.ViewGroup;
 
 import com.example.protography.BuildConfig;
 import com.example.protography.R;
+import com.example.protography.ui.Models.Image;
 import com.example.protography.ui.ViewModels.MapsViewModel;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -31,6 +34,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -38,7 +42,9 @@ import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class MapsFragment extends Fragment {
 
@@ -47,21 +53,51 @@ public class MapsFragment extends Fragment {
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private GoogleMap map;
     private LatLng coordinateAttuali;
+    private SharedPreferences sharedPreferences;
+    List<Image> immagini;
 
     private final OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         @Override
         public void onMapReady(GoogleMap googleMap) {
             map = googleMap;
+
+            for (Image image : immagini) {
+                double latitude = image.getLatitude();
+                double longitude = image.getLongitude();
+                LatLng Coords = new LatLng(latitude, longitude);
+                map.addMarker(new MarkerOptions().position(Coords).title(image.getImageTitle()));
+            }
+
             checkLocationPermission();
 
             if (coordinateAttuali != null)
                 map.moveCamera(CameraUpdateFactory.newLatLng(coordinateAttuali));
-            else {
-                LatLng sydney = new LatLng(-34, 151);
-                map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-                map.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-            }
+
+           /* mapsViewModel.getImages().observe(getViewLifecycleOwner(), images -> {
+                for (Image image : images) {
+                    String[] latlong = image.getCoords().split(",");
+                    double latitude = Double.parseDouble(latlong[0]);
+                    double longitude = Double.parseDouble(latlong[1]);
+                    LatLng Coords = new LatLng(latitude, longitude);
+                    map.addMarker(new MarkerOptions().position(Coords).title(image.getImageTitle()));
+                }
+            });*/
+
+            map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(@NonNull Marker marker) {
+                    String latLng = marker.getPosition().latitude + "," + marker.getPosition().longitude;
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("LATLNG", latLng);
+                    editor.apply();
+
+                    ModalBottomSheet bottomSheet = new ModalBottomSheet();
+
+                    bottomSheet.show(getChildFragmentManager(), bottomSheet.getTag());
+                    return true;
+                }
+            });
         }
     };
 
@@ -70,6 +106,12 @@ public class MapsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        mapsViewModel = new ViewModelProvider(requireActivity()).get(MapsViewModel.class);
+        immagini = new ArrayList<Image>();
+
+        mapsViewModel.getImages().observe(getViewLifecycleOwner(), images -> {
+            immagini.addAll(images);
+        });
 
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
@@ -77,7 +119,6 @@ public class MapsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mapsViewModel = new ViewModelProvider(requireActivity()).get(MapsViewModel.class);
         SetSearchBar();
     }
 
@@ -165,5 +206,11 @@ public class MapsFragment extends Fragment {
                 }
             });
         }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
 }

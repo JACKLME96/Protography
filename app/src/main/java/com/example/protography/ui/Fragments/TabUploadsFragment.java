@@ -1,5 +1,6 @@
 package com.example.protography.ui.Fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,11 +36,15 @@ public class TabUploadsFragment extends Fragment {
     private static final String TAG = "TabUploadsFragment";
     private DatabaseReference databaseReference;
     private FragmentUploadsTabBinding binding;
+    private SharedPreferences sharedPref;
+    private String nameUser;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Images");
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        nameUser = sharedPref.getString("FULLNAME", null);
 
     }
 
@@ -60,7 +66,7 @@ public class TabUploadsFragment extends Fragment {
 
 
         RecyclerView recyclerView = binding.recyclerViewUploads;
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(imageList, getContext());
+        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(imageList, getContext(), nameUser);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(recyclerViewAdapter);
 

@@ -31,7 +31,8 @@ public class AddActivity extends AppCompatActivity implements StepperLayout.Step
         mStepperLayout = (StepperLayout) findViewById(R.id.stepperLayout);
         mStepperLayout.setAdapter(new AddPhotoAdapter(getSupportFragmentManager(), this));
         sharedPref = getPreferences(Context.MODE_PRIVATE);
-        sharedPref.edit().remove("COORDS").apply();
+        sharedPref.edit().remove("LAT").apply();
+        sharedPref.edit().remove("LNG").apply();
         sharedPref.edit().remove("IMAGEURI").apply();
     }
 
