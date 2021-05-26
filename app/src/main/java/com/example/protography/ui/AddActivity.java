@@ -39,8 +39,8 @@ public class AddActivity extends AppCompatActivity implements StepperLayout.Step
     public void onBackPressed() {
 
         new AlertDialog.Builder(this)
-                .setTitle("Warning")
-                .setMessage("Do you want to exit? You'll lose your data!")
+                .setTitle(R.string.warning)
+                .setMessage(R.string.do_you_want_to_exit_and_lose_data)
                 .setNegativeButton(android.R.string.cancel, null)
                 .setPositiveButton(android.R.string.ok, (arg0, arg1) -> AddActivity.super.onBackPressed()).create().show();
     }

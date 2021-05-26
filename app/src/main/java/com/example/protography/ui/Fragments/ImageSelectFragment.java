@@ -20,6 +20,7 @@ import android.widget.ImageView;
 
 import android.widget.Toast;
 
+import com.example.protography.R;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 import com.example.protography.databinding.FragmentImageSelectBinding;
@@ -62,7 +63,7 @@ public class ImageSelectFragment extends Fragment implements View.OnClickListene
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             imageUri = result.getUri();
             selectedImage.setImageURI(imageUri);
-            reselectBtn.setText("Select another");
+            reselectBtn.setText(R.string.select_another);
         }
 
         if(imageUri != null) {
@@ -86,7 +87,7 @@ public class ImageSelectFragment extends Fragment implements View.OnClickListene
     public void onResume() {
         super.onResume();
         if(imageUri != null)
-            reselectBtn.setText("Select another");
+            reselectBtn.setText(R.string.select_another);
 
         selectedImage.setImageURI(Uri.parse(sharedPref.getString("IMAGEURI", "DEFAULT")));
     }
@@ -96,7 +97,7 @@ public class ImageSelectFragment extends Fragment implements View.OnClickListene
     @Override
     public VerificationError verifyStep() {
         if(imageUri == null)
-           return new VerificationError("You must select an image to proceed");
+           return new VerificationError(getString(R.string.you_must_select_image));
         return null;
     }
 

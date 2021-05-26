@@ -161,7 +161,7 @@ public class MapsFragment extends Fragment {
                 @Override
                 public void onError(@NonNull Status status) {
                     // TODO: Handle the error.
-                    Log.d(TAG, "An error occurred: " + status);
+                    Log.d(TAG, "setOnPlaceSelectedListener - An error occurred: " + status);
                 }
             });
         }

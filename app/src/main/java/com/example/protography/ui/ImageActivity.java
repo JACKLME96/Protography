@@ -47,7 +47,7 @@ public class ImageActivity extends AppCompatActivity {
         else
             binding.chipPortrait.setChecked(true);
 
-        //apertura gmaps
+        // Apertura gmaps
         binding.coords.setOnClickListener(v -> {
             Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + image.getCoords());
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);

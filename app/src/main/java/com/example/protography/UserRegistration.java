@@ -55,31 +55,39 @@ public class UserRegistration extends AppCompatActivity {
         String password = editTextPassword.getText().toString().trim();
         String nomeCompleto = editTextFullName.getText().toString().trim();
 
+        // Messaggi d'errore
+        String emptyName = getString(R.string.empty_name);
+        String emptyPassword = getString(R.string.password_empty);
+        String emptyMail = getString(R.string.empty_email);
+        String invalidEmail = getString(R.string.invalid_email);
+        String passwordLenght = getString(R.string.password_at_least_six);
+
+
         if(nomeCompleto.isEmpty()){
-            editTextFullName.setError("Nome non valido. il campo non deve essere vuoto.");
+            editTextFullName.setError(emptyName);
             editTextFullName.requestFocus();
             return;
         }
 
         if(password.isEmpty()){
-            editTextPassword.setError("Password non valida. il campo non deve essere vuoto.");
+            editTextPassword.setError(emptyPassword);
             editTextPassword.requestFocus();
             return;
         }
         if(email.isEmpty()){
-            editTextEmail.setError("Email non valida. il campo non deve essere vuoto.");
+            editTextEmail.setError(emptyMail);
             editTextEmail.requestFocus();
             return;
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            editTextEmail.setError("Mail non valida");
+            editTextEmail.setError(invalidEmail);
             editTextEmail.requestFocus();
             return;
         }
 
         if(password.length() < 6){
-            editTextPassword.setError("Lunghezza minima della password è di 6 caratteri ");
+            editTextPassword.setError(passwordLenght);
             editTextPassword.requestFocus();
             return;
         }
@@ -98,15 +106,15 @@ public class UserRegistration extends AppCompatActivity {
                                 public void onComplete(@NonNull @NotNull Task<Void> task) {
                                     if (task.isSuccessful()) {
 
-                                        Toast.makeText(UserRegistration.this, "Utente registrato con successo,", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(UserRegistration.this, R.string.success_registration, Toast.LENGTH_LONG).show();
 
                                     } else {
-                                        Toast.makeText(UserRegistration.this, "Registrazione fallita, Utente già esistente", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(UserRegistration.this, R.string.user_already_existing, Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
                         }else {
-                            Toast.makeText(UserRegistration.this, "Registrazione fallita, Utente già esistente", Toast.LENGTH_LONG).show();
+                            Toast.makeText(UserRegistration.this, R.string.user_already_existing, Toast.LENGTH_LONG).show();
 
                         }
                     }

@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         mailUser = getIntent().getStringExtra("mailUser");
         nameUser = getIntent().getStringExtra("nameUser");
-        Toast.makeText(MainActivity.this, "Benvenuto " + nameUser, Toast.LENGTH_LONG).show();
+        Toast.makeText(MainActivity.this, R.string.welcome + nameUser, Toast.LENGTH_LONG).show();
 
         sharedPreferences = getPreferences(Context.MODE_PRIVATE);
 

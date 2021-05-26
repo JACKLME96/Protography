@@ -89,23 +89,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
+        // Messaggi d'errore
+        String fieldMailIsEmpty = getString(R.string.field_email_is_empty);
+        String invalidEmail = getString(R.string.email_not_valid_unregistered_user);
+        String emptyPassword = getString(R.string.field_password_empty);
+        String minLenghtPassword = getString(R.string.password_at_least_six);
+
         if(email.isEmpty()){
-            editTextEmail.setError("Campo email vuoto");
+            editTextEmail.setError(fieldMailIsEmpty);
             editTextEmail.requestFocus();
             return;
         }
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            editTextEmail.setError("Email non valida. Utente non registrato.");
+            editTextEmail.setError(invalidEmail);
             editTextEmail.requestFocus();
             return;
         }
         if(password.isEmpty()){
-            editTextPassword.setError("Campo password vuoto.");
+            editTextPassword.setError(emptyPassword);
             editTextPassword.requestFocus();
             return;
         }
         if(password.length() < 6){
-            editTextPassword.setError("Lunghezza minima psw non soddisfatta");
+            editTextPassword.setError(minLenghtPassword);
             editTextPassword.requestFocus();
             return;
         }
@@ -119,7 +125,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 //Login Fallito, credenziali errate
                 else
-                    Toast.makeText(LoginActivity.this, "Login fallito, controlla i dati inseriti.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, R.string.login_failed_check_data, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -136,7 +142,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                String nameUser = "Nessun User";
+                String nameUser = "";
                 // Cerco i dati dall'utente loggato
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     User u = dataSnapshot.getValue(User.class);

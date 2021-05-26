@@ -137,7 +137,7 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
                         Uri downloadUrl = urlTask.getResult();
                         final String image_url = String.valueOf(downloadUrl);
 
-                        Toast.makeText(getActivity(), "Upload successful", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), R.string.upload_successful, Toast.LENGTH_LONG).show();
 
                         if (binding.radioButtonNature.isChecked())
                             category = "Nature";
@@ -162,25 +162,29 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
                     });
         }
         else {
-            Toast.makeText(getContext(), "No file selected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.no_file_selected, Toast.LENGTH_SHORT).show();
         }
     }
 
     public boolean FieldChecks(){
+        // In modo da non aver problemi con la lingua
+        String fieldIsRequired = getString(R.string.field_is_required);
+        String fillAllFields = getString(R.string.fill_all_fields);
+
         if (title.getText().toString().trim().isEmpty()) {
-            title.setError("Field is required");
+            title.setError(fieldIsRequired);
             title.requestFocus();
             return false;
         }
 
         if (description.getText().toString().trim().isEmpty()) {
-            description.setError("Field is required");
+            description.setError(fieldIsRequired);
             description.requestFocus();
             return false;
         }
 
         if (equipment.getText().toString().trim().isEmpty()) {
-            equipment.setError("Field is required");
+            equipment.setError(fieldIsRequired);
             equipment.requestFocus();
             return false;
         }
@@ -190,16 +194,16 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
             if (iso.getText().toString().trim().isEmpty()) {
                 if (shutterSpeed.getText().toString().trim().isEmpty()) {
                     if (aperture.getText().toString().trim().isEmpty()) {
-                        iso.setError("Fill all fields");
+                        iso.setError(fieldIsRequired);
                         iso.requestFocus();
                         return false;
                     } else {
-                        aperture.setError("Fill all fields");
+                        aperture.setError(fieldIsRequired);
                         aperture.requestFocus();
                         return false;
                     }
                 } else {
-                    iso.setError("Fill all fields");
+                    iso.setError(fillAllFields);
                     iso.requestFocus();
                     return false;
                 }
@@ -209,12 +213,12 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
                         settings = iso.getText().toString().trim() + "," + shutterSpeed.getText().toString().trim() + "," + "f/" + aperture.getText().toString().trim();
                         return true;
                     } else {
-                        aperture.setError("Fill all fields");
+                        aperture.setError(fillAllFields);
                         aperture.requestFocus();
                         return false;
                     }
                 } else {
-                    shutterSpeed.setError("Fill all fields");
+                    shutterSpeed.setError(fillAllFields);
                     shutterSpeed.requestFocus();
                     return false;
                 }

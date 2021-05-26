@@ -45,14 +45,18 @@ public class ForgotPassword extends AppCompatActivity {
 
                 String email = emailEditText.getText().toString().trim();
 
+                // Messaggi d'errore
+                String emailRequired = getString(R.string.email_required);
+                String invalidEmail = getString(R.string.invalid_email_try_again);
+
                 if(email.isEmpty()){
-                    emailEditText.setError("Email richiesta.");
+                    emailEditText.setError(emailRequired);
                     emailEditText.requestFocus();
                     return;
                 }
 
                 if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                    emailEditText.setError("Email non valida. Riprovate");
+                    emailEditText.setError(invalidEmail);
                     emailEditText.requestFocus();
                     return;
                 }
@@ -62,11 +66,11 @@ public class ForgotPassword extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<Void> task) {
                         if(task.isSuccessful()){
-                            Toast.makeText(ForgotPassword.this, "Controllare la mail per il reset della password.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ForgotPassword.this, R.string.check_email, Toast.LENGTH_LONG).show();
                             finish();
                         }
                         else
-                            Toast.makeText(ForgotPassword.this, "Errore durante il recupero della password. Ricontrollare i dati.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ForgotPassword.this, R.string.errore_retrieving_data, Toast.LENGTH_LONG).show();
                     }
                 });
 

@@ -35,4 +35,27 @@
     <string name="sign_in">Sign in</string>
     <string name="warning">Warning</string>
     <string name="want_to_exit">Are you sure you want to exit?</string>
+    <string name="upload_successful">Upload successful</string>
+    <string name="no_file_selected">No file selected</string>
+    <string name="field_is_required">Field is required</string>
+    <string name="fill_all_fields">Fill all fields</string>
+    <string name="select_another">Select another</string>
+    <string name="you_must_select_image">You must select an image to proceed</string>
+    <string name="do_you_want_to_exit_and_lose_data">Do you want to exit? You\'ll lose your data!</string>
+    <string name="field_email_is_empty">Field email is empty</string>
+    <string name="email_not_valid_unregistered_user">Email not valid. Unregistered user.</string>
+    <string name="field_password_empty">Field password is empty</string>
+    <string name="password_at_least_six">Password should have at least 6 characters</string>
+    <string name="login_failed_check_data">Login failed, check the data entered.</string>
+    <string name="email_required">Email required.</string>
+    <string name="invalid_email_try_again">Invalid email. Try again.</string>
+    <string name="check_email">Check your email for password reset.</string>
+    <string name="errore_retrieving_data">Error retrieving password. Check the data.</string>
+    <string name="welcome">\"Welcome \"</string>
+    <string name="empty_name">Invalid name. The field can\'t be empty.</string>
+    <string name="password_empty">Invalid password. The field can\'t be empty</string>
+    <string name="empty_email">Invalid email. The field can\'t be empty</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="success_registration">Successfully registered user</string>
+    <string name="user_already_existing">Registration failed, user already existing</string>
 </resources>
