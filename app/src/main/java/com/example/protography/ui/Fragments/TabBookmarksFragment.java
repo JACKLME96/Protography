@@ -19,6 +19,7 @@ import com.example.protography.databinding.FragmentBookmarksTabBinding;
 import com.example.protography.databinding.FragmentUploadsTabBinding;
 import com.example.protography.ui.Adapters.RecyclerViewAdapter;
 import com.example.protography.ui.Models.Image;
+import com.example.protography.ui.Models.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 public class TabBookmarksFragment extends Fragment {
@@ -36,13 +38,16 @@ public class TabBookmarksFragment extends Fragment {
     private FragmentBookmarksTabBinding binding;
     private SharedPreferences sharedPref;
     private String nameUser;
+    private List<String> imagesLiked;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         nameUser = sharedPref.getString("FULLNAME", null);
-
+        Set<String> imageL = sharedPref.getStringSet("IMAGES_LIKED", null);
+        imagesLiked = new ArrayList<>();
+        imagesLiked.addAll(imageL);
 
     }
 
@@ -69,8 +74,8 @@ public class TabBookmarksFragment extends Fragment {
         recyclerView.setAdapter(recyclerViewAdapter);
 
         // Ricerco le immagini che l'utente ha messo come preferite
-        // TODO
-        Query query = FirebaseDatabase.getInstance().getReference("Images").orderByChild("imageNameUser").equalTo(nameUser);
+
+        Query query = FirebaseDatabase.getInstance().getReference("Images");
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -79,7 +84,8 @@ public class TabBookmarksFragment extends Fragment {
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Image image = dataSnapshot.getValue(Image.class);
-                    imageList.add(image);
+                    if (imagesLiked.contains(image.getImageUrl()))
+                        imageList.add(image);
                 }
 
                 if (imageList.size() == 0)
@@ -96,4 +102,6 @@ public class TabBookmarksFragment extends Fragment {
             }
         });
     }
+
+
 }

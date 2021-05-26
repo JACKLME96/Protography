@@ -29,6 +29,7 @@ import com.example.protography.ui.ImageActivity;
 import com.example.protography.ui.Models.Image;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -109,9 +110,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             // L'animazione funziona solo con sdk >= 21
             if (android.os.Build.VERSION.SDK_INT >= 21) {
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) itemView.getContext(), imageView, ViewCompat.getTransitionName(imageView));
-                itemView.getContext().startActivity(intent, options.toBundle());
+                ((Activity) itemView.getContext()).startActivity(intent, options.toBundle());
             } else
                 itemView.getContext().startActivity(intent);
         }
+
     }
 }

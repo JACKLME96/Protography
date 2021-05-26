@@ -60,4 +60,6 @@
     <string name="user_already_existing">Registration failed, user already existing</string>
     <string name="you_haven_t_upload_any_image_yet">You haven\'t upload any image yet</string>
     <string name="add_an_image_to_favorites">Add an image to favorites</string>
+    <string name="liked">Added to favorites!</string>
+    <string name="disliked">Removed from favorites</string>
 </resources>

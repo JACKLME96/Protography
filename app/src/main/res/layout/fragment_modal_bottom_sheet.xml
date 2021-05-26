@@ -35,7 +35,7 @@
                 android:id="@+id/like"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                app:srcCompat="@drawable/ic_baseline_bookmark_24"
+                app:srcCompat="@drawable/ic_baseline_not_bookmark_24"
                 android:layout_gravity="end"
                 android:layout_marginTop="-8dp"
                 android:layout_marginRight="25dp"

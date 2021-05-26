@@ -40,6 +40,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView register, forgotPassword;
@@ -177,6 +180,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     editor.putString("FULLNAME", u.getFullName());
                     editor.putString("PSW", password);
                     editor.putBoolean("REMEMBER", remember.isChecked());
+                    HashSet<String> fotoPiaciute = new HashSet<>();
+                    if (u.getFotoPiaciute() != null)
+                        fotoPiaciute.addAll(u.getFotoPiaciute());
+                    editor.putStringSet("IMAGES_LIKED", fotoPiaciute);
+                    editor.putString("USER_KEY", dataSnapshot.getKey());
                     editor.apply();
                 }
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));

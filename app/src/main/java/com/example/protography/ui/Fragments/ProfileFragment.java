@@ -12,14 +12,21 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.protography.R;
 import com.example.protography.databinding.FragmentProfileBinding;
 import com.example.protography.ui.Adapters.ProfileAdapter;
 import com.example.protography.ui.LoginActivity;
+import com.example.protography.ui.Models.Image;
+import com.example.protography.ui.ViewModels.MapsViewModel;
+import com.example.protography.ui.ViewModels.ProfileViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProfileFragment extends Fragment {
 
@@ -31,11 +38,13 @@ public class ProfileFragment extends Fragment {
     private Button logout;
     SharedPreferences sharedPref;
 
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
         nameUser = sharedPref.getString("FULLNAME", null);

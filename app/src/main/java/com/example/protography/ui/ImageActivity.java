@@ -4,11 +4,13 @@ package com.example.protography.ui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -16,14 +18,26 @@ import android.widget.TextView;
 
 import com.example.protography.R;
 import com.example.protography.databinding.ActivityImageBinding;
+import com.example.protography.ui.Adapters.RecyclerViewAdapter;
 import com.example.protography.ui.Models.Image;
+import com.example.protography.ui.Models.User;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class ImageActivity extends AppCompatActivity {
 
     private static final String TAG = "ImageActivity";
     ActivityImageBinding binding;
     Image image;
+    private SharedPreferences sharedPreferencesDefault;
+    private List<String> imagesLiked;
+    private String userKey;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +94,55 @@ public class ImageActivity extends AppCompatActivity {
             binding.tips.setText(image.getImageTips());
 
 
+        sharedPreferencesDefault = PreferenceManager.getDefaultSharedPreferences(this);
+        Set<String> imageL = sharedPreferencesDefault.getStringSet("IMAGES_LIKED", null);
+        imagesLiked = new ArrayList<>();
+        imagesLiked.addAll(imageL);
+        userKey = sharedPreferencesDefault.getString("USER_KEY", null);
+        String mail = sharedPreferencesDefault.getString("EMAIL", null);
+        String fullName = sharedPreferencesDefault.getString("FULLNAME", null);
+        currentUser = new User(fullName, mail);
+        currentUser.setFotoPiaciute(imagesLiked);
+
+        if (imagesLiked.contains(image.getImageUrl()))
+            binding.like.setImageResource(R.drawable.ic_baseline_bookmark_24);
+        else
+            binding.like.setImageResource(R.drawable.ic_baseline_not_bookmark_24);
+
         binding.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ImageActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "Immagini: " + imagesLiked);
+                if (imagesLiked.contains(image.getImageUrl())) {
+
+                    // Se è piaciuta la rimuovo
+                    imagesLiked.remove(image.getImageUrl());
+                    currentUser.setFotoPiaciute(imagesLiked);
+                    FirebaseDatabase.getInstance().getReference("Users").child(userKey).setValue(currentUser);
+                    HashSet<String> fotoPiaciute = new HashSet<>();
+                    fotoPiaciute.addAll(imagesLiked);
+                    sharedPreferencesDefault.edit().remove("IMAGES_LIKED").commit();
+                    sharedPreferencesDefault.edit().putStringSet("IMAGES_LIKED", fotoPiaciute).commit();
+
+                    binding.like.setImageResource(R.drawable.ic_baseline_not_bookmark_24);
+                    Toast.makeText(ImageActivity.this, getString(R.string.disliked), Toast.LENGTH_SHORT).show();
+                } else {
+
+                    // Se non è piaciuta la aggiungo
+                    imagesLiked.add(image.getImageUrl());
+                    currentUser.setFotoPiaciute(imagesLiked);
+                    FirebaseDatabase.getInstance().getReference("Users").child(userKey).setValue(currentUser);
+                    HashSet<String> fotoPiaciute = new HashSet<>();
+                    fotoPiaciute.addAll(imagesLiked);
+                    sharedPreferencesDefault.edit().remove("IMAGES_LIKED").commit();
+                    sharedPreferencesDefault.edit().putStringSet("IMAGES_LIKED", fotoPiaciute).commit();
+
+                    binding.like.setImageResource(R.drawable.ic_baseline_bookmark_24);
+                    Toast.makeText(ImageActivity.this, getString(R.string.liked), Toast.LENGTH_SHORT).show();
+                }
+
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
             }
         });
     }

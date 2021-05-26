@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.example.protography.R;
 import com.example.protography.databinding.ActivityImageBinding;
 
 import com.example.protography.ui.Models.Image;
+import com.example.protography.ui.Models.User;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -37,6 +39,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class ModalBottomSheet extends BottomSheetDialogFragment {
     private ActivityImageBinding binding;
@@ -53,9 +60,15 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
     private Image image;
     LinearLayout swipeUp;
 
+    private List<String> imagesLiked;
+    private User currentUser;
+    private String userKey;
+
+
     private String latLng;
 
     private SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferencesDefault;
     private String TAG = "ModalBottomSheet";
 
     @NotNull
@@ -128,6 +141,19 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
         coords = binding.coords;
         swipeUp = binding.swipeUp;
 
+
+        sharedPreferencesDefault = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        Set<String> imageL = sharedPreferencesDefault.getStringSet("IMAGES_LIKED", null);
+        imagesLiked = new ArrayList<>();
+        imagesLiked.addAll(imageL);
+        userKey = sharedPreferencesDefault.getString("USER_KEY", null);
+        String mail = sharedPreferencesDefault.getString("EMAIL", null);
+        String fullName = sharedPreferencesDefault.getString("FULLNAME", null);
+        currentUser = new User(fullName, mail);
+        currentUser.setFotoPiaciute(imagesLiked);
+
+
+
         return root;
     }
 
@@ -152,7 +178,7 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
                         title.setText(image.getImageTitle());
 
                     swipeUp.setVisibility(View.VISIBLE);
-                    user.setText(sharedPreferences.getString("FULLNAME", null));
+                    user.setText(image.getImageNameUser());
                     desc.setText(image.getImageDescription());
                     binding.description.setShowingLine(4);
                     binding.description.setShowMoreColor(getResources().getColor(R.color.DarkThemeGray));
@@ -175,6 +201,47 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
                         binding.chipUrban.setChecked(true);
                     else
                         binding.chipPortrait.setChecked(true);
+
+                    // Imposta il like in base a se è un'immagine preferita o meno
+                    Log.d(TAG, "220-Immagini: " + imagesLiked);
+                    if (imagesLiked.contains(image.getImageUrl()))
+                        binding.like.setImageResource(R.drawable.ic_baseline_bookmark_24);
+                    else
+                        binding.like.setImageResource(R.drawable.ic_baseline_not_bookmark_24);
+
+                    binding.like.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d(TAG, "Immagini: " + imagesLiked);
+                            if (imagesLiked.contains(image.getImageUrl())) {
+
+                                // Se è piaciuta la rimuovo
+                                imagesLiked.remove(image.getImageUrl());
+                                currentUser.setFotoPiaciute(imagesLiked);
+                                FirebaseDatabase.getInstance().getReference("Users").child(userKey).setValue(currentUser);
+                                HashSet<String> fotoPiaciute = new HashSet<>();
+                                fotoPiaciute.addAll(imagesLiked);
+                                sharedPreferencesDefault.edit().remove("IMAGES_LIKED").commit();
+                                sharedPreferencesDefault.edit().putStringSet("IMAGES_LIKED", fotoPiaciute).commit();
+
+                                binding.like.setImageResource(R.drawable.ic_baseline_not_bookmark_24);
+                                Toast.makeText(getContext(), getString(R.string.disliked), Toast.LENGTH_SHORT).show();
+                            } else {
+
+                                // Se non è piaciuta la aggiungo
+                                imagesLiked.add(image.getImageUrl());
+                                currentUser.setFotoPiaciute(imagesLiked);
+                                FirebaseDatabase.getInstance().getReference("Users").child(userKey).setValue(currentUser);
+                                HashSet<String> fotoPiaciute = new HashSet<>();
+                                fotoPiaciute.addAll(imagesLiked);
+                                sharedPreferencesDefault.edit().remove("IMAGES_LIKED").commit();
+                                sharedPreferencesDefault.edit().putStringSet("IMAGES_LIKED", fotoPiaciute).commit();
+
+                                binding.like.setImageResource(R.drawable.ic_baseline_bookmark_24);
+                                Toast.makeText(getContext(), getString(R.string.liked), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
 
                     coords.setOnClickListener(v -> {
                         Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + image.getCoords());
