@@ -1,7 +1,11 @@
 package com.example.protography.ui.Models;
 
+import java.util.List;
+
 public class User {
     private String fullName, email;
+    // Lista di imageUrl
+    //private List<String> fotoPiaciute;
 
     public User(){
     }

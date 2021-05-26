@@ -14,10 +14,11 @@ public class Image implements Serializable {
     private double Latitude;
     private double Longitude;
     private String ImageCategory;
+    private String ImageNameUser;
 
     public Image(){ }
 
-    public Image(String title, String url, String description, String settings, String time, String tips, String equipment, String coords, Double latitude, Double longitude, String category){
+    public Image(String title, String url, String description, String settings, String time, String tips, String equipment, String coords, Double latitude, Double longitude, String category, String nameUser){
         ImageTitle = title;
         ImageUrl = url;
         ImageDescription = description;
@@ -29,6 +30,7 @@ public class Image implements Serializable {
         Latitude = latitude;
         Longitude = longitude;
         ImageCategory = category;
+        ImageNameUser = nameUser;
     }
 
     public String getImageTitle(){
@@ -108,6 +110,7 @@ public class Image implements Serializable {
     public void setLongitude(Double longitude){
         Longitude = longitude;
     }
+
     public String getImageCategory(){
         return ImageCategory;
     }
@@ -115,4 +118,8 @@ public class Image implements Serializable {
     public void setImageCategory(String category){
         ImageCategory = category;
     }
+
+    public String getImageNameUser() { return ImageNameUser; }
+
+    public void setImageNameUser(String nameUser) { ImageNameUser = nameUser; }
 }

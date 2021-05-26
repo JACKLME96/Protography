@@ -25,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -34,7 +35,6 @@ import java.util.List;
 public class TabUploadsFragment extends Fragment {
 
     private static final String TAG = "TabUploadsFragment";
-    private DatabaseReference databaseReference;
     private FragmentUploadsTabBinding binding;
     private SharedPreferences sharedPref;
     private String nameUser;
@@ -42,9 +42,9 @@ public class TabUploadsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Images");
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         nameUser = sharedPref.getString("FULLNAME", null);
+
 
     }
 
@@ -66,11 +66,13 @@ public class TabUploadsFragment extends Fragment {
 
 
         RecyclerView recyclerView = binding.recyclerViewUploads;
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(imageList, getContext(), nameUser);
+        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(imageList, getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(recyclerViewAdapter);
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        // Ricerco le immagini che l'utente attuale ha aggiunto
+        Query query = FirebaseDatabase.getInstance().getReference("Images").orderByChild("imageNameUser").equalTo(nameUser);
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -80,6 +82,11 @@ public class TabUploadsFragment extends Fragment {
                     Image image = dataSnapshot.getValue(Image.class);
                     imageList.add(image);
                 }
+
+                if (imageList.size() == 0)
+                    binding.noImages.setVisibility(View.VISIBLE);
+                else
+                    binding.noImages.setVisibility(View.VISIBLE);
 
                 recyclerViewAdapter.notifyDataSetChanged();
             }

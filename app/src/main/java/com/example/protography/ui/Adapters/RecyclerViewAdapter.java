@@ -41,14 +41,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private List<Image> imageList;
     private ImageItemBinding binding;
     private Context context;
-    private String nameUser;
 
 
 
-    public RecyclerViewAdapter(List<Image> imageList, Context context, String nameUser) {
+    public RecyclerViewAdapter(List<Image> imageList, Context context) {
         this.imageList = imageList;
         this.context = context;
-        this.nameUser = nameUser;
     }
 
     @NonNull
@@ -63,7 +61,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(imageList.get(position), nameUser);
+        holder.bind(imageList.get(position));
     }
 
     @Override
@@ -91,11 +89,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             itemView.setOnClickListener(this);
         }
 
-        public void bind(Image image, String nameUser) {
+        public void bind(Image image) {
             this.image = image;
             titleTextView.setText(image.getImageTitle());
 
-            userTextView.setText(nameUser);
+            userTextView.setText(image.getImageNameUser());
             Picasso.get().load(image.getImageUrl()).into(imageView);
 
             // La descrizione non serve nel profilo

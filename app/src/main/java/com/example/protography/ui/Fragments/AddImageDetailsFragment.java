@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,13 +61,20 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
     private FragmentAddImageDetailsBinding binding;
+    private String nameUser;
+
+    private static final String TAG = "AddImageDetailsFragment";
 
     SharedPreferences sharedPref;
+    private SharedPreferences sharedPrefDefault;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        sharedPrefDefault = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        nameUser = (sharedPrefDefault.getString("FULLNAME", null));
+
     }
 
 
@@ -120,6 +129,7 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
     }
 
     private void uploadFile() {
+
         if (imageuri != null) {
             coords = sharedPref.getString("LATLNG", "");
             latitude =  Double.longBitsToDouble(sharedPref.getLong("LATITUDE", 0));
@@ -151,7 +161,7 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
                             category = "Portrait";
 
                         Image upload = new Image(title.getText().toString().trim(),image_url, description.getText().toString().trim(), settings,
-                                time.getText().toString().trim(), tips.getText().toString().trim(), equipment.getText().toString().trim(), coords, latitude, longitude, category);
+                                time.getText().toString().trim(), tips.getText().toString().trim(), equipment.getText().toString().trim(), coords, latitude, longitude, category, nameUser);
                         String uploadId = mDatabaseRef.push().getKey();
                         mDatabaseRef.child(uploadId).setValue(upload);
 

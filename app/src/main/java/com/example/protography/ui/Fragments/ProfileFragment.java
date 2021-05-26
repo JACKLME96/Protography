@@ -38,7 +38,7 @@ public class ProfileFragment extends Fragment {
         View root = binding.getRoot();
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-        nameUser = (sharedPref.getString("FULLNAME", null));
+        nameUser = sharedPref.getString("FULLNAME", null);
         binding.textViewUsername.setText(nameUser);
         logout = binding.logout;
 
