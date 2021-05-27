@@ -1,4 +1,4 @@
-package com.example.protography;
+package com.example.protography.ui.Activities.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -6,12 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.protography.databinding.ActivityMainBinding;
+import com.example.protography.R;
 import com.example.protography.databinding.ActivityUserRegistrationBinding;
 import com.example.protography.ui.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;

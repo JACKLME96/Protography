@@ -1,4 +1,4 @@
-package com.example.protography;
+package com.example.protography.ui.Activities.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,13 +7,11 @@ import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.protography.R;
 import com.example.protography.databinding.ActivityForgotPasswordBinding;
-import com.example.protography.databinding.ActivityImageBinding;
-import com.example.protography.databinding.ActivityLoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

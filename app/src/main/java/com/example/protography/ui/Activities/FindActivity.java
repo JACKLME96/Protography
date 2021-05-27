@@ -1,4 +1,4 @@
-package com.example.protography.ui;
+package com.example.protography.ui.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

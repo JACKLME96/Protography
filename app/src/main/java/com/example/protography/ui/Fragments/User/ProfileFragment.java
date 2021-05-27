@@ -1,4 +1,4 @@
-package com.example.protography.ui.Fragments;
+package com.example.protography.ui.Fragments.User;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,21 +12,14 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.protography.R;
 import com.example.protography.databinding.FragmentProfileBinding;
 import com.example.protography.ui.Adapters.ProfileAdapter;
-import com.example.protography.ui.LoginActivity;
-import com.example.protography.ui.Models.Image;
-import com.example.protography.ui.ViewModels.MapsViewModel;
-import com.example.protography.ui.ViewModels.ProfileViewModel;
+import com.example.protography.ui.Activities.Log.LoginActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ProfileFragment extends Fragment {
 

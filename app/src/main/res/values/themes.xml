@@ -20,8 +20,10 @@
         <item name="ms_stepperStyle">@style/LightStepperLayout</item>
         <item name="android:textColor">@color/blueS</item>
 
+    </style>
 
-        <!--<item name="android:colorBackground">@color/LightSlateGray</item>-->
+    <style name="LaunchTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splashscreen</item>
     </style>
 
     <style name="LightStepperLayout">

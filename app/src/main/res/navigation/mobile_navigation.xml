@@ -7,18 +7,18 @@
 
     <activity
         android:id="@+id/navigation_add"
-        android:name="com.example.protography.ui.AddActivity"
+        android:name="com.example.protography.ui.Activities.AddActivity"
         android:label="@string/add"
         tools:layout="@layout/activity_add" />
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.example.protography.ui.Fragments.MapsFragment"
+        android:name="com.example.protography.ui.Fragments.Search.MapsFragment"
         android:label="@string/search" />
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.example.protography.ui.Fragments.ProfileFragment"
+        android:name="com.example.protography.ui.Fragments.User.ProfileFragment"
         android:label="@string/profile"
         tools:layout="@layout/fragment_profile" />
 

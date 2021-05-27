@@ -1,4 +1,4 @@
-package com.example.protography.ui.Fragments;
+package com.example.protography.ui.Fragments.AddImage;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

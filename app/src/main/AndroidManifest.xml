@@ -21,15 +21,15 @@
         android:roundIcon="@mipmap/logo_image_y_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Protography">
-        <activity android:name=".ForgotPassword"
+        <activity android:name=".ui.Activities.Log.ForgotPassword"
             android:screenOrientation="portrait"/>
-        <activity android:name=".UserRegistration"
+        <activity android:name=".ui.Activities.Log.UserRegistration"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ui.ImageActivity"
+        <activity android:name=".ui.Activities.ImageActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ui.FindActivity" />
+        <activity android:name=".ui.Activities.FindActivity" />
         <activity
-            android:name=".ui.AddActivity"
+            android:name=".ui.Activities.AddActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
@@ -37,8 +37,8 @@
             android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" />
         <activity android:name=".MainActivity" />
         <activity
-            android:name=".ui.LoginActivity"
-            android:screenOrientation="portrait"
+            android:name=".ui.Activities.Log.LaunchScreenActivity"
+            android:theme="@style/LaunchTheme"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,6 +46,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.Activities.Log.LoginActivity"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

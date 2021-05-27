@@ -1,4 +1,4 @@
-package com.example.protography.ui.Fragments;
+package com.example.protography.ui.Fragments.AddImage;
 
 import android.content.Context;
 import android.content.SharedPreferences;

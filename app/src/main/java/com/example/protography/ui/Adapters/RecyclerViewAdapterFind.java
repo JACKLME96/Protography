@@ -3,7 +3,6 @@ package com.example.protography.ui.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +14,9 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
-import com.example.protography.R;
+
 import com.example.protography.databinding.ImageItemBinding;
-import com.example.protography.ui.FindActivity;
-import com.example.protography.ui.ImageActivity;
+import com.example.protography.ui.Activities.ImageActivity;
 import com.example.protography.ui.Models.Image;
 import com.squareup.picasso.Picasso;
 
@@ -84,7 +82,8 @@ public class RecyclerViewAdapterFind extends RecyclerView.Adapter<RecyclerViewAd
             this.image = image;
             titleTextView.setText(image.getImageTitle());
             userTextView.setText("User");
-            descriptionTextView.setText(image.getImageDescription().substring(0, 20) + " ...");
+            if(image.getImageDescription().length() >= 20)
+                descriptionTextView.setText(image.getImageDescription().substring(0, 20) + " ...");
             Picasso.get().load(image.getImageUrl()).into(imageView);
         }
 

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/design_bottom_sheet"
-    tools:context=".ui.Fragments.ModalBottomSheet">
+    tools:context=".ui.Fragments.Search.ModalBottomSheet">
 
     <LinearLayout
         android:layout_width="match_parent"

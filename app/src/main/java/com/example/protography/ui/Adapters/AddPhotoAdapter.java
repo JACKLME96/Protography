@@ -7,9 +7,9 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.protography.ui.Fragments.AddImageDetailsFragment;
-import com.example.protography.ui.Fragments.ImageSelectFragment;
-import com.example.protography.ui.Fragments.PlaceSelectFragment;
+import com.example.protography.ui.Fragments.AddImage.AddImageDetailsFragment;
+import com.example.protography.ui.Fragments.AddImage.ImageSelectFragment;
+import com.example.protography.ui.Fragments.AddImage.PlaceSelectFragment;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
 import com.stepstone.stepper.viewmodel.StepViewModel;

@@ -1,4 +1,4 @@
-package com.example.protography.ui.Fragments;
+package com.example.protography.ui.Fragments.User;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;

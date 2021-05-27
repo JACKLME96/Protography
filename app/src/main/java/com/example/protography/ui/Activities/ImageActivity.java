@@ -1,12 +1,10 @@
-package com.example.protography.ui;
+package com.example.protography.ui.Activities;
 
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -14,11 +12,9 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-import android.widget.TextView;
 
 import com.example.protography.R;
 import com.example.protography.databinding.ActivityImageBinding;
-import com.example.protography.ui.Adapters.RecyclerViewAdapter;
 import com.example.protography.ui.Models.Image;
 import com.example.protography.ui.Models.User;
 import com.google.firebase.database.FirebaseDatabase;
