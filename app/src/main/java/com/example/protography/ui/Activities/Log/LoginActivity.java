@@ -1,30 +1,25 @@
-package com.example.protography.ui;
+package com.example.protography.ui.Activities.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.example.protography.ForgotPassword;
 import com.example.protography.MainActivity;
 import com.example.protography.R;
-import com.example.protography.UserRegistration;
 import com.example.protography.databinding.ActivityLoginBinding;
 import com.example.protography.ui.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,7 +36,6 @@ import com.google.firebase.database.ValueEventListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
-import java.util.Set;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -83,8 +77,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
-       remember.setChecked(sharedPref.getBoolean("REMEMBER", false));
-
        if(remember.isChecked())
            userLogin();
     }
@@ -106,8 +98,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void userLogin() {
-        mail = editTextEmail.getText().toString().trim().isEmpty() ? sharedPref.getString("EMAIL", null) : editTextEmail.getText().toString().trim();
-        password = editTextPassword.getText().toString().trim().isEmpty() ? sharedPref.getString("PSW", null) : editTextPassword.getText().toString().trim();
+        mail = editTextEmail.getText().toString().trim();
+        password = editTextPassword.getText().toString().trim();
 
         // Messaggi d'errore
         String fieldMailIsEmpty = getString(R.string.field_email_is_empty);

@@ -1,4 +1,4 @@
-package com.example.protography.ui.Fragments;
+package com.example.protography.ui.Fragments.Search;
 
 import android.app.Dialog;
 import android.content.Context;

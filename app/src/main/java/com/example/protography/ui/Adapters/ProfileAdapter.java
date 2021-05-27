@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.example.protography.ui.Fragments.TabBookmarksFragment;
-import com.example.protography.ui.Fragments.TabUploadsFragment;
+import com.example.protography.ui.Fragments.User.TabBookmarksFragment;
+import com.example.protography.ui.Fragments.User.TabUploadsFragment;
 
 public class ProfileAdapter extends FragmentStatePagerAdapter {
 

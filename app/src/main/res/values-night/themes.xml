@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.Protography" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_500</item>
+        <item name="colorPrimary">@color/yellow</item>
+        <item name="colorPrimaryVariant">@color/blueS</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -13,18 +13,24 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
+        <item name="android:windowBackground">@color/blueS</item>
+
         <item name="ms_stepperStyle">@style/DarkStepperLayout</item>
           <!-- Customize your theme here. -->
+    </style>
+
+    <style name="LaunchTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splashscreen</item>
     </style>
 
     <style name="DarkStepperLayout">
         <item name="ms_stepperType">tabs</item>
         <item name="ms_stepperLayoutTheme">@style/DarkCustomStepperLayoutTheme</item>
-        <item name="ms_activeStepColor">@color/purple_500</item>
-        <item name="ms_inactiveStepColor">@color/purple_200</item>
-        <item name="ms_nextButtonColor">@color/purple_200</item>
-        <item name="ms_backButtonColor">@color/purple_500</item>
-        <item name="ms_completeButtonColor">@color/purple_200</item>
+        <item name="ms_activeStepColor">@color/blueS</item>
+        <item name="ms_inactiveStepColor">@color/yellow</item>
+        <item name="ms_nextButtonColor">@color/yellow</item>
+        <item name="ms_backButtonColor">@color/blueS</item>
+        <item name="ms_completeButtonColor">@color/yellow</item>
         <item name="ms_stepTabTitleStyle">@style/MSStepTabTitle</item>
         <item name="ms_stepTabSubtitleStyle">@style/MSStepTabSubtitle</item>
         <!--<item name="ms_tabStepDividerWidth">40dp</item>-->

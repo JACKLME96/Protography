@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ui.Fragments.AddImageDetailsFragment">
+        tools:context=".ui.Fragments.AddImage.AddImageDetailsFragment">
 
         <ImageView
             android:id="@id/image"
@@ -35,7 +35,7 @@
             android:padding="15dp"
             android:id="@+id/textBoxLayout"
             android:layout_below="@+id/divider"
-            tools:context=".ui.Fragments.AddImageDetailsFragment">
+            tools:context=".ui.Fragments.AddImage.AddImageDetailsFragment">
 
             <TextView
                 android:layout_marginBottom="15dp"
