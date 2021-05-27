@@ -74,7 +74,6 @@ public class TabBookmarksFragment extends Fragment {
         recyclerView.setAdapter(recyclerViewAdapter);
 
         // Ricerco le immagini che l'utente ha messo come preferite
-
         Query query = FirebaseDatabase.getInstance().getReference("Images");
         query.addValueEventListener(new ValueEventListener() {
             @Override
