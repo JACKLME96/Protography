@@ -16,6 +16,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import android.view.ViewGroup;
 
 
 import com.example.protography.BuildConfig;
+import com.example.protography.MainActivity;
 import com.example.protography.R;
 import com.example.protography.ui.Models.Image;
 import com.example.protography.ui.ViewModels.MapsViewModel;
@@ -40,6 +42,8 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -212,4 +216,6 @@ public class MapsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
+
+
 }

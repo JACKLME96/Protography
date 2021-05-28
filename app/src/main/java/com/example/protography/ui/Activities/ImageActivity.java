@@ -42,11 +42,11 @@ public class ImageActivity extends AppCompatActivity {
         View root = binding.getRoot();
         setContentView(root);
 
-        image = (Image) getIntent().getSerializableExtra("Immagine");
+        image = (Image) getIntent().getParcelableExtra("Immagine");
 
         // Carica dati immagine
         Picasso.get().load(image.getImageUrl()).into(binding.imageView);
-        binding.user.setText("User");
+        binding.user.setText(image.getImageNameUser());
         binding.title.setText(image.getImageTitle());
 
         if (image.getImageCategory().equals("Nature"))
@@ -137,8 +137,6 @@ public class ImageActivity extends AppCompatActivity {
                     Toast.makeText(ImageActivity.this, getString(R.string.liked), Toast.LENGTH_SHORT).show();
                 }
 
-                Intent intent = new Intent();
-                setResult(RESULT_OK, intent);
             }
         });
     }

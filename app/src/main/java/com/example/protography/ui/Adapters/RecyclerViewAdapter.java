@@ -3,6 +3,7 @@ package com.example.protography.ui.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         binding = ImageItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         View view = binding.getRoot();
 
-        return new ViewHolder(view);
+        return new ViewHolder(view, context);
     }
 
     @Override
@@ -67,14 +68,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         private ImageView imageView;
         private TextView userTextView;
         private TextView titleTextView;
+        private Context context;
 
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, Context context) {
             super(itemView);
 
             titleTextView = binding.title;
             userTextView = binding.user;
             imageView = binding.imageView;
+            this.context = context;
 
             itemView.setOnClickListener(this);
         }
@@ -96,8 +99,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             Intent intent = new Intent(itemView.getContext(), ImageActivity.class);
             intent.putExtra("Immagine", image);
 
-            // L'animazione funziona solo con sdk >= 21
-            if (android.os.Build.VERSION.SDK_INT >= 21) {
+            // L'animazione funziona solo con sdk >= 21 e se lo screen è verticale
+            if (android.os.Build.VERSION.SDK_INT >= 21 && context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) itemView.getContext(), imageView, ViewCompat.getTransitionName(imageView));
                 ((Activity) itemView.getContext()).startActivity(intent, options.toBundle());
             } else

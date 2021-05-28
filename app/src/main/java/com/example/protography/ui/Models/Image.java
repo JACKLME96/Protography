@@ -1,8 +1,11 @@
 package com.example.protography.ui.Models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
-public class Image implements Serializable {
+public class Image implements Parcelable {
     private String ImageTitle;
     private String ImageUrl;
     private String ImageDescription;
@@ -32,6 +35,33 @@ public class Image implements Serializable {
         ImageCategory = category;
         ImageNameUser = nameUser;
     }
+
+    protected Image(Parcel in) {
+        ImageTitle = in.readString();
+        ImageUrl = in.readString();
+        ImageDescription = in.readString();
+        ImageEquipment = in.readString();
+        ImageSettings = in.readString();
+        ImageTime = in.readString();
+        ImageTips = in.readString();
+        CoordsIndex = in.readString();
+        Latitude = in.readDouble();
+        Longitude = in.readDouble();
+        ImageCategory = in.readString();
+        ImageNameUser = in.readString();
+    }
+
+    public static final Creator<Image> CREATOR = new Creator<Image>() {
+        @Override
+        public Image createFromParcel(Parcel in) {
+            return new Image(in);
+        }
+
+        @Override
+        public Image[] newArray(int size) {
+            return new Image[size];
+        }
+    };
 
     public String getImageTitle(){
         return ImageTitle;
@@ -122,4 +152,25 @@ public class Image implements Serializable {
     public String getImageNameUser() { return ImageNameUser; }
 
     public void setImageNameUser(String nameUser) { ImageNameUser = nameUser; }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(ImageTitle);
+        dest.writeString(ImageUrl);
+        dest.writeString(ImageDescription);
+        dest.writeString(ImageEquipment);
+        dest.writeString(ImageSettings);
+        dest.writeString(ImageTime);
+        dest.writeString(ImageTips);
+        dest.writeString(CoordsIndex);
+        dest.writeDouble(Latitude);
+        dest.writeDouble(Longitude);
+        dest.writeString(ImageCategory);
+        dest.writeString(ImageNameUser);
+    }
 }
