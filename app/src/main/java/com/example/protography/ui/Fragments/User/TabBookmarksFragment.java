@@ -110,7 +110,6 @@ public class TabBookmarksFragment extends Fragment {
 
     public void updateImagesToShow() {
 
-
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         nameUser = sharedPref.getString("FULLNAME", null);
         Set<String> imageL = sharedPref.getStringSet("IMAGES_LIKED", null);

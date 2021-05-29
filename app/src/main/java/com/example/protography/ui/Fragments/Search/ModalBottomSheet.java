@@ -97,7 +97,7 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
                     swipeUp.setVisibility(View.VISIBLE);
 
                     if(image.getImageTitle().length() > 15)
-                        title.setText(image.getImageTitle().substring(0,15) + "...");
+                        title.setText(image.getImageTitle().substring(0,15).concat("..."));
                 }
                 else
                 {
@@ -241,7 +241,7 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
                                 Toast.makeText(getContext(), getString(R.string.liked), Toast.LENGTH_SHORT).show();
                             }
                         }
-                    });
+                    }); 
 
                     coords.setOnClickListener(v -> {
                         Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + image.getCoords());
