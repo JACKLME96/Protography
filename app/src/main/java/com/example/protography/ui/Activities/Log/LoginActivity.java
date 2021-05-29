@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.CheckBox;
@@ -104,7 +105,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String emptyPassword = getString(R.string.field_password_empty);
         String minLenghtPassword = getString(R.string.password_at_least_six);
 
-        if(mail.isEmpty()){
+        if(TextUtils.isEmpty(mail)){
             editTextEmail.setError(fieldMailIsEmpty);
             editTextEmail.requestFocus();
             return;
@@ -114,7 +115,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             editTextEmail.requestFocus();
             return;
         }
-        if(password.isEmpty()){
+        if(TextUtils.isEmpty(password)){
             editTextPassword.setError(emptyPassword);
             editTextPassword.requestFocus();
             return;

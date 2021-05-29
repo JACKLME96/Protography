@@ -13,6 +13,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 
 import com.example.protography.BuildConfig;
@@ -35,6 +37,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.Places;
@@ -65,18 +68,21 @@ public class MapsFragment extends Fragment {
         public void onMapReady(GoogleMap googleMap) {
             map = googleMap;
 
-            for (Image image : immagini) {
-                double latitude = image.getLatitude();
-                double longitude = image.getLongitude();
-                LatLng Coords = new LatLng(latitude, longitude);
-                map.addMarker(new MarkerOptions().position(Coords).title(image.getImageTitle()));
-            }
-
             checkLocationPermission();
 
             if (coordinateAttuali != null)
                 map.moveCamera(CameraUpdateFactory.newLatLng(coordinateAttuali));
 
+            for (Image image : immagini) {
+                String[] latlong = image.getCoords().split(",");
+                double latitude = Double.parseDouble(latlong[0]);
+                double longitude = Double.parseDouble(latlong[1]);
+                LatLng Coords = new LatLng(latitude, longitude);
+                map.addMarker(new MarkerOptions().position(Coords).title(image.getImageTitle()));
+            }
+
+
+                map.moveCamera(CameraUpdateFactory.newLatLng(coordinateAttuali));
 
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
@@ -104,8 +110,9 @@ public class MapsFragment extends Fragment {
         immagini = new ArrayList<Image>();
 
         mapsViewModel.getImages().observe(getViewLifecycleOwner(), images -> {
-            immagini.addAll(images);
-        });
+            for (Image image : images)
+                immagini.addAll(images);
+            });
 
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
