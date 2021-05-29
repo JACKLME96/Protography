@@ -8,11 +8,13 @@
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/blue</item>
-        <item name="colorSecondaryVariant">@color/blueS</item>
+        <item name="colorSecondaryVariant">@color/white</item>
         <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSurface">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        
+        <item name="cardBackgroundColor">@color/blue</item>
+
         <!-- Customize your theme here. -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -20,16 +22,21 @@
         <item name="ms_stepperStyle">@style/LightStepperLayout</item>
         <item name="android:textColor">@color/blueS</item>
 
+
     </style>
 
     <style name="LaunchTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/splashscreen</item>
     </style>
 
+    <style name="Widget.App.Chip" parent="Widget.MaterialComponents.Chip.Choice">
+
+    </style>
+
     <style name="LightStepperLayout">
         <item name="ms_stepperType">tabs</item>
-        <item name="ms_activeStepColor">@color/blueS</item>
-        <item name="ms_inactiveStepColor">@color/yellow</item>
+        <item name="ms_activeStepColor">@color/yellow</item>
+        <item name="ms_inactiveStepColor">@color/blueS</item>
         <item name="ms_nextButtonColor">@color/yellow</item>
         <item name="ms_backButtonColor">@color/blueS  </item>
         <item name="ms_completeButtonColor">@color/yellow</item>

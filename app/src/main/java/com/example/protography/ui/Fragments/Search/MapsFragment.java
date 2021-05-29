@@ -77,15 +77,6 @@ public class MapsFragment extends Fragment {
             if (coordinateAttuali != null)
                 map.moveCamera(CameraUpdateFactory.newLatLng(coordinateAttuali));
 
-           /* mapsViewModel.getImages().observe(getViewLifecycleOwner(), images -> {
-                for (Image image : images) {
-                    String[] latlong = image.getCoords().split(",");
-                    double latitude = Double.parseDouble(latlong[0]);
-                    double longitude = Double.parseDouble(latlong[1]);
-                    LatLng Coords = new LatLng(latitude, longitude);
-                    map.addMarker(new MarkerOptions().position(Coords).title(image.getImageTitle()));
-                }
-            });*/
 
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override

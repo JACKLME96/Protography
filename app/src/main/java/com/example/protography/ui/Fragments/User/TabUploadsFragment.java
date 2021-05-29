@@ -20,6 +20,7 @@ import com.example.protography.MainActivity;
 import com.example.protography.R;
 import com.example.protography.databinding.FragmentUploadsTabBinding;
 import com.example.protography.ui.Adapters.RecyclerViewAdapter;
+import com.example.protography.ui.Adapters.RecyclerViewAdapterFind;
 import com.example.protography.ui.Models.Image;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -66,7 +67,7 @@ public class TabUploadsFragment extends Fragment {
 
 
         RecyclerView recyclerView = binding.recyclerViewUploads;
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(imageList, getContext());
+        RecyclerViewAdapterFind recyclerViewAdapter = new RecyclerViewAdapterFind(imageList, getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(recyclerViewAdapter);
 

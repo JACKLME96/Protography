@@ -20,6 +20,7 @@ import com.example.protography.R;
 import com.example.protography.databinding.FragmentBookmarksTabBinding;
 import com.example.protography.databinding.FragmentUploadsTabBinding;
 import com.example.protography.ui.Adapters.RecyclerViewAdapter;
+import com.example.protography.ui.Adapters.RecyclerViewAdapterFind;
 import com.example.protography.ui.Models.Image;
 import com.example.protography.ui.Models.User;
 import com.google.firebase.database.DataSnapshot;
@@ -45,7 +46,7 @@ public class TabBookmarksFragment extends Fragment {
     private List<Image> allImages;
     private List<String> imagesLiked;
     private List<Image> imagesToShow;
-    private RecyclerViewAdapter recyclerViewAdapter;
+    private RecyclerViewAdapterFind recyclerViewAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,7 +80,7 @@ public class TabBookmarksFragment extends Fragment {
 
 
         RecyclerView recyclerView = binding.recyclerViewBookmarks;
-        recyclerViewAdapter = new RecyclerViewAdapter(imagesToShow, getContext());
+        recyclerViewAdapter = new RecyclerViewAdapterFind(imagesToShow, getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(recyclerViewAdapter);
 

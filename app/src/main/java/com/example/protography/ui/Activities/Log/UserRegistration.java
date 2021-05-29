@@ -60,6 +60,7 @@ public class UserRegistration extends AppCompatActivity {
 
         // Messaggi d'errore
         String emptyName = getString(R.string.empty_name);
+        String longName = getString(R.string.long_name);
         String emptyPassword = getString(R.string.password_empty);
         String emptyMail = getString(R.string.empty_email);
         String invalidEmail = getString(R.string.invalid_email);
@@ -68,6 +69,12 @@ public class UserRegistration extends AppCompatActivity {
 
         if(nomeCompleto.isEmpty()){
             editTextFullName.setError(emptyName);
+            editTextFullName.requestFocus();
+            return;
+        }
+
+        if(nomeCompleto.length() > 15){
+            editTextFullName.setError(longName);
             editTextFullName.requestFocus();
             return;
         }

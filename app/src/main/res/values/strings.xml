@@ -53,6 +53,7 @@
     <string name="errore_retrieving_data">Error retrieving password. Check the data.</string>
     <string name="welcome">Welcome</string>
     <string name="empty_name">Invalid name. The field can\'t be empty.</string>
+    <string name="long_name">Invalid name. The field can\'t be longer than 15 characters.</string>
     <string name="password_empty">Invalid password. The field can\'t be empty</string>
     <string name="empty_email">Invalid email. The field can\'t be empty</string>
     <string name="invalid_email">Invalid email</string>

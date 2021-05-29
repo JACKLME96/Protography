@@ -48,6 +48,7 @@
     <string name="errore_retrieving_data">Errore nel ritiro password. Controlla i dati</string>
     <string name="welcome">Benvenuto</string>
     <string name="empty_name">Nome non valido. Il campo non può essere vuoto</string>
+    <string name="long_name">Nome non valido. Il campo non può superare i 15 caratteri.</string>
     <string name="password_empty">Password non valida. Il campo non può essere vuoto</string>
     <string name="empty_email">Email non valida. Il campo non può essere vuoto</string>
     <string name="invalid_email">Email non valida</string>

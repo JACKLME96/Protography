@@ -81,9 +81,9 @@ public class RecyclerViewAdapterFind extends RecyclerView.Adapter<RecyclerViewAd
         public void bind(Image image) {
             this.image = image;
             titleTextView.setText(image.getImageTitle());
-            userTextView.setText("User");
-            if(image.getImageDescription().length() >= 20)
-                descriptionTextView.setText(image.getImageDescription().substring(0, 20) + " ...");
+            userTextView.setText(image.getImageNameUser());
+            if(image.getImageDescription().length() >= 40)
+                descriptionTextView.setText(image.getImageDescription().substring(0, 40) + "...");
             Picasso.get().load(image.getImageUrl()).into(imageView);
         }
 

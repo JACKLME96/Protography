@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
+            android:maxHeight="700dp"
             android:contentDescription="Immagine"
             android:scaleType="fitCenter"
             android:transitionName="transition"
@@ -27,7 +28,8 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="35dp"
             android:layout_marginBottom="-35dp"
-            android:elevation="0dp">
+            android:elevation="0dp"
+            app:cardBackgroundColor="?attr/colorSecondaryVariant">
 
             <ImageButton
                 android:id="@+id/like"

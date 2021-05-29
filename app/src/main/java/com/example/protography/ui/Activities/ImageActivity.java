@@ -72,8 +72,8 @@ public class ImageActivity extends AppCompatActivity {
 
         binding.description.setText(image.getImageDescription());
         binding.description.setShowingLine(4);
-        binding.description.setShowMoreColor(getResources().getColor(R.color.DarkThemeGray));
-        binding.description.setShowLessTextColor(getResources().getColor(R.color.DarkThemeGray));
+        binding.description.setShowMoreColor(getResources().getColor(R.color.yellow));
+        binding.description.setShowLessTextColor(getResources().getColor(R.color.yellow));
 
         binding.equipment.setText(image.getImageEquipment());
 

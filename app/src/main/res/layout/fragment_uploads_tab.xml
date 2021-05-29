@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.Fragments.User.TabUploadsFragment"
-    android:background="@color/white">
+    tools:context=".ui.Fragments.User.TabUploadsFragment">
 
     <TextView
         android:id="@+id/no_images"

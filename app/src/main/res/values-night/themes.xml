@@ -7,11 +7,14 @@
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/blueS</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Customize your theme here. -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="cardBackgroundColor">@color/black</item>
+        <item name="colorSurface">@color/blue</item>
+
 
         <item name="android:windowBackground">@color/blueS</item>
 
@@ -26,8 +29,8 @@
     <style name="DarkStepperLayout">
         <item name="ms_stepperType">tabs</item>
         <item name="ms_stepperLayoutTheme">@style/DarkCustomStepperLayoutTheme</item>
-        <item name="ms_activeStepColor">@color/blueS</item>
-        <item name="ms_inactiveStepColor">@color/yellow</item>
+        <item name="ms_activeStepColor">@color/yellow</item>
+        <item name="ms_inactiveStepColor">@color/blueS</item>
         <item name="ms_nextButtonColor">@color/yellow</item>
         <item name="ms_backButtonColor">@color/blueS</item>
         <item name="ms_completeButtonColor">@color/yellow</item>
@@ -56,11 +59,11 @@
     </style>
 
     <style name="DarkBottomNavigationStyle" parent="MSBottomNavigation">
-        <item name="android:background">@color/DarkThemeGray</item>
+        <item name="android:background">@color/blue</item>
     </style>
 
     <style name="DarkStepTabsContainerStyle" parent="MSStepTabsContainer">
-        <item name="android:background">@color/DarkThemeGray</item>
+        <item name="android:background">@color/blue</item>
     </style>
 
 </resources>

@@ -99,7 +99,7 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
                     if(image.getImageTitle().length() > 15)
                         title.setText(image.getImageTitle().substring(0,15) + "...");
                 }
-                else
+                else if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
                 {
                     imagePrev.setScaleType(ImageView.ScaleType.FIT_START);
                     ViewGroup.LayoutParams params= imagePrev.getLayoutParams();

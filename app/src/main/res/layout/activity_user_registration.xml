@@ -1,44 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.Activities.Log.LoginActivity"
+    android:orientation="vertical">
+
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.Activities.Log.UserRegistration"
+        android:layout_weight="1"
+        android:background="?attr/colorPrimaryVariant"
         android:orientation="vertical">
 
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="70dp"
+            app:srcCompat="@drawable/ic_logoofficial"
+            android:layout_gravity="center_horizontal"
+            app:tint="@color/yellow" />
 
-        <LinearLayout
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.8"
+        android:layout_marginTop="-95dp"
+        android:orientation="vertical">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="?attr/colorPrimaryVariant"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="25dp"
+            android:layout_margin="25dp"
+            android:elevation="0dp"
+            app:cardBackgroundColor="?attr/colorSurface">
 
-            <ImageView
-                android:layout_width="250dp"
-                android:layout_height="150dp"
-                android:layout_marginTop="70dp"
-                app:srcCompat="@drawable/ic_logoofficial"
-                android:layout_gravity="center_horizontal"
-                app:tint="?android:colorBackground" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.8"
-            android:layout_marginTop="-95dp"
-            android:orientation="vertical">
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="25dp"
-                android:layout_margin="25dp"
-                android:elevation="0dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -56,11 +57,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:endIconMode="clear_text"
-                        android:hint="Full Name"
+                        android:hint="Username"
                         app:startIconDrawable="@drawable/ic_baseline_person_24"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="20"
                         android:layout_marginHorizontal="15dp"
-                        android:layout_marginBottom="25dp">
+                        android:layout_marginBottom="13dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/NomeCompleto"
                             android:inputType="textCapSentences"
@@ -101,6 +104,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
                     </com.google.android.material.textfield.TextInputLayout>
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <Button
