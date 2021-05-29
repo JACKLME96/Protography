@@ -60,7 +60,6 @@ public class MapsFragment extends Fragment {
     private GoogleMap map;
     private LatLng coordinateAttuali;
     private SharedPreferences sharedPreferences;
-    List<Image> immagini;
 
     private final OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -73,16 +72,15 @@ public class MapsFragment extends Fragment {
             if (coordinateAttuali != null)
                 map.moveCamera(CameraUpdateFactory.newLatLng(coordinateAttuali));
 
-            for (Image image : immagini) {
-                String[] latlong = image.getCoords().split(",");
-                double latitude = Double.parseDouble(latlong[0]);
-                double longitude = Double.parseDouble(latlong[1]);
-                LatLng Coords = new LatLng(latitude, longitude);
-                map.addMarker(new MarkerOptions().position(Coords).title(image.getImageTitle()));
-            }
-
-
-                map.moveCamera(CameraUpdateFactory.newLatLng(coordinateAttuali));
+            mapsViewModel.getImages().observe(getViewLifecycleOwner(), images -> {
+                for (Image image : images) {
+                    String[] latlong = image.getCoords().split(",");
+                    double latitude = Double.parseDouble(latlong[0]);
+                    double longitude = Double.parseDouble(latlong[1]);
+                    LatLng Coords = new LatLng(latitude, longitude);
+                    map.addMarker(new MarkerOptions().position(Coords).title(image.getImageTitle()));
+                }
+            });
 
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
@@ -107,12 +105,6 @@ public class MapsFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mapsViewModel = new ViewModelProvider(requireActivity()).get(MapsViewModel.class);
-        immagini = new ArrayList<Image>();
-
-        mapsViewModel.getImages().observe(getViewLifecycleOwner(), images -> {
-            for (Image image : images)
-                immagini.addAll(images);
-            });
 
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }

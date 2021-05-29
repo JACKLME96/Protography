@@ -241,7 +241,7 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
                                 Toast.makeText(getContext(), getString(R.string.liked), Toast.LENGTH_SHORT).show();
                             }
                         }
-                    }); 
+                    });
 
                     coords.setOnClickListener(v -> {
                         Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + image.getCoords());

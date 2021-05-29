@@ -39,6 +39,7 @@ public class MapsViewModel extends ViewModel {
                     Image image = postSnapshot.getValue(Image.class);
                     listImages.add(image);
                 }
+                images.setValue((List<Image>)listImages);
             }
 
             @Override
@@ -46,7 +47,6 @@ public class MapsViewModel extends ViewModel {
 
             }
         });
-        images.setValue((List<Image>)listImages);
     }
 
 }
