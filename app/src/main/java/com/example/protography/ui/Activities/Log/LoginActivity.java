@@ -76,9 +76,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         forgotPassword.setOnClickListener(this);
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-
-       if(remember.isChecked())
-           userLogin();
     }
 
     @Override
@@ -160,34 +157,35 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .create();
         dialog.show();
 
-        Query query = FirebaseDatabase.getInstance().getReference("Users").orderByChild("email").equalTo(mail);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    User u = dataSnapshot.getValue(User.class);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString("EMAIL", u.getEmail());
-                    editor.putString("FULLNAME", u.getFullName());
-                    editor.putString("PSW", password);
-                    editor.putBoolean("REMEMBER", remember.isChecked());
-                    HashSet<String> fotoPiaciute = new HashSet<>();
-                    if (u.getFotoPiaciute() != null)
-                        fotoPiaciute.addAll(u.getFotoPiaciute());
-                    editor.putStringSet("IMAGES_LIKED", fotoPiaciute);
-                    editor.putString("USER_KEY", dataSnapshot.getKey());
-                    editor.apply();
+            Query query = FirebaseDatabase.getInstance().getReference("Users").orderByChild("email").equalTo(mail);
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        User u = dataSnapshot.getValue(User.class);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+
+                        if(remember.isChecked())
+                            editor.putString("PSW", password).apply();
+
+                        editor.putString("EMAIL", u.getEmail()).apply();
+                        editor.putString("FULLNAME", u.getFullName()).apply();
+                        HashSet<String> fotoPiaciute = new HashSet<>();
+                        if (u.getFotoPiaciute() != null)
+                            fotoPiaciute.addAll(u.getFotoPiaciute());
+                        editor.putStringSet("IMAGES_LIKED", fotoPiaciute).apply();
+                        editor.putString("USER_KEY", dataSnapshot.getKey()).apply();
+                    }
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    dialog.dismiss();
+                    finish();
                 }
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                dialog.dismiss();
-                finish();
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
     }
 }

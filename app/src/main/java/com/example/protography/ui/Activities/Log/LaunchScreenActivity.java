@@ -30,7 +30,7 @@ public class LaunchScreenActivity extends AppCompatActivity {
         String mail = sharedPref.getString("EMAIL", null);
         String password = sharedPref.getString("PSW", null);
 
-        if (mail != null){
+        if (password != null){
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             mAuth.signInWithEmailAndPassword(mail, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
