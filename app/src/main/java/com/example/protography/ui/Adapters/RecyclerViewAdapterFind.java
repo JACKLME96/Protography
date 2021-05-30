@@ -27,11 +27,6 @@ public class RecyclerViewAdapterFind extends RecyclerView.Adapter<RecyclerViewAd
     private ImageItemBinding binding;
     private Context context;
 
-    private OnItemClickListener listener;
-
-    public interface OnItemClickListener {
-        void onItemClick(Image image);
-    }
 
     public RecyclerViewAdapterFind(List<Image> imageList, Context context) {
         this.imageList = imageList;
@@ -45,7 +40,7 @@ public class RecyclerViewAdapterFind extends RecyclerView.Adapter<RecyclerViewAd
         binding = ImageItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         View view = binding.getRoot();
 
-        return new ImageViewHolder(view);
+        return new ImageViewHolder(view, context);
     }
 
     @Override
@@ -67,8 +62,9 @@ public class RecyclerViewAdapterFind extends RecyclerView.Adapter<RecyclerViewAd
         private TextView descriptionTextView;
         private Context context;
 
-        public ImageViewHolder(@NonNull View itemView) {
+        public ImageViewHolder(@NonNull View itemView, Context context) {
             super(itemView);
+
             titleTextView = binding.title;
             userTextView = binding.user;
             descriptionTextView = binding.description;
@@ -82,8 +78,12 @@ public class RecyclerViewAdapterFind extends RecyclerView.Adapter<RecyclerViewAd
             this.image = image;
             titleTextView.setText(image.getImageTitle());
             userTextView.setText(image.getImageNameUser());
+
             if(image.getImageDescription().length() >= 40)
                 descriptionTextView.setText(image.getImageDescription().substring(0, 40) + "...");
+            else
+                descriptionTextView.setText(image.getImageDescription());
+
             Picasso.get().load(image.getImageUrl()).into(imageView);
         }
 
