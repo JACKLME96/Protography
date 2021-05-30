@@ -161,7 +161,8 @@ public class AddImageDetailsFragment extends Fragment implements BlockingStep {
                             category = "Portrait";
 
                         Image upload = new Image(title.getText().toString().trim(),image_url, description.getText().toString().trim(), settings,
-                                time.getText().toString().trim(), tips.getText().toString().trim(), equipment.getText().toString().trim(), coords, latitude, longitude, category, nameUser);
+                                time.getText().toString().trim(), tips.getText().toString().trim(), equipment.getText().toString().trim(), coords,
+                                latitude, longitude, category, nameUser, 0);
                         String uploadId = mDatabaseRef.push().getKey();
                         mDatabaseRef.child(uploadId).setValue(upload);
 

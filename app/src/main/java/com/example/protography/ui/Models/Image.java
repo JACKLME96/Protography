@@ -18,10 +18,11 @@ public class Image implements Parcelable {
     private double Longitude;
     private String ImageCategory;
     private String ImageNameUser;
+    private int SavesNumber;
 
     public Image(){ }
 
-    public Image(String title, String url, String description, String settings, String time, String tips, String equipment, String coords, Double latitude, Double longitude, String category, String nameUser){
+    public Image(String title, String url, String description, String settings, String time, String tips, String equipment, String coords, Double latitude, Double longitude, String category, String nameUser, int savesNumber){
         ImageTitle = title;
         ImageUrl = url;
         ImageDescription = description;
@@ -34,6 +35,7 @@ public class Image implements Parcelable {
         Longitude = longitude;
         ImageCategory = category;
         ImageNameUser = nameUser;
+        SavesNumber = savesNumber;
     }
 
     protected Image(Parcel in) {
@@ -49,6 +51,7 @@ public class Image implements Parcelable {
         Longitude = in.readDouble();
         ImageCategory = in.readString();
         ImageNameUser = in.readString();
+        SavesNumber = in.readInt();
     }
 
     public static final Creator<Image> CREATOR = new Creator<Image>() {
@@ -153,6 +156,10 @@ public class Image implements Parcelable {
 
     public void setImageNameUser(String nameUser) { ImageNameUser = nameUser; }
 
+    public int getSavesNumber() { return SavesNumber; }
+
+    public void setSavesNumber(int savesNumber) { SavesNumber = savesNumber; }
+
     @Override
     public int describeContents() {
         return 0;
@@ -172,5 +179,6 @@ public class Image implements Parcelable {
         dest.writeDouble(Longitude);
         dest.writeString(ImageCategory);
         dest.writeString(ImageNameUser);
+        dest.writeInt(SavesNumber);
     }
 }
