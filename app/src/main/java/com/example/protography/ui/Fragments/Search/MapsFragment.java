@@ -31,6 +31,7 @@ import com.example.protography.BuildConfig;
 import com.example.protography.MainActivity;
 import com.example.protography.R;
 import com.example.protography.ui.Models.Image;
+import com.example.protography.ui.Models.MarkerItem;
 import com.example.protography.ui.ViewModels.MapsViewModel;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -46,6 +47,8 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterManager;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -61,12 +64,16 @@ public class MapsFragment extends Fragment {
     private GoogleMap map;
     private LatLng coordinateAttuali;
     private SharedPreferences sharedPreferences;
+    private ClusterManager<MarkerItem> clusterManager;
+
 
     private final OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         @Override
         public void onMapReady(GoogleMap googleMap) {
             map = googleMap;
+            clusterManager = new ClusterManager<>(getContext(), map);
+            map.setOnCameraIdleListener(clusterManager);
 
             checkLocationPermission();
 
@@ -78,17 +85,19 @@ public class MapsFragment extends Fragment {
                     String[] latlong = image.getCoords().split(",");
                     double latitude = Double.parseDouble(latlong[0]);
                     double longitude = Double.parseDouble(latlong[1]);
-                    LatLng Coords = new LatLng(latitude, longitude);
-                    map.addMarker(new MarkerOptions().position(Coords).title(image.getImageTitle()));
+                    MarkerItem marker = new MarkerItem(latitude,longitude, image.getImageTitle(), "");
+                    clusterManager.addItem(marker);
+                    //LatLng Coords = new LatLng(latitude, longitude);
+                    //map.addMarker(new MarkerOptions().position(Coords).title(image.getImageTitle()));
                 }
-                //
-                Log.d(TAG, "Numero immagini: " + images.size());
+                clusterManager.cluster();
             });
 
-            map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            //logica clister -> il cluster è visibile con almeno 5 segnalini vicini
+            clusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MarkerItem>() {
                 @Override
-                public boolean onMarkerClick(@NonNull Marker marker) {
-                    String latLng = marker.getPosition().latitude + "," + marker.getPosition().longitude;
+                public boolean onClusterItemClick(MarkerItem item) {
+                    String latLng = item.getPosition().latitude + "," + item.getPosition().longitude;
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("LATLNG", latLng);
                     editor.apply();
@@ -98,6 +107,14 @@ public class MapsFragment extends Fragment {
                     bottomSheet.show(getChildFragmentManager(), bottomSheet.getTag());
                     return true;
                 }
+            });
+
+            clusterManager.setOnClusterClickListener(cluster -> {
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                        cluster.getPosition(), (float) Math.floor(map
+                                .getCameraPosition().zoom + 2)), 300,
+                        null);
+                return true;
             });
         }
     };
@@ -165,7 +182,7 @@ public class MapsFragment extends Fragment {
     private void setMyLocationButton(){
         map.setMyLocationEnabled(true);
         map.getUiSettings().setMyLocationButtonEnabled(true);
-        map.setPadding(0, 175, 0, 0);
+        map.setPadding(0, 205, 0, 0);
     }
 
     //SET THE SEARCH BAR FOR THE MAP
