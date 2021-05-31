@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 import com.example.protography.BuildConfig;
@@ -80,6 +81,8 @@ public class MapsFragment extends Fragment {
                     LatLng Coords = new LatLng(latitude, longitude);
                     map.addMarker(new MarkerOptions().position(Coords).title(image.getImageTitle()));
                 }
+                //
+                Log.d(TAG, "Numero immagini: " + images.size());
             });
 
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {

@@ -33,8 +33,13 @@ public class MapsViewModel extends ViewModel {
         List<Image> listImages = new ArrayList<Image>();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("Images");
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                // Si svuota per evitare di avere le immagini vecchie duplicate
+                listImages.clear();
+
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Image image = postSnapshot.getValue(Image.class);
                     listImages.add(image);

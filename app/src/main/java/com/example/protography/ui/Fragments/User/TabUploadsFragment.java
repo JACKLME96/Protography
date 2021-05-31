@@ -87,7 +87,7 @@ public class TabUploadsFragment extends Fragment {
                 if (imageList.size() == 0)
                     binding.noImages.setVisibility(View.VISIBLE);
                 else
-                    binding.noImages.setVisibility(View.VISIBLE);
+                    binding.noImages.setVisibility(View.GONE);
 
                 recyclerViewAdapter.notifyDataSetChanged();
             }

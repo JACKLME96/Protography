@@ -17,6 +17,8 @@ import java.util.List;
 
 public class ProfileViewModel extends ViewModel {
 
+    // NON SERVE QUESTA CLASSE
+
     private MutableLiveData<List<Image>> images;
     private DatabaseReference mDatabaseRef;
 
@@ -34,6 +36,9 @@ public class ProfileViewModel extends ViewModel {
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                listImages.clear();
+
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Image image = postSnapshot.getValue(Image.class);
                     listImages.add(image);

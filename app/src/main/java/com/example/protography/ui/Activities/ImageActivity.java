@@ -70,6 +70,8 @@ public class ImageActivity extends AppCompatActivity {
             }
         });
 
+
+        // Imposto gli elementi grafici
         binding.description.setText(image.getImageDescription());
         binding.description.setShowingLine(4);
         binding.description.setShowMoreColor(getResources().getColor(R.color.yellow));
@@ -89,7 +91,7 @@ public class ImageActivity extends AppCompatActivity {
         else
             binding.tips.setText(image.getImageTips());
 
-
+        // Prendo user e le sue immagini piaciute
         sharedPreferencesDefault = PreferenceManager.getDefaultSharedPreferences(this);
         Set<String> imageL = sharedPreferencesDefault.getStringSet("IMAGES_LIKED", null);
         imagesLiked = new ArrayList<>();
@@ -108,13 +110,15 @@ public class ImageActivity extends AppCompatActivity {
         binding.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Immagini: " + imagesLiked);
+
                 if (imagesLiked.contains(image.getImageUrl())) {
 
                     // Se è piaciuta la rimuovo
                     imagesLiked.remove(image.getImageUrl());
                     currentUser.setFotoPiaciute(imagesLiked);
                     FirebaseDatabase.getInstance().getReference("Users").child(userKey).setValue(currentUser);
+
+                    // Aggiorno shared
                     HashSet<String> fotoPiaciute = new HashSet<>();
                     fotoPiaciute.addAll(imagesLiked);
                     sharedPreferencesDefault.edit().remove("IMAGES_LIKED").commit();
@@ -128,6 +132,8 @@ public class ImageActivity extends AppCompatActivity {
                     imagesLiked.add(image.getImageUrl());
                     currentUser.setFotoPiaciute(imagesLiked);
                     FirebaseDatabase.getInstance().getReference("Users").child(userKey).setValue(currentUser);
+
+                    // Aggiorno shared
                     HashSet<String> fotoPiaciute = new HashSet<>();
                     fotoPiaciute.addAll(imagesLiked);
                     sharedPreferencesDefault.edit().remove("IMAGES_LIKED").commit();
