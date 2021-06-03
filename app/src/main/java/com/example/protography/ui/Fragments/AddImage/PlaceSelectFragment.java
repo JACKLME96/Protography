@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,7 @@ public class PlaceSelectFragment extends Fragment implements Step {
     private GoogleMap map;
     boolean firstMoved = false;
     private SharedPreferences sharedPref;
+    private String TAG = "PlaceSelectFragment";
 
 
 
@@ -159,7 +161,7 @@ public class PlaceSelectFragment extends Fragment implements Step {
 
                 @Override
                 public void onError(@NonNull Status status) {
-                    // TODO: Handle the error.
+                    Log.d(TAG, "setOnPlaceSelectedListener - An error occurred: " + status);
                 }
             });
         }

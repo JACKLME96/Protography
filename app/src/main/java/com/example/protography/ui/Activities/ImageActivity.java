@@ -101,6 +101,7 @@ public class ImageActivity extends AppCompatActivity {
         String fullName = sharedPreferencesDefault.getString("FULLNAME", null);
         currentUser = new User(fullName, mail);
         currentUser.setFotoPiaciute(imagesLiked);
+        // Se si aggiungerà la foto profilo bisogna aggiungerla qua
 
         if (imagesLiked.contains(image.getImageUrl()))
             binding.like.setImageResource(R.drawable.ic_baseline_bookmark_24);

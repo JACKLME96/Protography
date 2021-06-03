@@ -7,6 +7,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.protography.R;
 import com.example.protography.ui.Fragments.AddImage.AddImageDetailsFragment;
 import com.example.protography.ui.Fragments.AddImage.ImageSelectFragment;
 import com.example.protography.ui.Fragments.AddImage.PlaceSelectFragment;
@@ -56,18 +57,18 @@ public class AddPhotoAdapter extends AbstractFragmentStepAdapter {
         switch (position) {
             case 0:
             return new StepViewModel.Builder(context)
-                    .setTitle("Image") //can be a CharSequence instead
-                    .setSubtitle("Choose your image")
+                    .setTitle(R.string.image) //can be a CharSequence instead
+                    .setSubtitle(R.string.choose_your_image)
                     .create();
             case 1:
                 return new StepViewModel.Builder(context)
-                        .setTitle("Position") //can be a CharSequence instead
-                        .setSubtitle("Set your coordinates")
+                        .setTitle(R.string.position) //can be a CharSequence instead
+                        .setSubtitle(R.string.set_your_coordinates)
                         .create();
             case 2:
                 return new StepViewModel.Builder(context)
-                        .setTitle("Details") //can be a CharSequence instead
-                        .setSubtitle("Add some details")
+                        .setTitle(R.string.details) //can be a CharSequence instead
+                        .setSubtitle(R.string.add_some_details)
                         .create();
             default:
                 throw new IllegalArgumentException();

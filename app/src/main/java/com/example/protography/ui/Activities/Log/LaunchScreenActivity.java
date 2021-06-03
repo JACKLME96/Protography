@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.protography.MainActivity;
+import com.example.protography.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -39,7 +40,7 @@ public class LaunchScreenActivity extends AppCompatActivity {
                         startActivity(new Intent(LaunchScreenActivity.this, MainActivity.class));
                         finish();
                     } else {
-                        Toast.makeText(LaunchScreenActivity.this, "Something went wrong, login again", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LaunchScreenActivity.this, getString(R.string.error_login), Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(LaunchScreenActivity.this, LoginActivity.class));
                         finish();
                     }

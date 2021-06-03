@@ -94,7 +94,7 @@ public class TabUploadsFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.d(TAG, "Errore caricamento immagini: " + error.getMessage());
             }
         });
     }

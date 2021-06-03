@@ -203,7 +203,6 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
                         binding.chipPortrait.setChecked(true);
 
                     // Imposta il like in base a se è un'immagine preferita o meno
-                    Log.d(TAG, "220-Immagini: " + imagesLiked);
                     if (imagesLiked.contains(image.getImageUrl()))
                         binding.like.setImageResource(R.drawable.ic_baseline_bookmark_24);
                     else
@@ -212,7 +211,6 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
                     binding.like.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Log.d(TAG, "Immagini: " + imagesLiked);
                             if (imagesLiked.contains(image.getImageUrl())) {
 
                                 // Se è piaciuta la rimuovo

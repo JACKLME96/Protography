@@ -63,4 +63,11 @@
     <string name="add_an_image_to_favorites">Add an image to favorites</string>
     <string name="liked">Added to favorites!</string>
     <string name="disliked">Removed from favorites</string>
+    <string name="error_login">Something went wrong, login again</string>
+    <string name="image">Image</string>
+    <string name="choose_your_image">Choose your image</string>
+    <string name="position">Position</string>
+    <string name="set_your_coordinates">Set your coordinates</string>
+    <string name="details">Details</string>
+    <string name="add_some_details">Add some details</string>
 </resources>

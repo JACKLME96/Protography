@@ -119,15 +119,13 @@ public class TabBookmarksFragment extends Fragment {
 
         imagesToShow.clear();
 
-        if (allImages == null)
-            Log.d(TAG, "ERRORE LISTA NULLA");
-        else {
-            for (Image i : allImages) {
-                for (String url : imagesLiked) {
-                    if (i.getImageUrl().equals(url))
-                        imagesToShow.add(i);
-                }
+
+        for (Image i : allImages) {
+            for (String url : imagesLiked) {
+                if (i.getImageUrl().equals(url))
+                    imagesToShow.add(i);
             }
         }
+
     }
 }
