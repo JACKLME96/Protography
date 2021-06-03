@@ -58,6 +58,8 @@
     <string name="add_an_image_to_favorites">Aggiungi un\'immagine ai preferiti</string>
     <string name="liked">Aggiunto ai preferiti!</string>
     <string name="disliked">Rimosso dai preferiti</string>
+    <string name="drawer_open">Apri menù</string>
+    <string name="drawer_close">Chiudi menù</string>
     <string name="error_login">Qualcosa è andato storto, effettua il login di nuovo</string>
     <string name="image">Immagine</string>
     <string name="choose_your_image">Scegli l\'immagine</string>

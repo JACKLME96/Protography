@@ -79,15 +79,18 @@ public class ImageActivity extends AppCompatActivity {
 
         binding.equipment.setText(image.getImageEquipment());
 
-        binding.cameraSettings.setText(image.getImageSettings());
+        if (image.getImageSettings() == null || image.getImageSettings().isEmpty())
+            binding.settingsLayout.setVisibility(View.GONE);
+        else
+            binding.cameraSettings.setText(image.getImageSettings());
 
         if (image.getImageTime() == null || image.getImageTime().isEmpty())
-            binding.bestTimeToGo.setText("----------");
+            binding.timeLayout.setVisibility(View.GONE);
         else
             binding.bestTimeToGo.setText(image.getImageTime());
 
         if (image.getImageTips() == null || image.getImageTips().isEmpty())
-            binding.tips.setText("----------");
+            binding.tipsLayout.setVisibility(View.GONE);
         else
             binding.tips.setText(image.getImageTips());
 
@@ -99,7 +102,8 @@ public class ImageActivity extends AppCompatActivity {
         userKey = sharedPreferencesDefault.getString("USER_KEY", null);
         String mail = sharedPreferencesDefault.getString("EMAIL", null);
         String fullName = sharedPreferencesDefault.getString("FULLNAME", null);
-        currentUser = new User(fullName, mail);
+        String profileImg = sharedPreferencesDefault.getString("PROFILEIMG", null);
+        currentUser = new User(fullName, mail, profileImg);
         currentUser.setFotoPiaciute(imagesLiked);
         // Se si aggiungerà la foto profilo bisogna aggiungerla qua
 

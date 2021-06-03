@@ -22,11 +22,14 @@
         <item name="ms_stepperStyle">@style/LightStepperLayout</item>
         <item name="android:textColor">@color/blueS</item>
 
-
     </style>
 
     <style name="LaunchTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/splashscreen</item>
+    </style>
+
+    <style name="drawer" parent="Widget.MaterialComponents.NavigationView">
+        <item name="backgroundColor">@color/white</item>
     </style>
 
     <style name="Widget.App.Chip" parent="Widget.MaterialComponents.Chip.Choice">

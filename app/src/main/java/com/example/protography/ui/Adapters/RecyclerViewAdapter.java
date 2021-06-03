@@ -71,7 +71,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(itemView);
 
             titleTextView = binding.title;
-            userTextView = binding.user;
             imageView = binding.imageView;
             this.context = context;
 

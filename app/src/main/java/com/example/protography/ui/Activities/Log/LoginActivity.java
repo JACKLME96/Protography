@@ -47,7 +47,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private SharedPreferences sharedPref;
     private ActivityLoginBinding binding;
     private static final String TAG = "LoginActivity";
-    private DatabaseReference databaseReference;
 
     private String mail, password;
 
@@ -145,7 +144,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             .repeat(2)
                             .playOn(editTextPassword);
                     editTextPassword.getText().clear();
-                    Toast.makeText(LoginActivity.this, getString(R.string.login_failed_check_data), Toast.LENGTH_SHORT).show();                }
+                    Toast.makeText(LoginActivity.this, getString(R.string.login_failed_check_data), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -173,6 +173,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         editor.putString("EMAIL", u.getEmail()).apply();
                         editor.putString("FULLNAME", u.getFullName()).apply();
+                        editor.putString("PROFILEIMG", u.getProfileImg()).apply();
                         HashSet<String> fotoPiaciute = new HashSet<>();
                         if (u.getFotoPiaciute() != null)
                             fotoPiaciute.addAll(u.getFotoPiaciute());

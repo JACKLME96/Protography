@@ -70,4 +70,6 @@
     <string name="set_your_coordinates">Set your coordinates</string>
     <string name="details">Details</string>
     <string name="add_some_details">Add some details</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 </resources>

@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+
 import com.example.protography.MainActivity;
 import com.example.protography.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,6 +32,15 @@ public class LaunchScreenActivity extends AppCompatActivity {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String mail = sharedPref.getString("EMAIL", null);
         String password = sharedPref.getString("PSW", null);
+        String appTheme = sharedPref.getString("THEME", null);
+
+        if (appTheme != null)
+        {
+            if (appTheme.equals("DARK"))
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            else
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
 
         if (password != null){
             FirebaseAuth mAuth = FirebaseAuth.getInstance();

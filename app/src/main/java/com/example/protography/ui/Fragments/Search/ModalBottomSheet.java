@@ -149,10 +149,9 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
         userKey = sharedPreferencesDefault.getString("USER_KEY", null);
         String mail = sharedPreferencesDefault.getString("EMAIL", null);
         String fullName = sharedPreferencesDefault.getString("FULLNAME", null);
-        currentUser = new User(fullName, mail);
+        String profileImg = sharedPreferencesDefault.getString("PROFILEIMG", null);
+        currentUser = new User(fullName, mail, profileImg);
         currentUser.setFotoPiaciute(imagesLiked);
-
-
 
         return root;
     }
@@ -181,19 +180,24 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
                     user.setText(image.getImageNameUser());
                     desc.setText(image.getImageDescription());
                     binding.description.setShowingLine(4);
-                    binding.description.setShowMoreColor(getResources().getColor(R.color.DarkThemeGray));
-                    binding.description.setShowLessTextColor(getResources().getColor(R.color.DarkThemeGray));
+                    binding.description.setShowMoreColor(getResources().getColor(R.color.yellow));
+                    binding.description.setShowLessTextColor(getResources().getColor(R.color.yellow));
                     equipment.setText(image.getImageEquipment());
-                    camera.setText(image.getImageSettings());
-                    if (image.getImageTime() == null || image.getImageTime().isEmpty())
-                        bestTimeToGo.setText("----------");
+                    
+                    if (image.getImageSettings() == null || image.getImageSettings().isEmpty())
+                        binding.settingsLayout.setVisibility(View.GONE);
                     else
-                        bestTimeToGo.setText(image.getImageTime());
+                        binding.cameraSettings.setText(image.getImageSettings());
+
+                    if (image.getImageTime() == null || image.getImageTime().isEmpty())
+                        binding.timeLayout.setVisibility(View.GONE);
+                    else
+                        binding.bestTimeToGo.setText(image.getImageTime());
 
                     if (image.getImageTips() == null || image.getImageTips().isEmpty())
-                        tips.setText("----------");
+                        binding.tipsLayout.setVisibility(View.GONE);
                     else
-                        tips.setText(image.getImageTips());
+                        binding.tips.setText(image.getImageTips());
 
                     if (image.getImageCategory().equals("Nature"))
                         binding.chipNature.setChecked(true);

@@ -18,7 +18,16 @@ import java.util.List;
 import com.example.protography.databinding.ImageItemBinding;
 import com.example.protography.ui.Activities.ImageActivity;
 import com.example.protography.ui.Models.Image;
+import com.example.protography.ui.Models.User;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import org.jetbrains.annotations.NotNull;
 
 public class RecyclerViewAdapterFind extends RecyclerView.Adapter<RecyclerViewAdapterFind.ImageViewHolder> {
 
@@ -57,16 +66,17 @@ public class RecyclerViewAdapterFind extends RecyclerView.Adapter<RecyclerViewAd
 
         private Image image;
         private ImageView imageView;
-        private TextView userTextView;
+        private ShapeableImageView user;
         private TextView titleTextView;
         private TextView descriptionTextView;
         private Context context;
+
 
         public ImageViewHolder(@NonNull View itemView, Context context) {
             super(itemView);
 
             titleTextView = binding.title;
-            userTextView = binding.user;
+            user = binding.imageProfile;
             descriptionTextView = binding.description;
             imageView = binding.imageView;
             this.context = context;
@@ -77,9 +87,24 @@ public class RecyclerViewAdapterFind extends RecyclerView.Adapter<RecyclerViewAd
         public void bind(Image image) {
             this.image = image;
             titleTextView.setText(image.getImageTitle());
-            userTextView.setText(image.getImageNameUser());
 
-            if(image.getImageDescription().length() >= 40)
+            Query query = FirebaseDatabase.getInstance().getReference("Users").orderByChild("fullName").equalTo(image.getImageNameUser());
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        User u = dataSnapshot.getValue(User.class);
+                        Picasso.get().load(u.getProfileImg()).into(user);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                }
+            });
+
+            if (image.getImageDescription().length() >= 40)
                 descriptionTextView.setText(image.getImageDescription().substring(0, 40) + "...");
             else
                 descriptionTextView.setText(image.getImageDescription());
@@ -94,21 +119,8 @@ public class RecyclerViewAdapterFind extends RecyclerView.Adapter<RecyclerViewAd
             Intent intent = new Intent(itemView.getContext(), ImageActivity.class);
             intent.putExtra("Immagine", image);
 
-            // L'animazione funziona solo con sdk >= 21
-            if (android.os.Build.VERSION.SDK_INT >= 21) {
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) itemView.getContext(), imageView, ViewCompat.getTransitionName(imageView));
-                itemView.getContext().startActivity(intent, options.toBundle());
-            } else
-                itemView.getContext().startActivity(intent);
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) itemView.getContext(), imageView, ViewCompat.getTransitionName(imageView));
+            itemView.getContext().startActivity(intent, options.toBundle());
         }
-
-
-        /*public Filter getFilter() {
-            if(filter==null)
-            {
-                filter=new CustomFilter(filterList,this);
-            }
-            return filter;
-        }*/
     }
 }

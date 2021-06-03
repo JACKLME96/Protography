@@ -1,8 +1,13 @@
 package com.example.protography.ui.Activities.Log;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -10,14 +15,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.example.protography.R;
 import com.example.protography.databinding.ActivityUserRegistrationBinding;
 import com.example.protography.ui.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -26,8 +39,11 @@ public class UserRegistration extends AppCompatActivity {
 
     private TextView registerUser;
     private EditText editTextFullName, editTextEmail, editTextPassword;
+    private ShapeableImageView profileImage, chooseImage;
     private ActivityUserRegistrationBinding binding;
     private FirebaseAuth mAuth;
+    private StorageReference mStorageRef;
+    Uri imageUri;
 
 
     @Override
@@ -36,7 +52,6 @@ public class UserRegistration extends AppCompatActivity {
         binding = ActivityUserRegistrationBinding.inflate(getLayoutInflater());
         View root = binding.getRoot();
         setContentView(root);
-
         mAuth = FirebaseAuth.getInstance();
 
         registerUser = binding.register;
@@ -50,7 +65,24 @@ public class UserRegistration extends AppCompatActivity {
         editTextFullName = binding.NomeCompleto;
         editTextEmail = binding.registerAddress;
         editTextPassword = binding.registerPassword;
+        profileImage = binding.profileImage;
+        chooseImage = binding.selectProfilePhoto;
+        chooseImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CropImage.activity().start(UserRegistration.this);
+            }
+        });
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            imageUri = result.getUri();
+            profileImage.setImageURI(imageUri);
+        }
     }
 
     private void registerUser() {
@@ -67,66 +99,82 @@ public class UserRegistration extends AppCompatActivity {
         String passwordLenght = getString(R.string.password_at_least_six);
 
 
-        if(nomeCompleto.isEmpty()){
+        if (nomeCompleto.isEmpty()) {
             editTextFullName.setError(emptyName);
             editTextFullName.requestFocus();
             return;
         }
 
-        if(nomeCompleto.length() > 15){
+        if (nomeCompleto.length() > 20) {
             editTextFullName.setError(longName);
             editTextFullName.requestFocus();
             return;
         }
 
-        if(password.isEmpty()){
+        if (password.isEmpty()) {
             editTextPassword.setError(emptyPassword);
             editTextPassword.requestFocus();
             return;
         }
-        if(email.isEmpty()){
+        if (email.isEmpty()) {
             editTextEmail.setError(emptyMail);
             editTextEmail.requestFocus();
             return;
         }
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             editTextEmail.setError(invalidEmail);
             editTextEmail.requestFocus();
             return;
         }
 
-        if(password.length() < 6){
+        if (password.length() < 6) {
             editTextPassword.setError(passwordLenght);
             editTextPassword.requestFocus();
             return;
         }
 
+        if (imageUri == null){
+            YoYo.with(Techniques.Shake)
+                    .duration(300)
+                    .repeat(1)
+                    .playOn(profileImage);
+            Toast.makeText(UserRegistration.this, "You must select an image", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        AlertDialog dialog =  new AlertDialog.Builder(this)
+                .setView(R.layout.loading_dialog)
+                .setCancelable(false)
+                .create();
+        dialog.show();
+
         mAuth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            User user = new User(nomeCompleto,email);
+                        if(task.isSuccessful()) {
+                            StorageReference mStorage = FirebaseStorage.getInstance().getReference("Images").child("UserPhotos");
+                            StorageReference imageFilePath = mStorage.child(System.currentTimeMillis() + ".jpg");
+                            imageFilePath.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
 
-                            FirebaseDatabase.getInstance().getReference("Users")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull @NotNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
+                                Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
+                                while (!urlTask.isSuccessful());
+                                Uri downloadUrl = urlTask.getResult();
+                                User user = new User(nomeCompleto, email, downloadUrl.toString());
 
-                                        Toast.makeText(UserRegistration.this, getString(R.string.success_registration), Toast.LENGTH_LONG).show();
-                                        finish();
+                                FirebaseDatabase.getInstance().getReference("Users")
+                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .setValue(user);
 
-                                    } else {
-                                        Toast.makeText(UserRegistration.this, getString(R.string.user_already_existing), Toast.LENGTH_LONG).show();
-                                    }
-                                }
+                                dialog.dismiss();
+                                Toast.makeText(UserRegistration.this, getString(R.string.success_registration), Toast.LENGTH_LONG).show();
+                                finish();
                             });
-                        }else {
-                            Toast.makeText(UserRegistration.this, getString(R.string.user_already_existing), Toast.LENGTH_LONG).show();
-
+                        }
+                        else {
+                            dialog.dismiss();
+                            Toast.makeText(UserRegistration.this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

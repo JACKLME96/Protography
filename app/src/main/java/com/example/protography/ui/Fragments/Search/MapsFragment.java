@@ -87,8 +87,7 @@ public class MapsFragment extends Fragment {
                     double longitude = Double.parseDouble(latlong[1]);
                     MarkerItem marker = new MarkerItem(latitude,longitude, image.getImageTitle(), "");
                     clusterManager.addItem(marker);
-                    //LatLng Coords = new LatLng(latitude, longitude);
-                    //map.addMarker(new MarkerOptions().position(Coords).title(image.getImageTitle()));
+
                 }
                 clusterManager.cluster();
             });

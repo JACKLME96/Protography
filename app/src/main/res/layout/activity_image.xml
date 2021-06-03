@@ -100,7 +100,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginBottom="8dp"
-                    android:background="?android:attr/listDivider" />
+                    android:background="@color/DarkThemeLightGray"
+                    android:alpha="0.2"/>
 
                 <LinearLayout
                         android:id="@+id/swipeUp"
@@ -139,7 +140,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginBottom="8dp"
-                    android:background="?android:attr/listDivider" />
+                    android:background="@color/DarkThemeLightGray"
+                    android:alpha="0.2"/>
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -179,6 +181,12 @@
                         android:textSize="15sp"/>
                 </RelativeLayout>
 
+                <LinearLayout
+                    android:id="@+id/equipmentLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="8dp">
                 <TextView
                     android:text="@string/equipment"
                     android:textColor="?attr/colorPrimary"
@@ -204,9 +212,16 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="?android:attr/listDivider" />
+                    android:background="@color/DarkThemeLightGray"
+                    android:alpha="0.2"/>
+                </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/settingsLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp">
                 <TextView
                     android:text="@string/camera_settings"
                     android:textColor="?attr/colorPrimary"
@@ -228,13 +243,19 @@
                     app:drawableLeftCompat="@drawable/ic_baseline_settings_24"
                     android:drawablePadding="8dp"/>
 
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="?android:attr/listDivider" />
+                    android:background="@color/DarkThemeLightGray"
+                    android:alpha="0.2"/>
+            </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/timeLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginBottom="8dp">
                 <TextView
                     android:text="@string/best_time_to_go"
                     android:textColor="?attr/colorPrimary"
@@ -260,9 +281,16 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="?android:attr/listDivider" />
+                    android:background="@color/DarkThemeLightGray"
+                    android:alpha="0.2"/>
+            </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/tipsLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginBottom="8dp">
                 <TextView
                     android:text="@string/tips"
                     android:textColor="?attr/colorPrimary"
@@ -288,8 +316,9 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="?android:attr/listDivider" />
+                    android:background="@color/DarkThemeLightGray"
+                    android:alpha="0.2"/>
+            </LinearLayout>
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
