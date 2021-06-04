@@ -22,25 +22,28 @@ import org.jetbrains.annotations.NotNull;
 
 public class LaunchScreenActivity extends AppCompatActivity {
 
+    SharedPreferences sharedPref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        chooseActivityToLaunch();
-    }
-
-    private void chooseActivityToLaunch() {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String mail = sharedPref.getString("EMAIL", null);
-        String password = sharedPref.getString("PSW", null);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String appTheme = sharedPref.getString("THEME", null);
 
         if (appTheme != null)
         {
             if (appTheme.equals("DARK"))
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            else
+            else if (appTheme.equals("LIGHT"))
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
+        super.onCreate(savedInstanceState);
+
+        chooseActivityToLaunch();
+    }
+
+    private void chooseActivityToLaunch() {
+        String mail = sharedPref.getString("EMAIL", null);
+        String password = sharedPref.getString("PSW", null);
 
         if (password != null){
             FirebaseAuth mAuth = FirebaseAuth.getInstance();

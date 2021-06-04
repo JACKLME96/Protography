@@ -99,8 +99,6 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationUI.setupWithNavController(navView, navController);
         navView.setOnNavigationItemReselectedListener(mOnNavigationItemReselectedListener);
-
-
     }
 
     //per evitare la rigenerazione del fragment sulla selezione del fragment già attivo
