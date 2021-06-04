@@ -139,7 +139,7 @@ public class UserRegistration extends AppCompatActivity {
                     .duration(300)
                     .repeat(1)
                     .playOn(profileImage);
-            Toast.makeText(UserRegistration.this, "You must select an image", Toast.LENGTH_LONG).show();
+            Toast.makeText(UserRegistration.this, getString(R.string.you_must_select_an_image), Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -174,7 +174,7 @@ public class UserRegistration extends AppCompatActivity {
                         }
                         else {
                             dialog.dismiss();
-                            Toast.makeText(UserRegistration.this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UserRegistration.this, getString(R.string.registration_failed) + ": " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

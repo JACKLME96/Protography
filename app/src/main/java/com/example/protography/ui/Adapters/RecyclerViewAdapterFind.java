@@ -3,6 +3,7 @@ package com.example.protography.ui.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,8 +120,13 @@ public class RecyclerViewAdapterFind extends RecyclerView.Adapter<RecyclerViewAd
             Intent intent = new Intent(itemView.getContext(), ImageActivity.class);
             intent.putExtra("Immagine", image);
 
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) itemView.getContext(), imageView, ViewCompat.getTransitionName(imageView));
-            itemView.getContext().startActivity(intent, options.toBundle());
+            // L'animazione funziona solo con sdk >= 21 e se lo screen è verticale
+            if (android.os.Build.VERSION.SDK_INT >= 21 && context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) itemView.getContext(), imageView, ViewCompat.getTransitionName(imageView));
+                ((Activity) itemView.getContext()).startActivity(intent, options.toBundle());
+            } else
+                itemView.getContext().startActivity(intent);
+
         }
     }
 }

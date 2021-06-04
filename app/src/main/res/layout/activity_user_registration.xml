@@ -75,7 +75,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="REGISTER"
+                        android:text="@string/register"
                         android:textStyle="bold"
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="25dp"
@@ -85,7 +85,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:endIconMode="clear_text"
-                        android:hint="Username"
+                        android:hint="@string/username"
                         app:startIconDrawable="@drawable/ic_baseline_person_24"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         app:counterEnabled="true"
@@ -103,7 +103,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:endIconMode="clear_text"
-                        android:hint="Email"
+                        android:hint="@string/email"
                         app:startIconDrawable="@drawable/ic_baseline_alternate_email_24"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_marginHorizontal="15dp"
@@ -119,12 +119,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:endIconMode="clear_text"
-                        android:hint="Password"
+                        android:hint="@string/password"
                         app:startIconDrawable="@drawable/ic_baseline_password_24"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_marginHorizontal="15dp"
                         app:helperTextEnabled="true"
-                        app:helperText="At least 6 characters"
+                        app:helperText="@string/at_least_six"
                         android:layout_marginBottom="55dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/registerPassword"
@@ -140,7 +140,7 @@
                 android:layout_width="200dp"
                 android:layout_height="60dp"
                 android:layout_marginTop="-55dp"
-                android:text="Register"
+                android:text="@string/register"
                 android:layout_gravity="center_horizontal"/>
         </LinearLayout>
 

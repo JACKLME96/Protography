@@ -67,4 +67,20 @@
     <string name="set_your_coordinates">Imposta le coordinate</string>
     <string name="details">Informazioni</string>
     <string name="add_some_details">Aggiungi delle informazioni</string>
+    <string name="remember_me">Ricordami</string>
+    <string name="recover_password">Recupero password</string>
+    <string name="insert_email">Inserisci l\'email</string>
+    <string name="reset_password">Reimposta la password</string>
+    <string name="register">REGISTRAZIONE</string>
+    <string name="at_least_six">Almeno 6 caratteri</string>
+    <string name="you_must_select_an_image">Devi selezionare un\'immagine</string>
+    <string name="registration_failed">Registrazione fallita</string>
+    <string name="select_image">Seleziona un\'immagine</string>
+    <string name="edit_profile">Modifica profilo</string>
+    <string name="change_theme">Cambia tema</string>
+    <string name="edit_profile2">MODIFICA PROFILO</string>
+    <string name="save">Salva</string>
+    <string name="switched_to_light_theme">Impostato tema chiaro</string>
+    <string name="switched_to_dark_theme">Impostato tema scuro</string>
+    <string name="loading">Caricamento...</string>
 </resources>

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -94,10 +95,12 @@ public class ProfileFragment extends Fragment {
                         switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
                             case Configuration.UI_MODE_NIGHT_YES:
                                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                                Toast.makeText(getActivity(), getString(R.string.switched_to_light_theme), Toast.LENGTH_SHORT).show();
                                 sharedPref.edit().putString("THEME", "LIGHT").apply();
                                 break;
                             case Configuration.UI_MODE_NIGHT_NO:
                                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                                Toast.makeText(getActivity(), getString(R.string.switched_to_dark_theme), Toast.LENGTH_SHORT).show();
                                 sharedPref.edit().putString("THEME", "DARK").apply();
                                 break;
                         }
