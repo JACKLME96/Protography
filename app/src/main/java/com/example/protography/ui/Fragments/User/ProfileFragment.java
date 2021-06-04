@@ -43,7 +43,6 @@ public class ProfileFragment extends Fragment {
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private FragmentProfileBinding binding;
-    //private Button logout;
     private Button menu;
     private ShapeableImageView image;
     private ShapeableImageView ProfileImage;
@@ -63,7 +62,6 @@ public class ProfileFragment extends Fragment {
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
         binding.textViewUsername.setText(sharedPref.getString("FULLNAME", null));
-        //logout = binding.logout;
         image = binding.image;
         mDrawer = binding.drawerLayout;
         menu = binding.menu;
