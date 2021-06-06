@@ -80,7 +80,7 @@ public class TabBookmarksFragment extends Fragment {
 
 
         RecyclerView recyclerView = binding.recyclerViewBookmarks;
-        recyclerViewAdapter = new RecyclerViewAdapterFind(imagesToShow, getContext());
+        recyclerViewAdapter = new RecyclerViewAdapterFind(imagesToShow, getContext(),true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(recyclerViewAdapter);
 

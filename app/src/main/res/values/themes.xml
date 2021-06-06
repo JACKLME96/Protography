@@ -25,7 +25,8 @@
     </style>
 
     <style name="LaunchTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@drawable/splashscreen</item>
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+
     </style>
 
     <style name="drawer" parent="Widget.MaterialComponents.NavigationView">

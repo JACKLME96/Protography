@@ -36,11 +36,13 @@ public class RecyclerViewAdapterFind extends RecyclerView.Adapter<RecyclerViewAd
     private List<Image> imageList;
     private ImageItemBinding binding;
     private Context context;
+    private boolean showProfileImage;
 
 
-    public RecyclerViewAdapterFind(List<Image> imageList, Context context) {
+    public RecyclerViewAdapterFind(List<Image> imageList, Context context, boolean showProfileImage) {
         this.imageList = imageList;
         this.context = context;
+        this.showProfileImage = showProfileImage;
     }
 
     @NonNull
@@ -89,21 +91,25 @@ public class RecyclerViewAdapterFind extends RecyclerView.Adapter<RecyclerViewAd
             this.image = image;
             titleTextView.setText(image.getImageTitle());
 
-            Query query = FirebaseDatabase.getInstance().getReference("Users").orderByChild("fullName").equalTo(image.getImageNameUser());
-            query.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        User u = dataSnapshot.getValue(User.class);
-                        Picasso.get().load(u.getProfileImg()).into(user);
+            if(showProfileImage) {
+                Query query = FirebaseDatabase.getInstance().getReference("Users").orderByChild("fullName").equalTo(image.getImageNameUser());
+                query.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            User u = dataSnapshot.getValue(User.class);
+                            Picasso.get().load(u.getProfileImg()).into(user);
+                        }
                     }
-                }
 
-                @Override
-                public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull @NotNull DatabaseError error) {
 
-                }
-            });
+                    }
+                });
+            }
+            else
+                user.setVisibility(View.GONE);
 
             if (image.getImageDescription().length() >= 40)
                 descriptionTextView.setText(image.getImageDescription().substring(0, 40) + "...");

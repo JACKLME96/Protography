@@ -20,7 +20,7 @@
             android:layout_height="150dp"
             app:srcCompat="@drawable/ic_baseline_person_24"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="30dp"
             app:tint="@color/blue" />
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -32,7 +32,7 @@
             app:strokeWidth="3dp"
             app:strokeColor="@color/yellow"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="30dp"
             app:shapeAppearanceOverlay="@style/Circular"/>
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -42,11 +42,14 @@
             android:layout_height="38dp"
             app:contentPadding="5dp"
             android:background="@color/yellow"
-            app:srcCompat="@drawable/ic_baseline_camera_alt_24"
+            app:srcCompat="@drawable/ic_baseline_add_24"
             android:tint="?attr/colorPrimaryVariant"
             android:scaleType="fitCenter"
-            android:layout_marginTop="-50dp"
-            android:layout_marginLeft="-50dp"
+            android:layout_marginTop="-45dp"
+            android:layout_marginLeft="-45dp"
+            app:strokeWidth="3dp"
+            app:strokeColor="@color/blueS"
+            android:padding="2dp"
             android:layout_below="@+id/profileImage"
             android:layout_toRightOf="@+id/profileImage"
             app:shapeAppearanceOverlay="@style/Circular"/>
@@ -57,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.8"
-        android:layout_marginTop="-95dp"
+        android:layout_marginTop="-145dp"
         android:orientation="vertical">
         <androidx.cardview.widget.CardView
             android:id="@+id/card"
@@ -73,9 +76,11 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <TextView
+                        android:textAllCaps="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/register"
+                        android:textColor="@color/yellow"
                         android:textStyle="bold"
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="25dp"
@@ -91,7 +96,7 @@
                         app:counterEnabled="true"
                         app:counterMaxLength="20"
                         android:layout_marginHorizontal="15dp"
-                        android:layout_marginBottom="13dp">
+                        android:layout_marginBottom="9dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/NomeCompleto"
                             android:inputType="textCapSentences"
@@ -125,9 +130,25 @@
                         android:layout_marginHorizontal="15dp"
                         app:helperTextEnabled="true"
                         app:helperText="@string/at_least_six"
-                        android:layout_marginBottom="55dp">
+                        android:layout_marginBottom="9dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/registerPassword"
+                            android:inputType="textPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:endIconMode="clear_text"
+                        android:hint="@string/repeatPsw"
+                        app:startIconDrawable="@drawable/ic_baseline_verified_user_24"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginBottom="55dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/confrimRegisterPassword"
                             android:inputType="textPassword"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>

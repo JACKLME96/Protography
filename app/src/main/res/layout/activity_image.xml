@@ -206,7 +206,7 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="8dp"
                     android:textSize="15sp"
-                    android:drawableLeft="@drawable/ic_baseline_camera_alt_24"
+                    app:drawableLeftCompat="@drawable/ic_baseline_camera_alt_24"
                     android:drawablePadding="8dp"/>
 
                 <View

@@ -38,7 +38,7 @@ public class UserRegistration extends AppCompatActivity {
 
 
     private TextView registerUser;
-    private EditText editTextFullName, editTextEmail, editTextPassword;
+    private EditText editTextFullName, editTextEmail, editTextPassword, repeatPassword;
     private ShapeableImageView profileImage, chooseImage;
     private ActivityUserRegistrationBinding binding;
     private FirebaseAuth mAuth;
@@ -67,6 +67,7 @@ public class UserRegistration extends AppCompatActivity {
         editTextPassword = binding.registerPassword;
         profileImage = binding.profileImage;
         chooseImage = binding.selectProfilePhoto;
+        repeatPassword = binding.confrimRegisterPassword;
         chooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +89,7 @@ public class UserRegistration extends AppCompatActivity {
     private void registerUser() {
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
+        String repeatedPassword = repeatPassword.getText().toString().trim();
         String nomeCompleto = editTextFullName.getText().toString().trim();
 
         // Messaggi d'errore
@@ -97,6 +99,7 @@ public class UserRegistration extends AppCompatActivity {
         String emptyMail = getString(R.string.empty_email);
         String invalidEmail = getString(R.string.invalid_email);
         String passwordLenght = getString(R.string.password_at_least_six);
+        String differentPsw = getString(R.string.differentPsw);
 
 
         if (nomeCompleto.isEmpty()) {
@@ -131,6 +134,12 @@ public class UserRegistration extends AppCompatActivity {
         if (password.length() < 6) {
             editTextPassword.setError(passwordLenght);
             editTextPassword.requestFocus();
+            return;
+        }
+
+        if (!password.equals(repeatedPassword)) {
+            repeatPassword.setError(differentPsw);
+            repeatPassword.requestFocus();
             return;
         }
 

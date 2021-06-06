@@ -72,7 +72,7 @@ public class FindFragment extends Fragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView_find);
 
-        RecyclerViewAdapterFind recyclerViewAdapterFind = new RecyclerViewAdapterFind (imageList, getContext());
+        RecyclerViewAdapterFind recyclerViewAdapterFind = new RecyclerViewAdapterFind (imageList, getContext(),true);
 
         Query userFilter = databaseRoot.child("Images");
 
