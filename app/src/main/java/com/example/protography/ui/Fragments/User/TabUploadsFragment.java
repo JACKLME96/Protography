@@ -14,17 +14,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.example.protography.MainActivity;
-import com.example.protography.R;
 import com.example.protography.databinding.FragmentUploadsTabBinding;
-import com.example.protography.ui.Adapters.RecyclerViewAdapter;
 import com.example.protography.ui.Adapters.RecyclerViewAdapterFind;
 import com.example.protography.ui.Models.Image;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -39,6 +34,8 @@ public class TabUploadsFragment extends Fragment {
     private FragmentUploadsTabBinding binding;
     private SharedPreferences sharedPref;
     private String nameUser;
+    private RecyclerViewAdapterFind recyclerViewAdapter;
+    private List<Image> imageList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,11 +60,11 @@ public class TabUploadsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        List<Image> imageList = new ArrayList<>();
+        imageList = new ArrayList<>();
 
 
         RecyclerView recyclerView = binding.recyclerViewUploads;
-        RecyclerViewAdapterFind recyclerViewAdapter = new RecyclerViewAdapterFind(imageList, getContext(),false);
+        recyclerViewAdapter = new RecyclerViewAdapterFind(imageList, getContext(),false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(recyclerViewAdapter);
 
@@ -97,5 +94,44 @@ public class TabUploadsFragment extends Fragment {
                 Log.d(TAG, "Errore caricamento immagini: " + error.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        boolean newUsername = sharedPref.getBoolean("NAMECHANGED", false);
+        if (newUsername) {
+
+            nameUser = sharedPref.getString("FULLNAME", null);
+            sharedPref.edit().remove("NAMECHANGED").apply();
+
+
+            Query query = FirebaseDatabase.getInstance().getReference("Images").orderByChild("imageNameUser").equalTo(nameUser);
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    imageList.clear();
+
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Image image = dataSnapshot.getValue(Image.class);
+                        imageList.add(image);
+                    }
+
+                    if (imageList.size() == 0)
+                        binding.noImages.setVisibility(View.VISIBLE);
+                    else
+                        binding.noImages.setVisibility(View.GONE);
+
+                    recyclerViewAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.d(TAG, "Errore caricamento immagini: " + error.getMessage());
+                }
+            });
+        }
     }
 }

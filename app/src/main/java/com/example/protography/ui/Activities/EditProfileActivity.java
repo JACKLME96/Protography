@@ -160,6 +160,7 @@ public class EditProfileActivity extends AppCompatActivity {
         //update shared pref
         SharedPreferences.Editor editor = sharedPreferencesDefault.edit();
         editor.putString("FULLNAME", user.getFullName()).apply();
+        editor.putBoolean("NAMECHANGED", true).apply();
         editor.putString("PROFILEIMG", imageUri.toString()).apply();
         finish();
     }

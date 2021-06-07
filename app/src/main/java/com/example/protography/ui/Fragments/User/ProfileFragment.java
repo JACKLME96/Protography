@@ -66,7 +66,7 @@ public class ProfileFragment extends Fragment {
         image = binding.image;
         mDrawer = binding.drawerLayout;
         menu = binding.menu;
-        navigationView=binding.nvView;
+        navigationView = binding.nvView;
         menu.setOnClickListener(v -> mDrawer.openDrawer(GravityCompat.START));
         View header = navigationView.getHeaderView(0);
 
