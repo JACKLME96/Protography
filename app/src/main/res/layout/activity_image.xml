@@ -75,7 +75,7 @@
                         android:id="@+id/coords"
                         android:textColor="?attr/colorPrimary"
                         android:clickable="true"
-                        android:text="Get Directions"
+                        android:text="@string/get_directions"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="15sp"

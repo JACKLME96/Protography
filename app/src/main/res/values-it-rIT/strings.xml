@@ -85,6 +85,7 @@
     <string name="loading">Caricamento...</string>
     <string name="repeatPsw">Reinserisci password</string>
     <string name="differentPsw">La password non coincide</string>
+    <string name="get_directions">Indicazioni</string>
 
 
 </resources>

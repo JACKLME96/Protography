@@ -100,8 +100,11 @@ public class TabUploadsFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        Log.d(TAG, "RESUME");
         boolean newUsername = sharedPref.getBoolean("NAMECHANGED", false);
         if (newUsername) {
+
+            Log.d(TAG, "RESUME, new username");
 
             nameUser = sharedPref.getString("FULLNAME", null);
             sharedPref.edit().remove("NAMECHANGED").apply();

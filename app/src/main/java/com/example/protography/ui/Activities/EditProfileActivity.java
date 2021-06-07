@@ -5,7 +5,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -14,17 +13,11 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.protography.MainActivity;
 import com.example.protography.R;
 import com.example.protography.databinding.ActivityEditProfileBinding;
-import com.example.protography.databinding.ActivityImageBinding;
-import com.example.protography.ui.Activities.Log.UserRegistration;
-import com.example.protography.ui.Models.Image;
 import com.example.protography.ui.Models.User;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,6 +32,10 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -135,6 +132,12 @@ public class EditProfileActivity extends AppCompatActivity {
 
         //update user
         User user = new User(nomeCompleto, sharedPreferencesDefault.getString("EMAIL", null), imageUri.toString());
+        List<String> imagesLiked;
+        Set<String> imageL = sharedPreferencesDefault.getStringSet("IMAGES_LIKED", null);
+        imagesLiked = new ArrayList<>();
+        imagesLiked.addAll(imageL);
+        user.setFotoPiaciute(imagesLiked);
+
         FirebaseDatabase.getInstance().getReference("Users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .setValue(user);
