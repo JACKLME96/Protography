@@ -37,13 +37,12 @@ public class TabUploadsFragment extends Fragment {
     private RecyclerViewAdapterFind recyclerViewAdapter;
     private List<Image> imageList;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         nameUser = sharedPref.getString("FULLNAME", null);
-
-
     }
 
     @Override
@@ -70,7 +69,7 @@ public class TabUploadsFragment extends Fragment {
 
         // Ricerco le immagini che l'utente attuale ha aggiunto
         Query query = FirebaseDatabase.getInstance().getReference("Images").orderByChild("imageNameUser").equalTo(nameUser);
-        query.addValueEventListener(new ValueEventListener() {
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -94,29 +93,28 @@ public class TabUploadsFragment extends Fragment {
                 Log.d(TAG, "Errore caricamento immagini: " + error.getMessage());
             }
         });
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        Log.d(TAG, "RESUME");
         boolean newUsername = sharedPref.getBoolean("NAMECHANGED", false);
         if (newUsername) {
 
-            Log.d(TAG, "RESUME, new username");
-
             nameUser = sharedPref.getString("FULLNAME", null);
-            sharedPref.edit().remove("NAMECHANGED").apply();
+            sharedPref.edit().remove("NAMECHANGED").commit();
 
 
             Query query = FirebaseDatabase.getInstance().getReference("Images").orderByChild("imageNameUser").equalTo(nameUser);
-            query.addValueEventListener(new ValueEventListener() {
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                     imageList.clear();
 
+                    Log.d(TAG, "Immagini: " + snapshot.getChildrenCount());
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Image image = dataSnapshot.getValue(Image.class);
                         imageList.add(image);

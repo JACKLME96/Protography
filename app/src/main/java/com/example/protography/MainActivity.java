@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         else {
             justLogged = true;
 
-            // Ricerco le immagini che l'utente ha messo come preferite
+            // Ricerco tutte le immagini
             Query query = FirebaseDatabase.getInstance().getReference("Images");
             query.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -107,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
                 //on item reselected do nothing
             };
 
-    // APPARENTEMENTE INUTILE, MAI CHIAMATO
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);

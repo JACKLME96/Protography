@@ -46,9 +46,9 @@ public class TabBookmarksFragment extends Fragment {
         else {
             allImages = ((MainActivity) getActivity()).getAllImages();
         }
+
         imagesToShow = new ArrayList<>();
         updateImagesToShow();
-
 
     }
 
