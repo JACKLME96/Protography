@@ -40,6 +40,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.Places;
@@ -66,7 +67,6 @@ public class MapsFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     private ClusterManager<MarkerItem> clusterManager;
 
-
     private final OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         @Override
@@ -74,6 +74,10 @@ public class MapsFragment extends Fragment {
             map = googleMap;
             clusterManager = new ClusterManager<>(getContext(), map);
             map.setOnCameraIdleListener(clusterManager);
+
+            if(sharedPreferences.getString("THEME", null).equalsIgnoreCase("dark"))
+                map.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(),R.raw.map_dark_mode));
+
 
             checkLocationPermission();
 
@@ -92,7 +96,7 @@ public class MapsFragment extends Fragment {
                 clusterManager.cluster();
             });
 
-            //logica clister -> il cluster è visibile con almeno 5 segnalini vicini
+            //logica cluster -> il cluster è visibile con almeno 5 segnalini vicini
             clusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MarkerItem>() {
                 @Override
                 public boolean onClusterItemClick(MarkerItem item) {
@@ -115,6 +119,7 @@ public class MapsFragment extends Fragment {
                         null);
                 return true;
             });
+
         }
     };
 
@@ -124,6 +129,7 @@ public class MapsFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mapsViewModel = new ViewModelProvider(requireActivity()).get(MapsViewModel.class);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }

@@ -1,6 +1,7 @@
 package com.example.protography.ui.Activities;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -17,8 +18,14 @@ import com.example.protography.R;
 import com.example.protography.databinding.ActivityImageBinding;
 import com.example.protography.ui.Models.Image;
 import com.example.protography.ui.Models.User;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -76,6 +83,7 @@ public class ImageActivity extends AppCompatActivity {
         binding.description.setShowingLine(4);
         binding.description.setShowMoreColor(getResources().getColor(R.color.yellow));
         binding.description.setShowLessTextColor(getResources().getColor(R.color.yellow));
+        binding.saved.setText(String.format("%d",image.getSavesNumber()));
 
         binding.equipment.setText(image.getImageEquipment());
 
@@ -129,6 +137,26 @@ public class ImageActivity extends AppCompatActivity {
                     sharedPreferencesDefault.edit().remove("IMAGES_LIKED").commit();
                     sharedPreferencesDefault.edit().putStringSet("IMAGES_LIKED", fotoPiaciute).commit();
 
+                    image.setSavesNumber(image.getSavesNumber()-1);
+                    binding.saved.setText(String.format("%d",image.getSavesNumber()));
+
+                    Query query = FirebaseDatabase.getInstance().getReference("Images")
+                            .orderByChild("imageUrl").equalTo(image.getImageUrl());
+
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull @NotNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                snapshot.getRef().child("savesNumber").setValue(image.getSavesNumber());
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                        }
+                    });
+
                     binding.like.setImageResource(R.drawable.ic_baseline_not_bookmark_24);
                     Toast.makeText(ImageActivity.this, getString(R.string.disliked), Toast.LENGTH_SHORT).show();
                 } else {
@@ -143,6 +171,26 @@ public class ImageActivity extends AppCompatActivity {
                     fotoPiaciute.addAll(imagesLiked);
                     sharedPreferencesDefault.edit().remove("IMAGES_LIKED").commit();
                     sharedPreferencesDefault.edit().putStringSet("IMAGES_LIKED", fotoPiaciute).commit();
+
+                    image.setSavesNumber(image.getSavesNumber()+1);
+                    binding.saved.setText(String.format("%d",image.getSavesNumber()));
+
+                    Query query = FirebaseDatabase.getInstance().getReference("Images")
+                            .orderByChild("imageUrl").equalTo(image.getImageUrl());
+
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull @NotNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                snapshot.getRef().child("savesNumber").setValue(image.getSavesNumber());
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                        }
+                    });
 
                     binding.like.setImageResource(R.drawable.ic_baseline_bookmark_24);
                     Toast.makeText(ImageActivity.this, getString(R.string.liked), Toast.LENGTH_SHORT).show();

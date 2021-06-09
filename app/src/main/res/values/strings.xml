@@ -92,5 +92,7 @@
     <string name="loading">Loading...</string>
     <string name="repeatPsw">Reinsert password</string>
     <string name="differentPsw">Passwords are different</string>
+    <string name="immagine">Image</string>
     <string name="get_directions">Get Directions</string>
+    <string name="swipe_up_to_see_more">Swipe to see more</string>
 </resources>

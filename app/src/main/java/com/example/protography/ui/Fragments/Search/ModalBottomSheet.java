@@ -57,12 +57,14 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
     private TextView tips;
     private TextView bestTimeToGo;
     private TextView coords;
+    private TextView saved;
     private Image image;
     LinearLayout swipeUp;
 
     private List<String> imagesLiked;
     private User currentUser;
     private String userKey;
+    private String imageKey;
 
 
     private String latLng;
@@ -140,7 +142,7 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
         bestTimeToGo = binding.bestTimeToGo;
         coords = binding.coords;
         swipeUp = binding.swipeUp;
-
+        saved = binding.saved;
 
         sharedPreferencesDefault = PreferenceManager.getDefaultSharedPreferences(getActivity());
         Set<String> imageL = sharedPreferencesDefault.getStringSet("IMAGES_LIKED", null);
@@ -169,6 +171,7 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     image = snapshot.getValue(Image.class);
+                    imageKey = snapshot.getKey();
                     Picasso.get().load(image.getImageUrl()).into(imagePrev);
 
                     if(image.getImageTitle().length() > 15)
@@ -183,6 +186,7 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
                     binding.description.setShowMoreColor(getResources().getColor(R.color.yellow));
                     binding.description.setShowLessTextColor(getResources().getColor(R.color.yellow));
                     equipment.setText(image.getImageEquipment());
+                    saved.setText(String.format("%d",image.getSavesNumber()));
                     
                     if (image.getImageSettings() == null || image.getImageSettings().isEmpty())
                         binding.settingsLayout.setVisibility(View.GONE);
@@ -226,6 +230,11 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
                                 sharedPreferencesDefault.edit().remove("IMAGES_LIKED").commit();
                                 sharedPreferencesDefault.edit().putStringSet("IMAGES_LIKED", fotoPiaciute).commit();
 
+                                image.setSavesNumber(image.getSavesNumber()-1);
+                                saved.setText(String.format("%d",image.getSavesNumber()));
+                                FirebaseDatabase.getInstance().getReference("Images").child(imageKey).child("savesNumber")
+                                        .setValue(image.getSavesNumber());
+
                                 binding.like.setImageResource(R.drawable.ic_baseline_not_bookmark_24);
                                 Toast.makeText(getContext(), getString(R.string.disliked), Toast.LENGTH_SHORT).show();
                             } else {
@@ -238,6 +247,11 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
                                 fotoPiaciute.addAll(imagesLiked);
                                 sharedPreferencesDefault.edit().remove("IMAGES_LIKED").commit();
                                 sharedPreferencesDefault.edit().putStringSet("IMAGES_LIKED", fotoPiaciute).commit();
+
+                                image.setSavesNumber(image.getSavesNumber()+1);
+                                saved.setText(String.format("%d",image.getSavesNumber()));
+                                FirebaseDatabase.getInstance().getReference("Images").child(imageKey).child("savesNumber")
+                                        .setValue(image.getSavesNumber());
 
                                 binding.like.setImageResource(R.drawable.ic_baseline_bookmark_24);
                                 Toast.makeText(getContext(), getString(R.string.liked), Toast.LENGTH_SHORT).show();

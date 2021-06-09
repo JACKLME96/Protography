@@ -67,7 +67,7 @@
     <string name="set_your_coordinates">Imposta le coordinate</string>
     <string name="details">Informazioni</string>
     <string name="add_some_details">Aggiungi delle informazioni</string>
-    <string name="remember_me">Ricordami</string>
+    <string name="remember_me">Ricordami !</string>
     <string name="recover_password">Recupero password</string>
     <string name="insert_email">Inserisci l\'email</string>
     <string name="reset_password">Reimposta</string>
@@ -85,7 +85,9 @@
     <string name="loading">Caricamento...</string>
     <string name="repeatPsw">Reinserisci password</string>
     <string name="differentPsw">La password non coincide</string>
-    <string name="get_directions">Indicazioni</string>
+    <string name="immagine">Immagine</string>
+    <string name="get_directions">Ottieni Indicazioni</string>
+    <string name="swipe_up_to_see_more">Swipe per vedere di più</string>
 
 
 </resources>
