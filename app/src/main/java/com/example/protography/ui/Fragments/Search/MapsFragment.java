@@ -13,6 +13,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationManager;
@@ -74,10 +75,13 @@ public class MapsFragment extends Fragment {
             map = googleMap;
             clusterManager = new ClusterManager<>(getContext(), map);
             map.setOnCameraIdleListener(clusterManager);
+            int darkMode;
 
-            if(sharedPreferences.getString("THEME", null).equalsIgnoreCase("dark"))
+            darkMode = getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+            // Settaggio della dark mode, se il tema è salvato lo prende, altrimenti, controlla il tema del dispositivo
+            if(darkMode == Configuration.UI_MODE_NIGHT_YES || sharedPreferences.getString("THEME","").equalsIgnoreCase("dark"))
                 map.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(),R.raw.map_dark_mode));
-
 
             checkLocationPermission();
 
