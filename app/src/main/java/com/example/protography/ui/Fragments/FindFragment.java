@@ -1,20 +1,27 @@
 package com.example.protography.ui.Fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.protography.R;
 import com.example.protography.databinding.FragmentFindBinding;
+import com.example.protography.databinding.FragmentUploadsTabBinding;
+import com.example.protography.ui.Adapters.AdapterDiscover;
 import com.example.protography.ui.Adapters.RecyclerViewAdapterFind;
 import com.example.protography.ui.Models.Image;
+import com.google.android.material.chip.Chip;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +30,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FindFragment extends Fragment {
@@ -30,7 +38,10 @@ public class FindFragment extends Fragment {
     private static final String TAG = "FindFragment";
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference databaseRoot = database.getReference();
-    private FragmentFindBinding binding;
+    private FragmentUploadsTabBinding binding;
+    private Chip chip1, chip2, chip3;
+    private Query query;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_find, container, false);
@@ -38,45 +49,56 @@ public class FindFragment extends Fragment {
         return root;
     }
 
-    /*@Override
-    public boolean onCreateOptionsMenu() {
-        final SearchView searchView = (SearchView) getView().findViewById(R.id.Find_SearchView);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-            @Override
-            public boolean onQueryTextChange(String query) {
-                //FILTER AS YOU TYPE
-                RecycleViewAdapterFind.getFilter().filter(query);
-                return false;
-            }
-        });
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        return true;
-    }*/
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         List<Image> imageList = new ArrayList<>();
-
+        List<String>selectedChip = new ArrayList<>();
+        query = FirebaseDatabase.getInstance().getReference("Images");
+        chip1 = view.findViewById(R.id.chip_1);
+        chip2 = view.findViewById(R.id.chip_2);
+        chip3 = view.findViewById(R.id.chip_3);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView_find);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_find);
 
-        RecyclerViewAdapterFind recyclerViewAdapterFind = new RecyclerViewAdapterFind (imageList, getContext(),true);
+        AdapterDiscover adapterDiscover = new AdapterDiscover (imageList, getContext(),true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        Query userFilter = databaseRoot.child("Images");
+        recyclerView.setAdapter(adapterDiscover);
 
-        userFilter.addValueEventListener(new ValueEventListener() {
+
+        CompoundButton.OnCheckedChangeListener checkedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    selectedChip.add(buttonView.getText().toString());
+                    prova(query, imageList, adapterDiscover, selectedChip);
+                }
+                else {
+                    selectedChip.remove(buttonView.getText().toString());
+                    prova(query, imageList, adapterDiscover, selectedChip);
+                }
+            }
+        };
+
+        chip1.setOnCheckedChangeListener(checkedChangeListener);
+        chip2.setOnCheckedChangeListener(checkedChangeListener);
+        chip3.setOnCheckedChangeListener(checkedChangeListener);
+
+        prova(query, imageList, adapterDiscover, selectedChip);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
+                prova(query, imageList, adapterDiscover, selectedChip);
+            }
+        });
+    }
+
+    void prova(Query query, List<Image> imageList, AdapterDiscover adapterDiscover, List<String> selectedChip) {
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -84,24 +106,39 @@ public class FindFragment extends Fragment {
                 if(snapshot.exists() && snapshot.getChildrenCount() > 0) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Image image = dataSnapshot.getValue(Image.class);
-                        //if(image.getImageTime().equals("Nighttime")){     //modificare filtro per togliere le foto caricate dall'utente ?
-                        imageList.add(image);
-                        //}
+                        switch (selectedChip.size()) {
+                            case 0 :
+                                imageList.add(image);
+                                break;
+
+                            case 1 :
+                                if(image.getImageCategory().equals(selectedChip.get(0))){
+                                    imageList.add(image);
+                                }
+                                break;
+
+                            case 2 :
+                                if(image.getImageCategory().equals(selectedChip.get(0)) || image.getImageCategory().equals(selectedChip.get(1))){
+                                    imageList.add(image);
+                                }
+                                break;
+
+                            case 3 :
+                                if(image.getImageCategory().equals(selectedChip.get(0)) || image.getImageCategory().equals(selectedChip.get(1)) || image.getImageCategory().equals(selectedChip.get(2))){
+                                    imageList.add(image);
+                                }
+                                break;
+                        }
                     }
-                    recyclerViewAdapterFind.notifyDataSetChanged();
+                    Collections.shuffle(imageList);
+                    adapterDiscover.notifyDataSetChanged();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.d(TAG, "Errore caricamento immagini: " + error.getMessage());
             }
         });
-
-        recyclerView.setAdapter(recyclerViewAdapterFind);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
     }
-
-
 }
