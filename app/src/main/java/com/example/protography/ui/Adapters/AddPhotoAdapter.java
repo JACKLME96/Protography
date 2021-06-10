@@ -59,16 +59,22 @@ public class AddPhotoAdapter extends AbstractFragmentStepAdapter {
             return new StepViewModel.Builder(context)
                     .setTitle(R.string.image) //can be a CharSequence instead
                     .setSubtitle(R.string.choose_your_image)
+                    .setBackButtonLabel(R.string.back)
+                    .setEndButtonLabel(R.string.next)
                     .create();
             case 1:
                 return new StepViewModel.Builder(context)
                         .setTitle(R.string.position) //can be a CharSequence instead
                         .setSubtitle(R.string.set_your_coordinates)
+                        .setBackButtonLabel(R.string.back)
+                        .setEndButtonLabel(R.string.next)
                         .create();
             case 2:
                 return new StepViewModel.Builder(context)
                         .setTitle(R.string.details) //can be a CharSequence instead
                         .setSubtitle(R.string.add_some_details)
+                        .setBackButtonLabel(R.string.back)
+                        .setEndButtonLabel(R.string.end)
                         .create();
             default:
                 throw new IllegalArgumentException();

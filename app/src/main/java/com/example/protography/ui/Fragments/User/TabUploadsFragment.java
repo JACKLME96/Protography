@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.protography.R;
 import com.example.protography.databinding.FragmentUploadsTabBinding;
 import com.example.protography.ui.Adapters.RecyclerViewAdapterFind;
 import com.example.protography.ui.Models.Image;
@@ -35,6 +37,7 @@ public class TabUploadsFragment extends Fragment {
     private SharedPreferences sharedPref;
     private String nameUser;
     private RecyclerViewAdapterFind recyclerViewAdapter;
+    private RecyclerView recyclerView;
     private List<Image> imageList;
 
 
@@ -42,7 +45,6 @@ public class TabUploadsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        nameUser = sharedPref.getString("FULLNAME", null);
     }
 
     @Override
@@ -58,16 +60,35 @@ public class TabUploadsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.d(TAG, "VIEWCREATED");
 
         imageList = new ArrayList<>();
 
 
-        RecyclerView recyclerView = binding.recyclerViewUploads;
+        recyclerView = binding.recyclerViewUploads;
         recyclerViewAdapter = new RecyclerViewAdapterFind(imageList, getContext(),false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(recyclerViewAdapter);
 
-        // Ricerco le immagini che l'utente attuale ha aggiunto
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
+
+        Log.d(TAG, "RESUME");
+        boolean newUsername = sharedPref.getBoolean("NAMECHANGED", false);
+        if (newUsername) {
+            nameUser = sharedPref.getString("FULLNAME", null);
+            sharedPref.edit().remove("NAMECHANGED").commit();
+        } else
+            nameUser = sharedPref.getString("FULLNAME", null);
+
+
         Query query = FirebaseDatabase.getInstance().getReference("Images").orderByChild("imageNameUser").equalTo(nameUser);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -78,6 +99,7 @@ public class TabUploadsFragment extends Fragment {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Image image = dataSnapshot.getValue(Image.class);
                     imageList.add(image);
+                    Log.d(TAG, "Title: " + image.getImageTitle());
                 }
 
                 if (imageList.size() == 0)
@@ -86,6 +108,7 @@ public class TabUploadsFragment extends Fragment {
                     binding.noImages.setVisibility(View.GONE);
 
                 recyclerViewAdapter.notifyDataSetChanged();
+                Log.d(TAG, "QUERY RESUME");
             }
 
             @Override
@@ -94,45 +117,9 @@ public class TabUploadsFragment extends Fragment {
             }
         });
 
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        boolean newUsername = sharedPref.getBoolean("NAMECHANGED", false);
-        if (newUsername) {
-
-            nameUser = sharedPref.getString("FULLNAME", null);
-            sharedPref.edit().remove("NAMECHANGED").commit();
+        recyclerViewAdapter.notifyDataSetChanged();
 
 
-            Query query = FirebaseDatabase.getInstance().getReference("Images").orderByChild("imageNameUser").equalTo(nameUser);
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                    imageList.clear();
-
-                    Log.d(TAG, "Immagini: " + snapshot.getChildrenCount());
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        Image image = dataSnapshot.getValue(Image.class);
-                        imageList.add(image);
-                    }
-
-                    if (imageList.size() == 0)
-                        binding.noImages.setVisibility(View.VISIBLE);
-                    else
-                        binding.noImages.setVisibility(View.GONE);
-
-                    recyclerViewAdapter.notifyDataSetChanged();
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Log.d(TAG, "Errore caricamento immagini: " + error.getMessage());
-                }
-            });
-        }
     }
 }
