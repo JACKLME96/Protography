@@ -72,7 +72,6 @@ public class TabBookmarksFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(recyclerViewAdapter);
 
-
         if (imagesToShow.size() == 0)
             binding.noImages.setVisibility(View.VISIBLE);
         else
@@ -87,6 +86,10 @@ public class TabBookmarksFragment extends Fragment {
         super.onResume();
 
         updateImagesToShow();
+        if (imagesToShow.size() == 0)
+            binding.noImages.setVisibility(View.VISIBLE);
+        else
+            binding.noImages.setVisibility(View.GONE);
         recyclerViewAdapter.notifyDataSetChanged();
     }
 

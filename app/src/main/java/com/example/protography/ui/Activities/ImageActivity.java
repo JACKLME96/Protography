@@ -2,8 +2,10 @@ package com.example.protography.ui.Activities;
 
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -14,15 +16,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.specials.out.TakingOffAnimator;
 import com.example.protography.R;
 import com.example.protography.databinding.ActivityImageBinding;
 import com.example.protography.ui.Models.Image;
 import com.example.protography.ui.Models.User;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
@@ -113,8 +119,65 @@ public class ImageActivity extends AppCompatActivity {
         String profileImg = sharedPreferencesDefault.getString("PROFILEIMG", null);
         currentUser = new User(fullName, mail, profileImg);
         currentUser.setFotoPiaciute(imagesLiked);
-        // Se si aggiungerà la foto profilo bisogna aggiungerla qua
 
+
+        // Controllo se l'immagine è dell'utente
+        if (!image.getImageNameUser().equals(fullName))
+
+            // Se non è dell'utente nascono il pulsante elimina
+            binding.deleteLayout.setVisibility(View.GONE);
+        else {
+
+            // Se è dell'utente imposto il listener per l'elimina
+            binding.delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    new AlertDialog.Builder(ImageActivity.this)
+                            .setTitle(R.string.sure_to_delete_image)
+                            .setNegativeButton(android.R.string.cancel, null)
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface arg0, int arg1) {
+
+                                    // Delete da Firebase
+                                    Query q = FirebaseDatabase.getInstance().getReference("Images")
+                                            .orderByChild("imageUrl").equalTo(image.getImageUrl());
+                                    q.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                                            for (DataSnapshot i: snapshot.getChildren())
+                                                FirebaseDatabase.getInstance().getReference("Images").child(i.getKey()).removeValue();
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                                            Log.d(TAG, "ERRORE ELIMINAZIONE IMMAGINE");
+                                        }
+                                    });
+
+
+                                    // Delete della vecchia immagine dallo storage
+                                    StorageReference imageRef = FirebaseStorage.getInstance().getReference("Images").getStorage()
+                                            .getReferenceFromUrl(image.getImageUrl());
+                                    imageRef.delete().addOnSuccessListener(unused -> {
+
+                                        Toast.makeText(ImageActivity.this, getString(R.string.image_correctly_deleted), Toast.LENGTH_SHORT).show();
+                                    });
+
+                                    finish();
+
+                                }
+                            }).create().show();
+
+
+
+                }
+            });
+        }
+
+
+        // Controllo se è un'immagine piaciuta a l'utente e imposto il like
         if (imagesLiked.contains(image.getImageUrl()))
             binding.like.setImageResource(R.drawable.ic_baseline_bookmark_24);
         else

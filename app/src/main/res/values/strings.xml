@@ -72,7 +72,7 @@
     <string name="add_some_details">Add some details</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    <string name="remember_me">Remember me</string>
+    <string name="remember_me">Remember me!</string>
     <string name="recover_password">Recover Password</string>
     <string name="insert_email">Insert Email</string>
     <string name="reset_password">Reset Password</string>
@@ -95,4 +95,9 @@
     <string name="immagine">Image</string>
     <string name="get_directions">Get Directions</string>
     <string name="swipe_up_to_see_more">Swipe to see more</string>
+    <string name="sure_to_delete_image">Are you sure you want to delete the image?</string>
+    <string name="back">BACK</string>
+    <string name="next">NEXT</string>
+    <string name="end">END</string>
+    <string name="image_correctly_deleted">Image correctly deleted</string>
 </resources>
