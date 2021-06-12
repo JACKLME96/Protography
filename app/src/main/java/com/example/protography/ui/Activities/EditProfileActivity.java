@@ -30,6 +30,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -65,7 +66,7 @@ public class EditProfileActivity extends AppCompatActivity {
         imageUri = Uri.parse(sharedPreferencesDefault.getString("PROFILEIMG", null));
 
 
-        chooseImage.setOnClickListener(v -> CropImage.activity().start(EditProfileActivity.this));
+        chooseImage.setOnClickListener(v -> CropImage.activity().setFixAspectRatio(true).setCropShape(CropImageView.CropShape.OVAL).start(EditProfileActivity.this));
 
         save.setOnClickListener(v -> {
 

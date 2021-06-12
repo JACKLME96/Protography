@@ -88,6 +88,7 @@
     <string name="immagine">Immagine</string>
     <string name="get_directions">Ottieni Indicazioni</string>
     <string name="swipe_up_to_see_more">Swipe per vedere di più</string>
+    <string name="cant_save">Non puoi salvare una tua foto</string>
     <string name="sure_to_delete_image">Sei sicuro di voler eliminare l\'immagine?</string>
     <string name="back">INDIETRO</string>
     <string name="next">AVANTI</string>

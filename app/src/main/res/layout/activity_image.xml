@@ -36,14 +36,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginTop="-8dp"
-                android:layout_marginEnd="50dp"
-                android:layout_marginRight="50dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginRight="30dp"
                 android:background="@null"
                 app:srcCompat="@drawable/ic_baseline_bookmark_24" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="623dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingBottom="35dp">
 
@@ -81,6 +81,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
+                        android:layout_marginRight="35dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:textSize="15sp" />
@@ -91,15 +92,14 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginStart="81dp"
-                        android:layout_marginLeft="81dp"
                         android:layout_marginEnd="20dp"
-                        android:layout_marginRight="20dp"
+                        android:maxWidth="80dp"
                         android:layout_toEndOf="@+id/coords"
                         android:layout_toRightOf="@+id/coords"
                         android:fontFamily="sans-serif-thin"
                         android:text="@string/saves_nr"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:layout_marginRight="20dp" />
 
                 </RelativeLayout>
 
@@ -135,7 +135,7 @@
                         android:textColor="?attr/colorPrimary" />
                 </LinearLayout>
 
-                <com.skyhope.showmoretextview.ShowMoreTextView
+                <com.abdulhakeem.seemoretextview.SeeMoreTextView
                     android:id="@+id/description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -198,7 +198,7 @@
                 <LinearLayout
                     android:id="@+id/equipmentLayout"
                     android:layout_width="wrap_content"
-                    android:layout_height="70dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:orientation="vertical">
 
@@ -234,7 +234,7 @@
                 <LinearLayout
                     android:id="@+id/settingsLayout"
                     android:layout_width="wrap_content"
-                    android:layout_height="70dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:orientation="vertical">
 
@@ -270,7 +270,7 @@
                 <LinearLayout
                     android:id="@+id/timeLayout"
                     android:layout_width="wrap_content"
-                    android:layout_height="70dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:orientation="vertical">
 
@@ -308,7 +308,7 @@
                 <LinearLayout
                     android:id="@+id/tipsLayout"
                     android:layout_width="wrap_content"
-                    android:layout_height="70dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:orientation="vertical">
 
@@ -347,7 +347,7 @@
                 <LinearLayout
                     android:id="@+id/deleteLayout"
                     android:layout_width="wrap_content"
-                    android:layout_height="70dp"
+                    android:layout_height="40dp"
                     android:layout_marginBottom="8dp"
                     android:orientation="vertical">
 

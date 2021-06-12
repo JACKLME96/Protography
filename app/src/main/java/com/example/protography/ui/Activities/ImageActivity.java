@@ -83,13 +83,13 @@ public class ImageActivity extends AppCompatActivity {
             }
         });
 
-
         // Imposto gli elementi grafici
         binding.description.setText(image.getImageDescription());
-        binding.description.setShowingLine(4);
-        binding.description.setShowMoreColor(getResources().getColor(R.color.yellow));
-        binding.description.setShowLessTextColor(getResources().getColor(R.color.yellow));
-        binding.saved.setText(String.format("%d",image.getSavesNumber()));
+        binding.description.setContent(image.getImageDescription());
+        binding.description.setTextMaxLength(200);
+        binding.description.setSeeMoreTextColor(R.color.yellow);
+
+        binding.saved.setText("Saves: " + String.format("%d",image.getSavesNumber()));
 
         binding.equipment.setText(image.getImageEquipment());
 
@@ -119,6 +119,14 @@ public class ImageActivity extends AppCompatActivity {
         String profileImg = sharedPreferencesDefault.getString("PROFILEIMG", null);
         currentUser = new User(fullName, mail, profileImg);
         currentUser.setFotoPiaciute(imagesLiked);
+
+        //disabilito il salvataggio di una propria foto
+        if(image.getImageNameUser().equals(fullName)) {
+            binding.like.setActivated(false);
+            binding.like.setAlpha(0.6f);
+        }
+        else
+            binding.like.setActivated(true);
 
 
         // Controllo se l'immagine è dell'utente
@@ -186,79 +194,81 @@ public class ImageActivity extends AppCompatActivity {
         binding.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (v.isActivated()) {
+                    if (imagesLiked.contains(image.getImageUrl())) {
 
-                if (imagesLiked.contains(image.getImageUrl())) {
+                        // Se è piaciuta la rimuovo
+                        imagesLiked.remove(image.getImageUrl());
+                        currentUser.setFotoPiaciute(imagesLiked);
+                        FirebaseDatabase.getInstance().getReference("Users").child(userKey).setValue(currentUser);
 
-                    // Se è piaciuta la rimuovo
-                    imagesLiked.remove(image.getImageUrl());
-                    currentUser.setFotoPiaciute(imagesLiked);
-                    FirebaseDatabase.getInstance().getReference("Users").child(userKey).setValue(currentUser);
+                        // Aggiorno shared
+                        HashSet<String> fotoPiaciute = new HashSet<>();
+                        fotoPiaciute.addAll(imagesLiked);
+                        sharedPreferencesDefault.edit().remove("IMAGES_LIKED").commit();
+                        sharedPreferencesDefault.edit().putStringSet("IMAGES_LIKED", fotoPiaciute).commit();
 
-                    // Aggiorno shared
-                    HashSet<String> fotoPiaciute = new HashSet<>();
-                    fotoPiaciute.addAll(imagesLiked);
-                    sharedPreferencesDefault.edit().remove("IMAGES_LIKED").commit();
-                    sharedPreferencesDefault.edit().putStringSet("IMAGES_LIKED", fotoPiaciute).commit();
+                        image.setSavesNumber(image.getSavesNumber() - 1);
+                        binding.saved.setText("Saves: " + String.format("%d", image.getSavesNumber()));
 
-                    image.setSavesNumber(image.getSavesNumber()-1);
-                    binding.saved.setText(String.format("%d",image.getSavesNumber()));
+                        Query query = FirebaseDatabase.getInstance().getReference("Images")
+                                .orderByChild("imageUrl").equalTo(image.getImageUrl());
 
-                    Query query = FirebaseDatabase.getInstance().getReference("Images")
-                            .orderByChild("imageUrl").equalTo(image.getImageUrl());
-
-                    query.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull @NotNull DataSnapshot dataSnapshot) {
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                snapshot.getRef().child("savesNumber").setValue(image.getSavesNumber());
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull @NotNull DataSnapshot dataSnapshot) {
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    snapshot.getRef().child("savesNumber").setValue(image.getSavesNumber());
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                            @Override
+                            public void onCancelled(@NonNull @NotNull DatabaseError error) {
 
-                        }
-                    });
-
-                    binding.like.setImageResource(R.drawable.ic_baseline_not_bookmark_24);
-                    Toast.makeText(ImageActivity.this, getString(R.string.disliked), Toast.LENGTH_SHORT).show();
-                } else {
-
-                    // Se non è piaciuta la aggiungo
-                    imagesLiked.add(image.getImageUrl());
-                    currentUser.setFotoPiaciute(imagesLiked);
-                    FirebaseDatabase.getInstance().getReference("Users").child(userKey).setValue(currentUser);
-
-                    // Aggiorno shared
-                    HashSet<String> fotoPiaciute = new HashSet<>();
-                    fotoPiaciute.addAll(imagesLiked);
-                    sharedPreferencesDefault.edit().remove("IMAGES_LIKED").commit();
-                    sharedPreferencesDefault.edit().putStringSet("IMAGES_LIKED", fotoPiaciute).commit();
-
-                    image.setSavesNumber(image.getSavesNumber()+1);
-                    binding.saved.setText(String.format("%d",image.getSavesNumber()));
-
-                    Query query = FirebaseDatabase.getInstance().getReference("Images")
-                            .orderByChild("imageUrl").equalTo(image.getImageUrl());
-
-                    query.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull @NotNull DataSnapshot dataSnapshot) {
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                snapshot.getRef().child("savesNumber").setValue(image.getSavesNumber());
                             }
-                        }
+                        });
 
-                        @Override
-                        public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                        binding.like.setImageResource(R.drawable.ic_baseline_not_bookmark_24);
+                        Toast.makeText(ImageActivity.this, getString(R.string.disliked), Toast.LENGTH_SHORT).show();
+                    } else {
 
-                        }
-                    });
+                        // Se non è piaciuta la aggiungo
+                        imagesLiked.add(image.getImageUrl());
+                        currentUser.setFotoPiaciute(imagesLiked);
+                        FirebaseDatabase.getInstance().getReference("Users").child(userKey).setValue(currentUser);
 
-                    binding.like.setImageResource(R.drawable.ic_baseline_bookmark_24);
-                    Toast.makeText(ImageActivity.this, getString(R.string.liked), Toast.LENGTH_SHORT).show();
+                        // Aggiorno shared
+                        HashSet<String> fotoPiaciute = new HashSet<>();
+                        fotoPiaciute.addAll(imagesLiked);
+                        sharedPreferencesDefault.edit().remove("IMAGES_LIKED").commit();
+                        sharedPreferencesDefault.edit().putStringSet("IMAGES_LIKED", fotoPiaciute).commit();
+
+                        image.setSavesNumber(image.getSavesNumber() + 1);
+                        binding.saved.setText("Saves: " + String.format("%d", image.getSavesNumber()));
+
+                        Query query = FirebaseDatabase.getInstance().getReference("Images")
+                                .orderByChild("imageUrl").equalTo(image.getImageUrl());
+
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull @NotNull DataSnapshot dataSnapshot) {
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    snapshot.getRef().child("savesNumber").setValue(image.getSavesNumber());
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                            }
+                        });
+
+                        binding.like.setImageResource(R.drawable.ic_baseline_bookmark_24);
+                        Toast.makeText(ImageActivity.this, getString(R.string.liked), Toast.LENGTH_SHORT).show();
+                    }
                 }
-
+                else
+                    Toast.makeText(ImageActivity.this, R.string.cant_save, Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -31,6 +31,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -42,7 +43,6 @@ public class UserRegistration extends AppCompatActivity {
     private ShapeableImageView profileImage, chooseImage;
     private ActivityUserRegistrationBinding binding;
     private FirebaseAuth mAuth;
-    private StorageReference mStorageRef;
     Uri imageUri;
 
 
@@ -71,7 +71,7 @@ public class UserRegistration extends AppCompatActivity {
         chooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CropImage.activity().start(UserRegistration.this);
+                CropImage.activity().setFixAspectRatio(true).setCropShape(CropImageView.CropShape.OVAL).start(UserRegistration.this);
             }
         });
     }

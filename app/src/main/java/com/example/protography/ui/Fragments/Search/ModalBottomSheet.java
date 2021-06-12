@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -37,6 +38,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.abdulhakeem.seemoretextview.SeeMoreTextView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -51,7 +53,7 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
     private ImageView imagePrev;
     private TextView title;
     private TextView user;
-    private TextView desc;
+    private SeeMoreTextView desc;
     private TextView equipment;
     private TextView camera;
     private TextView tips;
@@ -181,12 +183,13 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
 
                     swipeUp.setVisibility(View.VISIBLE);
                     user.setText(image.getImageNameUser());
-                    desc.setText(image.getImageDescription());
-                    binding.description.setShowingLine(4);
-                    binding.description.setShowMoreColor(getResources().getColor(R.color.yellow));
-                    binding.description.setShowLessTextColor(getResources().getColor(R.color.yellow));
+
+                    desc.setContent(image.getImageDescription());
+                    desc.setTextMaxLength(200);
+                    desc.setSeeMoreTextColor(R.color.yellow);
+
                     equipment.setText(image.getImageEquipment());
-                    saved.setText(String.format("%d",image.getSavesNumber()));
+                    saved.setText("Saves: " + String.format("%d",image.getSavesNumber()));
                     
                     if (image.getImageSettings() == null || image.getImageSettings().isEmpty())
                         binding.settingsLayout.setVisibility(View.GONE);
@@ -216,46 +219,58 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
                     else
                         binding.like.setImageResource(R.drawable.ic_baseline_not_bookmark_24);
 
+                    //disabilito il salvataggio di una propria foto
+                    if(image.getImageNameUser().equals(currentUser.getFullName())) {
+                        binding.like.setActivated(false);
+                        binding.like.setAlpha(0.6f);
+                    }
+                    else
+                        binding.like.setActivated(true);
+
                     binding.like.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if (imagesLiked.contains(image.getImageUrl())) {
+                            if (v.isActivated()) {
+                                if (imagesLiked.contains(image.getImageUrl())) {
 
-                                // Se è piaciuta la rimuovo
-                                imagesLiked.remove(image.getImageUrl());
-                                currentUser.setFotoPiaciute(imagesLiked);
-                                FirebaseDatabase.getInstance().getReference("Users").child(userKey).setValue(currentUser);
-                                HashSet<String> fotoPiaciute = new HashSet<>();
-                                fotoPiaciute.addAll(imagesLiked);
-                                sharedPreferencesDefault.edit().remove("IMAGES_LIKED").commit();
-                                sharedPreferencesDefault.edit().putStringSet("IMAGES_LIKED", fotoPiaciute).commit();
+                                    // Se è piaciuta la rimuovo
+                                    imagesLiked.remove(image.getImageUrl());
+                                    currentUser.setFotoPiaciute(imagesLiked);
+                                    FirebaseDatabase.getInstance().getReference("Users").child(userKey).setValue(currentUser);
+                                    HashSet<String> fotoPiaciute = new HashSet<>();
+                                    fotoPiaciute.addAll(imagesLiked);
+                                    sharedPreferencesDefault.edit().remove("IMAGES_LIKED").commit();
+                                    sharedPreferencesDefault.edit().putStringSet("IMAGES_LIKED", fotoPiaciute).commit();
 
-                                image.setSavesNumber(image.getSavesNumber()-1);
-                                saved.setText(String.format("%d",image.getSavesNumber()));
-                                FirebaseDatabase.getInstance().getReference("Images").child(imageKey).child("savesNumber")
-                                        .setValue(image.getSavesNumber());
+                                    image.setSavesNumber(image.getSavesNumber() - 1);
+                                    saved.setText("Saves: " + String.format("%d", image.getSavesNumber()));
+                                    FirebaseDatabase.getInstance().getReference("Images").child(imageKey).child("savesNumber")
+                                            .setValue(image.getSavesNumber());
 
-                                binding.like.setImageResource(R.drawable.ic_baseline_not_bookmark_24);
-                                Toast.makeText(getContext(), getString(R.string.disliked), Toast.LENGTH_SHORT).show();
-                            } else {
+                                    binding.like.setImageResource(R.drawable.ic_baseline_not_bookmark_24);
+                                    Toast.makeText(getContext(), getString(R.string.disliked), Toast.LENGTH_SHORT).show();
+                                } else {
 
-                                // Se non è piaciuta la aggiungo
-                                imagesLiked.add(image.getImageUrl());
-                                currentUser.setFotoPiaciute(imagesLiked);
-                                FirebaseDatabase.getInstance().getReference("Users").child(userKey).setValue(currentUser);
-                                HashSet<String> fotoPiaciute = new HashSet<>();
-                                fotoPiaciute.addAll(imagesLiked);
-                                sharedPreferencesDefault.edit().remove("IMAGES_LIKED").commit();
-                                sharedPreferencesDefault.edit().putStringSet("IMAGES_LIKED", fotoPiaciute).commit();
+                                    // Se non è piaciuta la aggiungo
+                                    imagesLiked.add(image.getImageUrl());
+                                    currentUser.setFotoPiaciute(imagesLiked);
+                                    FirebaseDatabase.getInstance().getReference("Users").child(userKey).setValue(currentUser);
+                                    HashSet<String> fotoPiaciute = new HashSet<>();
+                                    fotoPiaciute.addAll(imagesLiked);
+                                    sharedPreferencesDefault.edit().remove("IMAGES_LIKED").commit();
+                                    sharedPreferencesDefault.edit().putStringSet("IMAGES_LIKED", fotoPiaciute).commit();
 
-                                image.setSavesNumber(image.getSavesNumber()+1);
-                                saved.setText(String.format("%d",image.getSavesNumber()));
-                                FirebaseDatabase.getInstance().getReference("Images").child(imageKey).child("savesNumber")
-                                        .setValue(image.getSavesNumber());
+                                    image.setSavesNumber(image.getSavesNumber() + 1);
+                                    saved.setText("Saves: " + String.format("%d", image.getSavesNumber()));
+                                    FirebaseDatabase.getInstance().getReference("Images").child(imageKey).child("savesNumber")
+                                            .setValue(image.getSavesNumber());
 
-                                binding.like.setImageResource(R.drawable.ic_baseline_bookmark_24);
-                                Toast.makeText(getContext(), getString(R.string.liked), Toast.LENGTH_SHORT).show();
+                                    binding.like.setImageResource(R.drawable.ic_baseline_bookmark_24);
+                                    Toast.makeText(getContext(), getString(R.string.liked), Toast.LENGTH_SHORT).show();
+                                }
                             }
+                            else
+                                Toast.makeText(getContext(), getString(R.string.cant_save), Toast.LENGTH_SHORT).show();
                         }
                     });
 

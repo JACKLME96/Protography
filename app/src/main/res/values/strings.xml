@@ -100,4 +100,5 @@
     <string name="next">NEXT</string>
     <string name="end">END</string>
     <string name="image_correctly_deleted">Image correctly deleted</string>
+    <string name="cant_save">Can\'t save your own photo</string>
 </resources>
