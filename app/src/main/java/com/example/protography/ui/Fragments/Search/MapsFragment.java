@@ -89,6 +89,8 @@ public class MapsFragment extends Fragment {
                 map.moveCamera(CameraUpdateFactory.newLatLng(coordinateAttuali));
 
             mapsViewModel.getImages().observe(getViewLifecycleOwner(), images -> {
+                clusterManager.clearItems();
+                clusterManager.cluster();
                 for (Image image : images) {
                     String[] latlong = image.getCoords().split(",");
                     double latitude = Double.parseDouble(latlong[0]);

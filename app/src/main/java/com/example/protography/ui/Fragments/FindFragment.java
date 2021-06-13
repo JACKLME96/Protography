@@ -38,13 +38,15 @@ public class FindFragment extends Fragment {
     private static final String TAG = "FindFragment";
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference databaseRoot = database.getReference();
-    private FragmentUploadsTabBinding binding;
+    private FragmentFindBinding binding;
     private Chip chip1, chip2, chip3;
     private Query query;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_find, container, false);
+        binding = FragmentFindBinding.inflate(inflater,container,false);
+
+        View root = binding.getRoot();
 
         return root;
     }
@@ -56,11 +58,11 @@ public class FindFragment extends Fragment {
         List<Image> imageList = new ArrayList<>();
         List<String>selectedChip = new ArrayList<>();
         query = FirebaseDatabase.getInstance().getReference("Images");
-        chip1 = view.findViewById(R.id.chip_1);
-        chip2 = view.findViewById(R.id.chip_2);
-        chip3 = view.findViewById(R.id.chip_3);
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView_find);
-        swipeRefreshLayout = view.findViewById(R.id.swipe_find);
+        chip1 = binding.chip1;
+        chip2 = binding.chip2;
+        chip3 = binding.chip3;
+        RecyclerView recyclerView = binding.recyclerViewFind;
+        swipeRefreshLayout = binding.swipeFind;
 
         AdapterDiscover adapterDiscover = new AdapterDiscover (imageList, getContext(),true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
