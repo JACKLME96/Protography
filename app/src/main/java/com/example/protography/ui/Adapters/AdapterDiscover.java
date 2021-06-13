@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import com.example.protography.databinding.ImageDiscoverBinding;
 import com.example.protography.databinding.ImageItemBinding;
 import com.example.protography.ui.Activities.ImageActivity;
 import com.example.protography.ui.Models.Image;
@@ -34,7 +35,7 @@ public class AdapterDiscover extends RecyclerView.Adapter<AdapterDiscover.ImageV
 
     private static final String TAG = "RecyclerViewAdapterFind";
     private List<Image> imageList;
-    private ImageItemBinding binding; //Cambiare binding
+    private ImageDiscoverBinding binding; //Cambiare binding
     private Context context;
     private boolean showProfileImage;
 
@@ -49,7 +50,7 @@ public class AdapterDiscover extends RecyclerView.Adapter<AdapterDiscover.ImageV
     @Override
     public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Create a new view, which defines the UI of the list item
-        binding = ImageItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        binding = ImageDiscoverBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         View view = binding.getRoot();
 
         return new ImageViewHolder(view, context);
@@ -111,15 +112,14 @@ public class AdapterDiscover extends RecyclerView.Adapter<AdapterDiscover.ImageV
             else
                 user.setVisibility(View.GONE);
 
-            if (image.getImageDescription().length() >= 40)
-                descriptionTextView.setText(image.getImageDescription().substring(0, 40) + "...");
+            if (image.getImageDescription().length() >= 120)
+                descriptionTextView.setText(image.getImageDescription().substring(0, 120) + "...");
             else
                 descriptionTextView.setText(image.getImageDescription());
 
             Picasso.get().load(image.getImageUrl()).into(imageView);
         }
 
-// RIMUOVERE onClick, non servirà
         @Override
         public void onClick(View v) {
 

@@ -12,7 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.protography.R;
@@ -41,6 +43,7 @@ public class FindFragment extends Fragment {
     private FragmentFindBinding binding;
     private Chip chip1, chip2, chip3;
     private Query query;
+    RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,11 +64,17 @@ public class FindFragment extends Fragment {
         chip1 = binding.chip1;
         chip2 = binding.chip2;
         chip3 = binding.chip3;
-        RecyclerView recyclerView = binding.recyclerViewFind;
+        recyclerView = binding.recyclerViewFind;
         swipeRefreshLayout = binding.swipeFind;
 
         AdapterDiscover adapterDiscover = new AdapterDiscover (imageList, getContext(),true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+
+        recyclerView.setLayoutManager(layoutManager);
+
+        SnapHelper snapHelper = new PagerSnapHelper();
+        recyclerView.setLayoutManager(layoutManager);
+        snapHelper.attachToRecyclerView(recyclerView);
 
         recyclerView.setAdapter(adapterDiscover);
 
@@ -95,6 +104,7 @@ public class FindFragment extends Fragment {
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(false);
                 prova(query, imageList, adapterDiscover, selectedChip);
+                recyclerView.setAdapter(adapterDiscover);
             }
         });
     }
@@ -134,6 +144,7 @@ public class FindFragment extends Fragment {
                     }
                     Collections.shuffle(imageList);
                     adapterDiscover.notifyDataSetChanged();
+                    recyclerView.setAdapter(adapterDiscover);
                 }
             }
 

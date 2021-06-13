@@ -123,7 +123,7 @@ public class ImageActivity extends AppCompatActivity {
         //disabilito il salvataggio di una propria foto
         if(image.getImageNameUser().equals(fullName)) {
             binding.like.setActivated(false);
-            binding.like.setAlpha(0.6f);
+            binding.like.setAlpha(0.2f);
         }
         else
             binding.like.setActivated(true);
@@ -133,7 +133,7 @@ public class ImageActivity extends AppCompatActivity {
         if (!image.getImageNameUser().equals(fullName))
 
             // Se non è dell'utente nascono il pulsante elimina
-            binding.deleteLayout.setVisibility(View.GONE);
+            binding.delete.setVisibility(View.GONE);
         else {
 
             // Se è dell'utente imposto il listener per l'elimina

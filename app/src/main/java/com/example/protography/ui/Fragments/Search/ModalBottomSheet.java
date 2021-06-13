@@ -31,6 +31,7 @@ import com.example.protography.ui.Models.User;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -62,6 +63,7 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
     private TextView saved;
     private Image image;
     LinearLayout swipeUp;
+    private FloatingActionButton delete;
 
     private List<String> imagesLiked;
     private User currentUser;
@@ -145,6 +147,8 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
         coords = binding.coords;
         swipeUp = binding.swipeUp;
         saved = binding.saved;
+        delete = binding.delete;
+        delete.setVisibility(View.GONE);
 
         sharedPreferencesDefault = PreferenceManager.getDefaultSharedPreferences(getActivity());
         Set<String> imageL = sharedPreferencesDefault.getStringSet("IMAGES_LIKED", null);
@@ -222,7 +226,7 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
                     //disabilito il salvataggio di una propria foto
                     if(image.getImageNameUser().equals(currentUser.getFullName())) {
                         binding.like.setActivated(false);
-                        binding.like.setAlpha(0.6f);
+                        binding.like.setAlpha(0.2f);
                     }
                     else
                         binding.like.setActivated(true);

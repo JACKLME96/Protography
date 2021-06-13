@@ -6,7 +6,7 @@
         <item name="colorPrimaryVariant">@color/blueS</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondary">@color/blue</item>
         <item name="colorSecondaryVariant">@color/blue</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Customize your theme here. -->
@@ -14,6 +14,7 @@
         <item name="windowNoTitle">true</item>
         <item name="cardBackgroundColor">@color/black</item>
         <item name="colorSurface">@color/DarkThemeGray</item>
+        <item name="colorAccent">@color/blue</item>
 
 
         <item name="android:windowBackground">@color/blue</item>
