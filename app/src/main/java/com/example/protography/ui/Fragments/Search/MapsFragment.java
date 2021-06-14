@@ -234,7 +234,6 @@ public class MapsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
 
 

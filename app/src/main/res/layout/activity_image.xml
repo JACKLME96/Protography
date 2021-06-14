@@ -53,9 +53,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginTop="-8dp"
-                android:layout_marginEnd="30dp"
-                android:layout_marginRight="30dp"
+                android:layout_marginEnd="65dp"
+                android:layout_marginRight="65dp"
                 android:background="@null"
+                android:contentDescription="@string/saves_nr"
                 app:srcCompat="@drawable/ic_baseline_bookmark_24" />
 
             <LinearLayout

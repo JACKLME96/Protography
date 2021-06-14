@@ -11,6 +11,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.TypeFilter;
@@ -58,6 +60,14 @@ public class PlaceSelectFragment extends Fragment implements Step {
             map = googleMap;
             map.setMinZoomPreference(5.0f);
             setMyLocationButton(googleMap);
+            int darkMode;
+
+            darkMode = getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+            // Settaggio della dark mode, se il tema è salvato lo prende, altrimenti, controlla il tema del dispositivo
+            if(darkMode == Configuration.UI_MODE_NIGHT_YES || sharedPref.getString("THEME","").equalsIgnoreCase("dark"))
+                map.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(),R.raw.map_dark_mode));
+
             googleMap.setOnCameraMoveListener(() -> {
                 firstMoved = true;
                 coordsValue = Double.toString(googleMap.getCameraPosition().target.latitude).substring(0,7) + " , " + Double.toString(googleMap.getCameraPosition().target.longitude).substring(0,7);
