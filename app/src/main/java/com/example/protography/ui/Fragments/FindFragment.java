@@ -1,6 +1,8 @@
 package com.example.protography.ui.Fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +48,7 @@ public class FindFragment extends Fragment {
     RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
 
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentFindBinding.inflate(inflater,container,false);
 
@@ -57,6 +60,10 @@ public class FindFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String nameUser;
+        nameUser = prefs.getString("FULLNAME", null);
 
         List<Image> imageList = new ArrayList<>();
         List<String>selectedChip = new ArrayList<>();
@@ -84,11 +91,11 @@ public class FindFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     selectedChip.add(buttonView.getText().toString());
-                    prova(query, imageList, adapterDiscover, selectedChip);
+                    load(query, imageList, adapterDiscover, selectedChip, nameUser);
                 }
                 else {
                     selectedChip.remove(buttonView.getText().toString());
-                    prova(query, imageList, adapterDiscover, selectedChip);
+                    load(query, imageList, adapterDiscover, selectedChip, nameUser);
                 }
             }
         };
@@ -97,19 +104,19 @@ public class FindFragment extends Fragment {
         chip2.setOnCheckedChangeListener(checkedChangeListener);
         chip3.setOnCheckedChangeListener(checkedChangeListener);
 
-        prova(query, imageList, adapterDiscover, selectedChip);
+        load(query, imageList, adapterDiscover, selectedChip, nameUser);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(false);
-                prova(query, imageList, adapterDiscover, selectedChip);
+                load(query, imageList, adapterDiscover, selectedChip, nameUser);
                 recyclerView.setAdapter(adapterDiscover);
             }
         });
     }
 
-    void prova(Query query, List<Image> imageList, AdapterDiscover adapterDiscover, List<String> selectedChip) {
+    void load(Query query, List<Image> imageList, AdapterDiscover adapterDiscover, List<String> selectedChip, String nameUser) {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -120,25 +127,26 @@ public class FindFragment extends Fragment {
                         Image image = dataSnapshot.getValue(Image.class);
                         switch (selectedChip.size()) {
                             case 0 :
-                                imageList.add(image);
+                                if(!image.getImageNameUser().equals(nameUser))
+                                    imageList.add(image);
                                 break;
 
                             case 1 :
-                                if(image.getImageCategory().equals(selectedChip.get(0))){
-                                    imageList.add(image);
-                                }
+                                if(!image.getImageNameUser().equals(nameUser))
+                                    if(image.getImageCategory().equals(selectedChip.get(0)))
+                                        imageList.add(image);
                                 break;
 
                             case 2 :
-                                if(image.getImageCategory().equals(selectedChip.get(0)) || image.getImageCategory().equals(selectedChip.get(1))){
-                                    imageList.add(image);
-                                }
+                                if(!image.getImageNameUser().equals(nameUser))
+                                    if(image.getImageCategory().equals(selectedChip.get(0)) || image.getImageCategory().equals(selectedChip.get(1)))
+                                        imageList.add(image);
                                 break;
 
                             case 3 :
-                                if(image.getImageCategory().equals(selectedChip.get(0)) || image.getImageCategory().equals(selectedChip.get(1)) || image.getImageCategory().equals(selectedChip.get(2))){
-                                    imageList.add(image);
-                                }
+                                if(!image.getImageNameUser().equals(nameUser))
+                                    if(image.getImageCategory().equals(selectedChip.get(0)) || image.getImageCategory().equals(selectedChip.get(1)) || image.getImageCategory().equals(selectedChip.get(2)))
+                                        imageList.add(image);
                                 break;
                         }
                     }
