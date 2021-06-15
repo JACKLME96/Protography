@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginTop="-8dp"
-                android:layout_marginEnd="65dp"
+                android:layout_marginEnd="35dp"
                 android:layout_marginRight="65dp"
                 android:background="@null"
                 android:contentDescription="@string/saves_nr"
@@ -179,7 +179,7 @@
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipNature"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        style="@style/CustomChips"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
@@ -190,7 +190,7 @@
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipUrban"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        style="@style/CustomChips"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
@@ -201,7 +201,7 @@
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipPortrait"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        style="@style/CustomChips"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"

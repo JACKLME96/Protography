@@ -5,13 +5,19 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -26,6 +32,7 @@ import com.example.protography.ui.Adapters.AdapterDiscover;
 import com.example.protography.ui.Adapters.RecyclerViewAdapterFind;
 import com.example.protography.ui.Models.Image;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,15 +50,17 @@ public class FindFragment extends Fragment {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference databaseRoot = database.getReference();
     private FragmentFindBinding binding;
+    private RelativeLayout filters;
     private Chip chip1, chip2, chip3;
     private Query query;
     RecyclerView recyclerView;
+    Toolbar toolbar;
     private SwipeRefreshLayout swipeRefreshLayout;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentFindBinding.inflate(inflater,container,false);
-
+        setHasOptionsMenu(true);
         View root = binding.getRoot();
 
         return root;
@@ -68,11 +77,31 @@ public class FindFragment extends Fragment {
         List<Image> imageList = new ArrayList<>();
         List<String>selectedChip = new ArrayList<>();
         query = FirebaseDatabase.getInstance().getReference("Images");
+        filters = binding.chipGroupLayout;
         chip1 = binding.chip1;
         chip2 = binding.chip2;
         chip3 = binding.chip3;
+        toolbar = binding.toolbar;
         recyclerView = binding.recyclerViewFind;
         swipeRefreshLayout = binding.swipeFind;
+
+        toolbar.inflateMenu(R.menu.app_bar_menu);
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.filter:
+                        if (filters.getVisibility() == View.GONE)
+                            filters.setVisibility(View.VISIBLE);
+                        else
+                            filters.setVisibility(View.GONE);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
 
         AdapterDiscover adapterDiscover = new AdapterDiscover (imageList, getContext(),true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -115,6 +144,7 @@ public class FindFragment extends Fragment {
             }
         });
     }
+
 
     void load(Query query, List<Image> imageList, AdapterDiscover adapterDiscover, List<String> selectedChip, String nameUser) {
         query.addListenerForSingleValueEvent(new ValueEventListener() {

@@ -3,7 +3,9 @@ package com.example.protography.ui.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,6 +76,8 @@ public class AdapterDiscover extends RecyclerView.Adapter<AdapterDiscover.ImageV
         private TextView titleTextView;
         private TextView descriptionTextView;
         private Context context;
+        private TextView userName;
+        private TextView saves;
 
 
         public ImageViewHolder(@NonNull View itemView, Context context) {
@@ -83,6 +87,8 @@ public class AdapterDiscover extends RecyclerView.Adapter<AdapterDiscover.ImageV
             user = binding.imageProfile;
             descriptionTextView = binding.description;
             imageView = binding.imageView;
+            userName = binding.userName;
+            saves = binding.savesNr;
             this.context = context;
 
             itemView.setOnClickListener(this);
@@ -116,6 +122,10 @@ public class AdapterDiscover extends RecyclerView.Adapter<AdapterDiscover.ImageV
                 descriptionTextView.setText(image.getImageDescription().substring(0, 120) + "...");
             else
                 descriptionTextView.setText(image.getImageDescription());
+
+            userName.setText(image.getImageNameUser());
+
+            saves.setText(String.valueOf(image.getSavesNumber()));
 
             Picasso.get().load(image.getImageUrl()).into(imageView);
         }

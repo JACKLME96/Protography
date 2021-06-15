@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_forward"
-        android:icon="@drawable/ic_baseline_arrow_forward_24"
-        android:title="forward"
+        android:id="@+id/filter"
+        android:icon="@drawable/ic_baseline_filter_list_24"
+        android:title="filter"
         app:showAsAction="always" />
 </menu>

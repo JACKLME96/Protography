@@ -72,6 +72,7 @@ public class RecyclerViewAdapterFind extends RecyclerView.Adapter<RecyclerViewAd
         private ShapeableImageView user;
         private TextView titleTextView;
         private TextView descriptionTextView;
+        private TextView saves;
         private Context context;
 
 
@@ -82,6 +83,7 @@ public class RecyclerViewAdapterFind extends RecyclerView.Adapter<RecyclerViewAd
             user = binding.imageProfile;
             descriptionTextView = binding.description;
             imageView = binding.imageView;
+            saves = binding.savesNr;
             this.context = context;
 
             itemView.setOnClickListener(this);
@@ -116,6 +118,7 @@ public class RecyclerViewAdapterFind extends RecyclerView.Adapter<RecyclerViewAd
             else
                 descriptionTextView.setText(image.getImageDescription());
 
+            saves.setText(String.valueOf(image.getSavesNumber()));
             Picasso.get().load(image.getImageUrl()).into(imageView);
         }
 
