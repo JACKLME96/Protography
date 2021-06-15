@@ -157,7 +157,7 @@ public class PlaceSelectFragment extends Fragment implements Step {
                     getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
             //filer the type of results
-            autocompleteFragment.setTypeFilter(TypeFilter.CITIES);
+            //autocompleteFragment.setTypeFilter(TypeFilter.ADDRESS);
 
             // Specify the types of place data to return.
             autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME));

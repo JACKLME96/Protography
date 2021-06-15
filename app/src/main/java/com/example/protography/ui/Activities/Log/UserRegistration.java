@@ -144,12 +144,7 @@ public class UserRegistration extends AppCompatActivity {
         }
 
         if (imageUri == null){
-            YoYo.with(Techniques.Shake)
-                    .duration(300)
-                    .repeat(1)
-                    .playOn(profileImage);
-            Toast.makeText(UserRegistration.this, getString(R.string.you_must_select_an_image), Toast.LENGTH_LONG).show();
-            return;
+            imageUri = Uri.parse("android.resource://"+ this.getPackageName()+"/drawable/blank_profile_picture");
         }
 
         AlertDialog dialog =  new AlertDialog.Builder(this)
