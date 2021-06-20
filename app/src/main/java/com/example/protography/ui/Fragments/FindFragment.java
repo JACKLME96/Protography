@@ -120,11 +120,11 @@ public class FindFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     selectedChip.add(buttonView.getText().toString());
-                    load(query, imageList, adapterDiscover, selectedChip, nameUser);
+                    filter(query, imageList, adapterDiscover, selectedChip, nameUser);
                 }
                 else {
                     selectedChip.remove(buttonView.getText().toString());
-                    load(query, imageList, adapterDiscover, selectedChip, nameUser);
+                    filter(query, imageList, adapterDiscover, selectedChip, nameUser);
                 }
             }
         };
@@ -144,7 +144,6 @@ public class FindFragment extends Fragment {
             }
         });
     }
-
 
     void load(Query query, List<Image> imageList, AdapterDiscover adapterDiscover, List<String> selectedChip, String nameUser) {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -184,6 +183,50 @@ public class FindFragment extends Fragment {
                     adapterDiscover.notifyDataSetChanged();
                     recyclerView.setAdapter(adapterDiscover);
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d(TAG, "Errore caricamento immagini: " + error.getMessage());
+            }
+        });
+    }
+
+    void filter(Query query, List<Image> imageList, AdapterDiscover adapterDiscover, List<String> selectedChip, String nameUser){
+        List<Image> imageListTMP = new ArrayList<>();
+        AdapterDiscover adapterDiscover2 = new AdapterDiscover (imageListTMP, getContext(),true);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                imageListTMP.clear();
+                    for (int i = 0; i < imageList.size(); i++) {
+                        switch (selectedChip.size()) {
+                            case 0 :
+                                if(!imageList.get(i).getImageNameUser().equals(nameUser))
+                                    imageListTMP.add(imageList.get(i));
+                                break;
+
+                            case 1 :
+                                if(!imageList.get(i).getImageNameUser().equals(nameUser))
+                                    if(imageList.get(i).getImageCategory().equals(selectedChip.get(0)))
+                                        imageListTMP.add(imageList.get(i));
+                                break;
+
+                            case 2 :
+                                if(!imageList.get(i).getImageNameUser().equals(nameUser))
+                                    if(imageList.get(i).getImageCategory().equals(selectedChip.get(0)) || imageList.get(i).getImageCategory().equals(selectedChip.get(1)))
+                                        imageListTMP.add(imageList.get(i));
+                                break;
+
+                            case 3 :
+                                if(!imageList.get(i).getImageNameUser().equals(nameUser))
+                                    if(imageList.get(i).getImageCategory().equals(selectedChip.get(0)) || imageList.get(i).getImageCategory().equals(selectedChip.get(1)) || imageList.get(i).getImageCategory().equals(selectedChip.get(2)))
+                                        imageListTMP.add(imageList.get(i));
+                                break;
+                        }
+                    }
+                    adapterDiscover2.notifyDataSetChanged();
+                    recyclerView.setAdapter(adapterDiscover2);
             }
 
             @Override
