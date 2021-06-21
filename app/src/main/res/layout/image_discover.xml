@@ -40,35 +40,35 @@
 
             <TextView
                 android:id="@+id/userName"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/username"
                 android:textStyle="bold"
                 android:textColor="@color/white"
-                android:textSize="20dp"
+                android:textSize="25dp"
                 android:layout_toRightOf="@id/imageProfile"
                 android:layout_alignTop="@id/imageProfile"/>
 
             <ImageView
-                android:id="@+id/savesImage"
-                android:scaleX="0.7"
-                android:scaleY="0.7"
-                android:layout_marginTop="-5dp"
-                android:layout_marginLeft="-11dp"
+                android:id="@+id/PlaceImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_baseline_bookmark_24"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="-4dp"
+                app:srcCompat="@drawable/ic_baseline_place_24"
                 android:layout_below="@id/userName"
                 android:layout_toRightOf="@id/imageProfile"
                 app:tint="@color/white" />
 
             <TextView
-                android:id="@+id/savesNr"
-                android:layout_toRightOf="@id/savesImage"
+                android:id="@+id/place"
+                android:text="@string/set_your_coordinates"
+                android:layout_toRightOf="@id/PlaceImage"
                 android:layout_below="@id/userName"
-                android:text="25"
-                android:textSize="25dp"
+                android:textSize="20dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -78,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@id/description"
-                android:text="Titolo"
+                android:text="@string/title"
                 android:textStyle="bold"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
@@ -87,7 +87,7 @@
 
             <TextView
                 android:id="@+id/description"
-                android:text="Descrizione"
+                android:text="@string/description"
                 android:layout_alignBottom="@id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

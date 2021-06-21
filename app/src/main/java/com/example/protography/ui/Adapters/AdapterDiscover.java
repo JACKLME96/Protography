@@ -5,19 +5,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.location.Address;
+import android.location.Geocoder;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
+import com.example.protography.R;
 import com.example.protography.databinding.ImageDiscoverBinding;
 import com.example.protography.databinding.ImageItemBinding;
 import com.example.protography.ui.Activities.ImageActivity;
@@ -77,7 +84,8 @@ public class AdapterDiscover extends RecyclerView.Adapter<AdapterDiscover.ImageV
         private TextView descriptionTextView;
         private Context context;
         private TextView userName;
-        private TextView saves;
+        private TextView place;
+        Geocoder gcd;
 
 
         public ImageViewHolder(@NonNull View itemView, Context context) {
@@ -88,7 +96,7 @@ public class AdapterDiscover extends RecyclerView.Adapter<AdapterDiscover.ImageV
             descriptionTextView = binding.description;
             imageView = binding.imageView;
             userName = binding.userName;
-            saves = binding.savesNr;
+            place = binding.place;
             this.context = context;
 
             itemView.setOnClickListener(this);
@@ -125,7 +133,27 @@ public class AdapterDiscover extends RecyclerView.Adapter<AdapterDiscover.ImageV
 
             userName.setText(image.getImageNameUser());
 
-            saves.setText(String.valueOf(image.getSavesNumber()));
+            gcd = new Geocoder(context, Locale.getDefault());
+
+            try {
+                List<Address> addresses = gcd.getFromLocation(image.getLatitude(), image.getLongitude(), 1);
+                if (addresses.size() > 0){
+
+                    if(addresses.get(0).getLocality() != null)
+                        place.setText(addresses.get(0).getLocality());
+
+                    else if(addresses.get(0).getCountryName() != null)
+                        place.setText(addresses.get(0).getCountryName());
+
+                    else
+                        place.setText("Unknown");
+                }
+                else
+                    place.setText("Unknown");
+            }
+            catch (IOException e) {
+                Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
 
             Picasso.get().load(image.getImageUrl()).into(imageView);
         }
@@ -134,15 +162,31 @@ public class AdapterDiscover extends RecyclerView.Adapter<AdapterDiscover.ImageV
         public void onClick(View v) {
 
             Intent intent = new Intent(itemView.getContext(), ImageActivity.class);
-            intent.putExtra("Immagine", image);
+            Query query = FirebaseDatabase.getInstance().getReference("Images").orderByChild("imageUid").equalTo(image.getImageUid());
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                    if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            image = dataSnapshot.getValue(Image.class);
+                            intent.putExtra("Immagine", image);
 
-            // L'animazione funziona solo con sdk >= 21 e se lo screen è verticale
-            if (android.os.Build.VERSION.SDK_INT >= 21 && context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) itemView.getContext(), imageView, ViewCompat.getTransitionName(imageView));
-                ((Activity) itemView.getContext()).startActivity(intent, options.toBundle());
-            } else
-                itemView.getContext().startActivity(intent);
+                            // L'animazione funziona solo con sdk >= 21 e se lo screen è verticale
+                            if (android.os.Build.VERSION.SDK_INT >= 21 && context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) itemView.getContext(), imageView, ViewCompat.getTransitionName(imageView));
+                                ((Activity) itemView.getContext()).startActivity(intent, options.toBundle());
+                            } else
+                                itemView.getContext().startActivity(intent);
 
+                            break;
+                        }
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                }
+            });
         }
     }
 }

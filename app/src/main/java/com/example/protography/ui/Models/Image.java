@@ -19,10 +19,11 @@ public class Image implements Parcelable {
     private String ImageCategory;
     private String ImageNameUser;
     private int SavesNumber;
+    private String Uid;
 
     public Image(){ }
 
-    public Image(String title, String url, String description, String settings, String time, String tips, String equipment, String coords, Double latitude, Double longitude, String category, String nameUser, int savesNumber){
+    public Image(String uid, String title, String url, String description, String settings, String time, String tips, String equipment, String coords, Double latitude, Double longitude, String category, String nameUser, int savesNumber){
         ImageTitle = title;
         ImageUrl = url;
         ImageDescription = description;
@@ -36,6 +37,7 @@ public class Image implements Parcelable {
         ImageCategory = category;
         ImageNameUser = nameUser;
         SavesNumber = savesNumber;
+        Uid = uid;
     }
 
     protected Image(Parcel in) {
@@ -52,6 +54,7 @@ public class Image implements Parcelable {
         ImageCategory = in.readString();
         ImageNameUser = in.readString();
         SavesNumber = in.readInt();
+        Uid = in.readString();
     }
 
     public static final Creator<Image> CREATOR = new Creator<Image>() {
@@ -65,6 +68,14 @@ public class Image implements Parcelable {
             return new Image[size];
         }
     };
+
+    public String getImageUid(){
+        return Uid;
+    }
+
+    public void setImageUid(String uid){
+        Uid = uid;
+    }
 
     public String getImageTitle(){
         return ImageTitle;
