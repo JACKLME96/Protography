@@ -54,9 +54,10 @@
                 android:id="@+id/description"
                 android:text="Descrizione"
                 android:layout_alignBottom="@id/imageView"
-                android:layout_width="280dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
@@ -64,25 +65,30 @@
             <ImageView
                 android:id="@+id/savesImage"
                 android:layout_marginLeft="-20dp"
+                android:layout_marginEnd="30dp"
                 android:scaleX="0.7"
                 android:scaleY="0.7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_baseline_bookmark_24"
                 android:layout_alignTop="@id/imageView"
-                android:layout_toRightOf="@id/description"
-                app:tint="@color/white" />
+                android:layout_alignParentEnd="true"
+                app:tint="@color/white"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="30dp" />
 
             <TextView
                 android:id="@+id/savesNr"
-                android:layout_toRightOf="@id/savesImage"
+                android:layout_alignParentEnd="true"
                 android:layout_alignBottom="@id/savesImage"
+                android:layout_marginRight="20dp"
                 android:layout_marginBottom="7dp"
                 android:text="25"
                 android:textSize="15sp"
                 android:textColor="@color/white"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
