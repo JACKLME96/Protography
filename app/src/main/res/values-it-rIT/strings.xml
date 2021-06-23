@@ -13,14 +13,14 @@
     <string name="nature">Natura</string>
     <string name="urban">Urbano</string>
     <string name="portrait">Ritratto</string>
-    <string name="equipment">Equipaggiamento</string>
+    <string name="equipment">Equipaggiamento*</string>
     <string name="camera_settings">Impostazioni camera</string>
     <string name="best_time_to_go">Momento migliore per andare</string>
     <string name="tips">Suggerimenti</string>
     <string name="errorMaps">Impossibile mostrare le indicazioni</string>
     <string name="insert_image_details">Inserisci i dettagli dell\'immagine</string>
-    <string name="title">Titolo</string>
-    <string name="description">Descrizione</string>
+    <string name="title">Titolo*</string>
+    <string name="description">Descrizione*</string>
     <string name="advanced_settings">Impostazioni avanzate</string>
     <string name="shutter_speed">Velocità otturattore</string>
     <string name="aperture">Apertura</string>
@@ -94,6 +94,5 @@
     <string name="next">AVANTI</string>
     <string name="end">FINE</string>
     <string name="image_correctly_deleted">Immagine eliminata correttamente</string>
-
-
+    <string name="equipmentImageActivity">Equipaggiamento</string>
 </resources>

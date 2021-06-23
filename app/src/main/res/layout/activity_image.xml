@@ -227,7 +227,7 @@
                         android:layout_marginLeft="8dp"
                         android:layout_marginBottom="8dp"
                         android:drawablePadding="8dp"
-                        android:text="@string/equipment"
+                        android:text="@string/equipmentImageActivity"
                         android:textColor="?attr/colorPrimary"
                         android:textSize="18sp" />
 

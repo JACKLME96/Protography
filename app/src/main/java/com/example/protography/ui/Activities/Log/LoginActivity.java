@@ -128,12 +128,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mAuth.signInWithEmailAndPassword(mail, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+
                 //Login avvenuto con successo
                 if (task.isSuccessful()) {
                     startMainActivity();
                 }
-                //Login Fallito, credenziali errate
 
+
+                //Login Fallito, credenziali errate
                 else {
                     YoYo.with(Techniques.Shake)
                             .duration(300)

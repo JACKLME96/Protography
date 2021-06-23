@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +54,7 @@ public class ProfileFragment extends Fragment {
     SharedPreferences sharedPref;
     private NavigationView navigationView;
     Intent intent;
+    private TextView textViewUsername;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -62,13 +64,28 @@ public class ProfileFragment extends Fragment {
         setHasOptionsMenu(true);
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-        binding.textViewUsername.setText(sharedPref.getString("FULLNAME", null));
-        image = binding.image;
+
         mDrawer = binding.drawerLayout;
-        menu = binding.menu;
         navigationView = binding.nvView;
-        menu.setOnClickListener(v -> mDrawer.openDrawer(GravityCompat.START));
+
         View header = navigationView.getHeaderView(0);
+
+        // Controllo l'orientamento e in base a quello cambio il layout per immagine e username
+        LinearLayout placeHolder = binding.layoutImage;
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            getLayoutInflater().inflate(R.layout.image_name_landscape, placeHolder);
+        } else {
+            getLayoutInflater().inflate(R.layout.image_name_portrait, placeHolder);
+        }
+
+        // Questi elementi li posso inizializzare solo dopo che ho caricato il layout precedente
+        textViewUsername = placeHolder.findViewById(R.id.text_view_username);
+        textViewUsername.setText(sharedPref.getString("FULLNAME", null));
+        image = placeHolder.findViewById(R.id.image);
+        menu = placeHolder.findViewById(R.id.menu);
+        menu.setOnClickListener(v -> mDrawer.openDrawer(GravityCompat.START));
+
 
         //header drawer
         ProfileImage = header.findViewById(R.id.imageProfile);
@@ -157,6 +174,6 @@ public class ProfileFragment extends Fragment {
         Picasso.get().load(sharedPref.getString("PROFILEIMG", null)).into(ProfileImage);
         userName.setText(sharedPref.getString("FULLNAME", null));
         userMail.setText(sharedPref.getString("EMAIL", null));
-        binding.textViewUsername.setText(sharedPref.getString("FULLNAME", null));
+        textViewUsername.setText(sharedPref.getString("FULLNAME", null));
     }
 }

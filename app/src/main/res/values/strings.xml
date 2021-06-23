@@ -14,14 +14,15 @@
     <string name="nature">Nature</string>
     <string name="urban">Urban</string>
     <string name="portrait">Portrait</string>
-    <string name="equipment">Equipment</string>
+    <string name="equipment">Equipment*</string>
+    <string name="equipment2">Equipment</string>
     <string name="camera_settings">Camera settings</string>
     <string name="best_time_to_go">Best time to go</string>
     <string name="tips">Tips</string>
     <string name="errorMaps">Impossible to show directions</string>
     <string name="insert_image_details">Insert image details</string>
-    <string name="title">Title</string>
-    <string name="description">Description</string>
+    <string name="title">Title*</string>
+    <string name="description">Description*</string>
     <string name="advanced_settings">Advanced settings</string>
     <string name="iso" translatable="false">ISO</string>
     <string name="shutter_speed">Shutter Speed</string>
@@ -101,4 +102,5 @@
     <string name="end">END</string>
     <string name="image_correctly_deleted">Image correctly deleted</string>
     <string name="cant_save">Can\'t save your own photo</string>
+    <string name="equipmentImageActivity">Equipment</string>
 </resources>
