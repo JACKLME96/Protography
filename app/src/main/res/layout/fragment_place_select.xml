@@ -42,7 +42,7 @@
             android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints="@string/search"/>
+            android:autofillHints="@string/place_search"/>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -57,7 +57,7 @@
         card_view:cardBackgroundColor="@color/white"
         card_view:cardCornerRadius="35dp">
         <TextView
-            android:text="Move the map"
+            android:text="@string/move_the_map"
             android:layout_gravity="center_horizontal"
             android:padding="15dp"
             android:textSize="15sp"

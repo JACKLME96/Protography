@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name" translatable="false">Protography</string>
-    <string name="search">Search</string>
     <string name="add">Add</string>
     <string name="profile">Profile</string>
     <string name="discover">Discover</string>
@@ -10,12 +9,11 @@
     <string name="image_description">Profile image</string>
     <string name="tab_upload">Uploads</string>
     <string name="tab_bookmarks">Bookmarks</string>
-    <string name="saves_nr" translatable="false">Saves nr.</string>
+    <string name="saves_nr" translatable="false">Saves:</string>
     <string name="nature">Nature</string>
     <string name="urban">Urban</string>
     <string name="portrait">Portrait</string>
     <string name="equipment">Equipment*</string>
-    <string name="equipment2">Equipment</string>
     <string name="camera_settings">Camera settings</string>
     <string name="best_time_to_go">Best time to go</string>
     <string name="tips">Tips</string>
@@ -90,7 +88,7 @@
     <string name="save">Save</string>
     <string name="switched_to_light_theme">Switched to light theme</string>
     <string name="switched_to_dark_theme">Switched to dark theme</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading…</string>
     <string name="repeatPsw">Reinsert password</string>
     <string name="differentPsw">Passwords are different</string>
     <string name="immagine">Image</string>
@@ -102,5 +100,10 @@
     <string name="end">END</string>
     <string name="image_correctly_deleted">Image correctly deleted</string>
     <string name="cant_save">Can\'t save your own photo</string>
+    <string name="move_the_map">Move the map</string>
+    <string name="search">Search</string>
+    <string name="map_search">Search (Cities)</string>
+    <string name="place_search">Search (Address)</string>
     <string name="equipmentImageActivity">Equipment</string>
+    <string name="required_field">* = required field</string>
 </resources>

@@ -25,6 +25,6 @@
     <fragment
         android:id="@+id/navigation_find"
         android:name="com.example.protography.ui.Fragments.FindFragment"
-        android:label="Discover"
+        android:label="@string/discover"
         tools:layout="@layout/fragment_find" />
 </navigation>

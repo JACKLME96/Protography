@@ -42,6 +42,7 @@ import com.stepstone.stepper.VerificationError;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class PlaceSelectFragment extends Fragment implements Step {
     private TextView coords;
@@ -150,14 +151,14 @@ public class PlaceSelectFragment extends Fragment implements Step {
             mapFragment.getMapAsync(callback);
 
             if (!Places.isInitialized())
-                Places.initialize(getContext(), BuildConfig.API_KEY);
+                Places.initialize(requireContext(), BuildConfig.API_KEY);
 
             // Initialize the AutocompleteSupportFragment.
             AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                     getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
             //filer the type of results
-            //autocompleteFragment.setTypeFilter(TypeFilter.ADDRESS);
+            autocompleteFragment.setTypeFilter(TypeFilter.ADDRESS);
 
             // Specify the types of place data to return.
             autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME));

@@ -57,6 +57,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class MapsFragment extends Fragment {
 
@@ -204,13 +205,14 @@ public class MapsFragment extends Fragment {
             mapFragment.getMapAsync(callback);
 
             if (!Places.isInitialized())
-                Places.initialize(getContext(), BuildConfig.API_KEY);
+                Places.initialize(requireContext(), BuildConfig.API_KEY);
 
             // Initialize the AutocompleteSupportFragment.
             AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                     getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
             //filer the type of results
+            assert autocompleteFragment != null;
             autocompleteFragment.setTypeFilter(TypeFilter.CITIES);
 
             // Specify the types of place data to return.

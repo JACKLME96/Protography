@@ -181,7 +181,7 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
                     Picasso.get().load(image.getImageUrl()).into(imagePrev);
 
                     if(image.getImageTitle().length() > 15)
-                        title.setText(image.getImageTitle().substring(0,15) + "...");
+                        title.setText(image.getImageTitle().substring(0,15).concat("..."));
                     else
                         title.setText(image.getImageTitle());
 
@@ -193,7 +193,7 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
                     desc.setSeeMoreTextColor(R.color.yellow);
 
                     equipment.setText(image.getImageEquipment());
-                    saved.setText("Saves: " + String.format("%d",image.getSavesNumber()));
+                    saved.setText("Saves: " +String.format("%d",image.getSavesNumber()));
                     
                     if (image.getImageSettings() == null || image.getImageSettings().isEmpty())
                         binding.settingsLayout.setVisibility(View.GONE);
